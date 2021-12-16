@@ -1,8 +1,7 @@
 package com.lambakean.RationPlanner.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -13,6 +12,19 @@ public class User extends BaseEntity {
 
     @Column(nullable = false)
     private String password;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<Product> products;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<Product> meals;
+
+    public User(String username, String password, Set<Product> products, Set<Product> meals) {
+        this.username = username;
+        this.password = password;
+        this.products = products;
+        this.meals = meals;
+    }
 
     public User(String username, String password) {
         this.username = username;
@@ -36,5 +48,21 @@ public class User extends BaseEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Set<Product> products) {
+        this.products = products;
+    }
+
+    public Set<Product> getMeals() {
+        return meals;
+    }
+
+    public void setMeals(Set<Product> meals) {
+        this.meals = meals;
     }
 }

@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto register(@NonNull UserCredentialsDto userCredentialsDto) {  // todo check username uniqueness
+    public UserDto register(@NonNull UserCredentialsDto userCredentialsDto) {
 
         String username = userCredentialsDto.getUsername();
         String password = userCredentialsDto.getPassword();
