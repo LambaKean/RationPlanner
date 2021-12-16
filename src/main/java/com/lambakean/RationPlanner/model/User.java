@@ -19,6 +19,9 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Product> meals;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<PlannedDay> plannedDays;
+
     public User(String username, String password, Set<Product> products, Set<Product> meals) {
         this.username = username;
         this.password = password;

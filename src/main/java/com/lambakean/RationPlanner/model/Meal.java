@@ -26,6 +26,9 @@ public class Meal extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @ManyToMany(mappedBy = "meals")
+    private Set<PlannedDay> relatedPlannedDays;
+
     public Meal(String name,
                 String description,
                 Duration cookingDuration,
@@ -104,5 +107,13 @@ public class Meal extends BaseEntity {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Set<PlannedDay> getRelatedPlannedDays() {
+        return relatedPlannedDays;
+    }
+
+    public void setRelatedPlannedDays(Set<PlannedDay> relatedPlannedDays) {
+        this.relatedPlannedDays = relatedPlannedDays;
     }
 }
