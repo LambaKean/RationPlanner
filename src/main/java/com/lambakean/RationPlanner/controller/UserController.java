@@ -2,7 +2,10 @@ package com.lambakean.RationPlanner.controller;
 
 import com.lambakean.RationPlanner.dto.UserCredentialsDto;
 import com.lambakean.RationPlanner.dto.UserDto;
+import com.lambakean.RationPlanner.dto.UserWithTokensDto;
 import com.lambakean.RationPlanner.exception.AuthenticationException;
+import com.lambakean.RationPlanner.model.User;
+import com.lambakean.RationPlanner.service.PrincipalService;
 import com.lambakean.RationPlanner.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,64 +13,47 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/api/v1/user")
 public class UserController {
 
     private final UserService userService;
+    private final PrincipalService principalService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, PrincipalService principalService) {
         this.userService = userService;
+        this.principalService = principalService;
     }
 
     @PostMapping
-    public ResponseEntity<UserDto> register(@RequestBody UserCredentialsDto userCredentialsDto,
+    public ResponseEntity<UserWithTokensDto> register(@RequestBody UserCredentialsDto userCredentialsDto,
                                             HttpServletRequest httpServletRequest) {
 
-        UserDto userDto = userService.register(userCredentialsDto);
+        UserWithTokensDto userWithTokensDto = userService.register(userCredentialsDto);
 
-        httpServletRequest
-                .getSession(true)
-                .setAttribute("userId", userDto.getId());
-
-        return new ResponseEntity<>(userDto, HttpStatus.CREATED);
+        return new ResponseEntity<>(userWithTokensDto, HttpStatus.CREATED);
     }
 
     @PostMapping("/session")
-    public ResponseEntity<UserDto> login(@RequestBody UserCredentialsDto userCredentialsDto,
+    public ResponseEntity<UserWithTokensDto> login(@RequestBody UserCredentialsDto userCredentialsDto,
                                          HttpServletRequest httpServletRequest) {
 
-        UserDto userDto = userService.login(userCredentialsDto);
+        UserWithTokensDto userWithTokensDto = userService.login(userCredentialsDto);
 
-        httpServletRequest
-                .getSession(true)
-                .setAttribute("userId", userDto.getId());
-
-        return new ResponseEntity<>(userDto, HttpStatus.CREATED);
+        return new ResponseEntity<>(userWithTokensDto, HttpStatus.CREATED);
     }
 
     @GetMapping()
     public ResponseEntity<UserDto> getCurrentUser(HttpServletRequest httpServletRequest) {
 
-        if (httpServletRequest.getSession(false) == null) {
+        if(!principalService.isPrincipalPresent()) {
             throw new AuthenticationException("Вы должны войти в свой аккаунт, чтобы получить к нему доступ");
         }
 
-        String userId = (String) httpServletRequest.getSession().getAttribute("userId");
+        User user = (User) principalService.getCurrentPrincipal();
 
-        return new ResponseEntity<>(userService.findUserById(userId), HttpStatus.OK);
-    }
-
-    @DeleteMapping("/session")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void logout(HttpServletRequest httpServletRequest) {
-
-        HttpSession session = httpServletRequest.getSession(false);
-        if(session != null) {
-            session.invalidate();
-        }
+        return new ResponseEntity<>(new UserDto(user.getId(), user.getUsername()), HttpStatus.OK);
     }
 }
