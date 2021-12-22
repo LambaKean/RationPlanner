@@ -68,4 +68,12 @@ public class User extends BaseEntity {
     public void setMeals(Set<Product> meals) {
         this.meals = meals;
     }
+
+    public Set<PlannedDay> getPlannedDays() {
+        return plannedDays;
+    }
+
+    public void setPlannedDays(Set<PlannedDay> plannedDays) {
+        this.plannedDays = plannedDays;
+    }
 }

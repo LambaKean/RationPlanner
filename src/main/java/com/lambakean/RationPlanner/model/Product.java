@@ -15,7 +15,7 @@ public class Product extends BaseEntity {
     private Double price;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "product_quantity_id", referencedColumnName = "id")
+    @JoinColumn(name = "product_quantity_id", referencedColumnName = "id", nullable = false)
     private ProductQuantity quantity;
 
     @ManyToOne
@@ -37,6 +37,14 @@ public class Product extends BaseEntity {
 
     public Double quantityDifferenceCoef(ProductQuantity productQuantity) {
         return productQuantity.getAmount() / quantity.getAmount();
+    }
+
+    public Double getQuantityAmount() {
+        return this.quantity.getAmount();
+    }
+
+    public String getQuantityMeasurementUnitName() {
+        return this.quantity.getMeasurementUnitName();
     }
 
 

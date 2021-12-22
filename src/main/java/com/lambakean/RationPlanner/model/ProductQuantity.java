@@ -33,6 +33,10 @@ public class ProductQuantity extends BaseEntity {
 
     public ProductQuantity() {}
 
+    public String getMeasurementUnitName() {
+        return measurementUnit.getName();
+    }
+
 
     public Double getAmount() {
         return amount;

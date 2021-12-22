@@ -12,8 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-
 @RestController
 @RequestMapping("/api/v1/user")
 public class UserController {
@@ -28,17 +26,15 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserWithTokensDto> register(@RequestBody UserCredentialsDto userCredentialsDto,
-                                            HttpServletRequest httpServletRequest) {
+    public ResponseEntity<UserWithTokensDto> register(@RequestBody UserCredentialsDto userCredentialsDto) {
 
         UserWithTokensDto userWithTokensDto = userService.register(userCredentialsDto);
 
         return new ResponseEntity<>(userWithTokensDto, HttpStatus.CREATED);
     }
 
-    @PostMapping("/session")
-    public ResponseEntity<UserWithTokensDto> login(@RequestBody UserCredentialsDto userCredentialsDto,
-                                         HttpServletRequest httpServletRequest) {
+    @PostMapping("/login")
+    public ResponseEntity<UserWithTokensDto> login(@RequestBody UserCredentialsDto userCredentialsDto) {
 
         UserWithTokensDto userWithTokensDto = userService.login(userCredentialsDto);
 
@@ -46,7 +42,7 @@ public class UserController {
     }
 
     @GetMapping()
-    public ResponseEntity<UserDto> getCurrentUser(HttpServletRequest httpServletRequest) {
+    public ResponseEntity<UserDto> getCurrentUser() {
 
         if(!principalService.isPrincipalPresent()) {
             throw new AuthenticationException("Вы должны войти в свой аккаунт, чтобы получить к нему доступ");
