@@ -1,25 +1,23 @@
 package com.lambakean.RationPlanner.dto;
 
-import com.lambakean.RationPlanner.dto.exceptionDto.ExceptionDto;
-
 import java.util.Set;
 
 public class ResponseWithExceptionsDto {
 
-    private Set<ExceptionDto> exceptions;
+    private Set<? extends ExceptionDto> exceptions;
 
-    public ResponseWithExceptionsDto(Set<ExceptionDto> exceptions) {
+    public ResponseWithExceptionsDto(Set<? extends ExceptionDto> exceptions) {
         this.exceptions = exceptions;
     }
 
     public ResponseWithExceptionsDto() {}
 
 
-    public Set<ExceptionDto> getExceptions() {
+    public Set<? extends ExceptionDto> getExceptions() {
         return exceptions;
     }
 
-    public void setExceptions(Set<ExceptionDto> exceptions) {
+    public void setExceptions(Set<? extends ExceptionDto> exceptions) {
         this.exceptions = exceptions;
     }
 }

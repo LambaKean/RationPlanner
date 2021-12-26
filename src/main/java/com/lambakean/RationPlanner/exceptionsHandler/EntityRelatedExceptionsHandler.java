@@ -1,7 +1,9 @@
 package com.lambakean.RationPlanner.exceptionsHandler;
 
+import com.lambakean.RationPlanner.dto.InvalidFieldExceptionDto;
 import com.lambakean.RationPlanner.dto.ResponseWithExceptionsDto;
-import com.lambakean.RationPlanner.dto.exceptionDto.ExceptionDto;
+import com.lambakean.RationPlanner.dto.ExceptionDto;
+import com.lambakean.RationPlanner.exception.AccessDeniedException;
 import com.lambakean.RationPlanner.exception.EntityNotFoundException;
 import com.lambakean.RationPlanner.exception.InvalidEntityException;
 import org.springframework.http.HttpStatus;
@@ -31,18 +33,40 @@ public class EntityRelatedExceptionsHandler {
     @ExceptionHandler(InvalidEntityException.class)
     public ResponseEntity<ResponseWithExceptionsDto> handleInvalidEntityException(InvalidEntityException e) {
 
-        Set<ExceptionDto> exceptionDtos = new HashSet<>();
+        Set<InvalidFieldExceptionDto> exceptionDtos = new HashSet<>();
 
         BindingResult entityBindingResult = e.getBindingResult();
+
         for(FieldError fieldError : entityBindingResult.getFieldErrors()) {
-            exceptionDtos.add(new ExceptionDto(
-                    "invalidField." + fieldError.getField(),
-                    fieldError.getDefaultMessage()
-            ));
+
+            InvalidFieldExceptionDto exceptionDto = new InvalidFieldExceptionDto();
+
+            exceptionDto.setCode("invalidField");
+            exceptionDto.setTargetObjectName(fieldError.getObjectName());
+            exceptionDto.setField(fieldError.getField());
+            exceptionDto.setFieldCode(fieldError.getCode());
+            exceptionDto.setMessage(fieldError.getDefaultMessage());
+
+            exceptionDtos.add(exceptionDto);
         }
 
         ResponseWithExceptionsDto responseDto = new ResponseWithExceptionsDto(exceptionDtos);
         return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ResponseWithExceptionsDto> handleAccessDeniedException(AccessDeniedException e) {
+
+        ExceptionDto exceptionDto = new ExceptionDto("accessDenied", e.getMessage());
+
+        Set<ExceptionDto> exceptionDtos = new HashSet<>();
+        exceptionDtos.add(exceptionDto);
+
+        ResponseWithExceptionsDto responseDto = new ResponseWithExceptionsDto();
+        responseDto.setExceptions(exceptionDtos);
+
+        return new ResponseEntity<>(responseDto, HttpStatus.FORBIDDEN);
+
     }
 
 }

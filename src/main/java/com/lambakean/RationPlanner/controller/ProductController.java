@@ -5,10 +5,9 @@ import com.lambakean.RationPlanner.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/product")
@@ -27,5 +26,29 @@ public class ProductController {
         ProductDto productDto = productService.getProductById(id);
 
         return new ResponseEntity<>(productDto, HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProductDto>> getProducts() {
+
+        List<ProductDto> productDots = productService.getCurrentUserProducts();
+
+        return new ResponseEntity<>(productDots, HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto incomingProductDto) {
+
+        ProductDto outgoingProductDto = productService.createProduct(incomingProductDto);
+
+        return new ResponseEntity<>(outgoingProductDto, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProductById(@PathVariable String id) {
+
+        productService.deleteProductById(id);
+
+        return ResponseEntity.noContent().build();
     }
 }

@@ -104,6 +104,7 @@ public class UserServiceImpl implements UserService {
 
         DataBinder dataBinder = new DataBinder(user);
         dataBinder.addValidators(userValidator, userUniquenessValidator);
+
         dataBinder.validate();
 
         BindingResult userBindingResult = dataBinder.getBindingResult();

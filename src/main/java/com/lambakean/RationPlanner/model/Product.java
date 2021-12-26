@@ -12,6 +12,7 @@ public class Product extends BaseEntity {
 
     private String producer;
 
+    @Column(nullable = false)
     private Double price;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -45,6 +46,10 @@ public class Product extends BaseEntity {
 
     public String getQuantityMeasurementUnitName() {
         return this.quantity.getMeasurementUnitName();
+    }
+
+    public String getUserId() {
+        return this.user.getId();
     }
 
 

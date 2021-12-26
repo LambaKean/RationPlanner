@@ -1,18 +1,17 @@
 package com.lambakean.RationPlanner.dto;
 
 import com.lambakean.RationPlanner.model.Product;
-import org.springframework.lang.NonNull;
-
-import java.text.DecimalFormat;
 
 public class ProductDto {
 
+    private String id;
     private String name;
     private String producer;
-    private String quantity;
-    private double price;
+    private ProductQuantityDto quantity;
+    private Double price;
 
-    public ProductDto(String name, String producer, String quantity, double price) {
+    public ProductDto(String id, String name, String producer, ProductQuantityDto quantity, Double price) {
+        this.id = id;
         this.name = name;
         this.producer = producer;
         this.quantity = quantity;
@@ -21,19 +20,47 @@ public class ProductDto {
 
     public ProductDto() {}
 
-    public static ProductDto fromProduct(@NonNull Product product) {
+    public static ProductDto fromProduct(Product product) {
+
+        if(product == null) {
+            return null;
+        }
 
         ProductDto productDto = new ProductDto();
+        productDto.setId(product.getId());
         productDto.setName(product.getName());
         productDto.setProducer(product.getProducer());
+        productDto.setQuantity(ProductQuantityDto.fromProductQuantity(product.getQuantity()));
         productDto.setPrice(product.getPrice());
 
-        DecimalFormat decimalFormat = new DecimalFormat("0.#");
-        productDto.setQuantity(
-                decimalFormat.format(product.getQuantityAmount()) + " " + product.getQuantityMeasurementUnitName()
-        );
-
         return productDto;
+    }
+
+    public String getMeasurementUnitId() {
+
+        if(quantity == null) {
+            return null;
+        }
+
+        return quantity.getMeasurementUnitId();
+    }
+
+    public Double getQuantityAmount() {
+
+        if(quantity == null) {
+            return null;
+        }
+
+        return quantity.getAmount();
+    }
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -52,19 +79,19 @@ public class ProductDto {
         this.producer = producer;
     }
 
-    public String getQuantity() {
+    public ProductQuantityDto getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(String quantity) {
+    public void setQuantity(ProductQuantityDto quantity) {
         this.quantity = quantity;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 }

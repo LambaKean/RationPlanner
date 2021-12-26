@@ -31,6 +31,11 @@ public class ProductQuantity extends BaseEntity {
         this.ingredient = ingredient;
     }
 
+    public ProductQuantity(Double amount, MeasurementUnit measurementUnit) {
+        this.amount = amount;
+        this.measurementUnit = measurementUnit;
+    }
+
     public ProductQuantity() {}
 
     public String getMeasurementUnitName() {

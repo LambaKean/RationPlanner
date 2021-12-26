@@ -3,7 +3,7 @@ package com.lambakean.RationPlanner.controller;
 import com.lambakean.RationPlanner.dto.UserCredentialsDto;
 import com.lambakean.RationPlanner.dto.UserDto;
 import com.lambakean.RationPlanner.dto.UserWithTokensDto;
-import com.lambakean.RationPlanner.exception.AuthenticationException;
+import com.lambakean.RationPlanner.exception.UserNotLoggedInException;
 import com.lambakean.RationPlanner.model.User;
 import com.lambakean.RationPlanner.service.PrincipalService;
 import com.lambakean.RationPlanner.service.UserService;
@@ -44,11 +44,9 @@ public class UserController {
     @GetMapping()
     public ResponseEntity<UserDto> getCurrentUser() {
 
-        if(!principalService.isPrincipalPresent()) {
-            throw new AuthenticationException("Вы должны войти в свой аккаунт, чтобы получить к нему доступ");
-        }
-
-        User user = (User) principalService.getCurrentPrincipal();
+        User user = (User) principalService.getCurrentPrincipal().orElseThrow(
+                () -> new UserNotLoggedInException("Вы должны войти в аккаунт, чтобы просмотреть свой профиль")
+        );
 
         return new ResponseEntity<>(new UserDto(user.getId(), user.getUsername()), HttpStatus.OK);
     }

@@ -1,10 +1,10 @@
 package com.lambakean.RationPlanner.service;
 
-import java.security.Principal;
+import java.util.Optional;
 
 public interface PrincipalService {
 
     boolean isPrincipalPresent();
 
-    Object getCurrentPrincipal();
+    Optional<?> getCurrentPrincipal();
 }

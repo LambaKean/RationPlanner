@@ -5,6 +5,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class UserPrincipalService implements PrincipalService {
 
@@ -16,12 +18,14 @@ public class UserPrincipalService implements PrincipalService {
     }
 
     @Override
-    public User getCurrentPrincipal() {
+    public Optional<User> getCurrentPrincipal() {
 
-        if(isPrincipalPresent()) {
-            return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(!isPrincipalPresent()) {
+            return Optional.empty();
         }
 
-        return null;
+        return Optional.ofNullable(
+                (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()
+        );
     }
 }

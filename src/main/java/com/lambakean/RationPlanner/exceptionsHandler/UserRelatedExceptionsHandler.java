@@ -2,28 +2,30 @@ package com.lambakean.RationPlanner.exceptionsHandler;
 
 import com.lambakean.RationPlanner.dto.ResponseWithExceptionsDto;
 import com.lambakean.RationPlanner.dto.ExceptionDto;
-import com.lambakean.RationPlanner.exception.AuthenticationException;
+import com.lambakean.RationPlanner.exception.UserNotLoggedInException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @ControllerAdvice
-public class SecurityRelatedExceptionsHandler {
+public class UserRelatedExceptionsHandler {
 
-    @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<ResponseWithExceptionsDto> handleAuthenticationException(AuthenticationException e) {
+    @ExceptionHandler(UserNotLoggedInException.class)
+    public ResponseEntity<ResponseWithExceptionsDto> handleUserNotLoggedInException(UserNotLoggedInException e) {
 
-        ExceptionDto exceptionDto = new ExceptionDto("authenticationException", e.getMessage());
+        ExceptionDto exceptionDto = new ExceptionDto("userNotLoggedIn", e.getMessage());
+
+        Set<ExceptionDto> exceptionDtos = new HashSet<>();
+        exceptionDtos.add(exceptionDto);
 
         ResponseWithExceptionsDto responseDto = new ResponseWithExceptionsDto();
-        responseDto.setExceptions(Set.of(exceptionDto));
+        responseDto.setExceptions(exceptionDtos);
 
         return new ResponseEntity<>(responseDto, HttpStatus.UNAUTHORIZED);
     }
-
-
 
 }

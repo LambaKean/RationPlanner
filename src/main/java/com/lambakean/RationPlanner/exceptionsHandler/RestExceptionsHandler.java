@@ -1,7 +1,7 @@
 package com.lambakean.RationPlanner.exceptionsHandler;
 
 import com.lambakean.RationPlanner.dto.ResponseWithExceptionsDto;
-import com.lambakean.RationPlanner.dto.exceptionDto.ExceptionDto;
+import com.lambakean.RationPlanner.dto.ExceptionDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.lambakean.RationPlanner.dto.exceptionDto;
+package com.lambakean.RationPlanner.dto;
 
 public class ExceptionDto {
 
