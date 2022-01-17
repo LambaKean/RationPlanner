@@ -25,8 +25,8 @@ public class Meal extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToMany(mappedBy = "meals")
-    private Set<PlannedDay> relatedPlannedDays;
+    @OneToMany(mappedBy = "meal", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<PlannedDayMeal> plannedDayMeals;
 
     public Meal(String name,
                 String description,
@@ -116,11 +116,11 @@ public class Meal extends BaseEntity {
         this.user = user;
     }
 
-    public Set<PlannedDay> getRelatedPlannedDays() {
-        return relatedPlannedDays;
+    public Set<PlannedDayMeal> getPlannedDayMeals() {
+        return plannedDayMeals;
     }
 
-    public void setRelatedPlannedDays(Set<PlannedDay> relatedPlannedDays) {
-        this.relatedPlannedDays = relatedPlannedDays;
+    public void setPlannedDayMeals(Set<PlannedDayMeal> plannedDayMeals) {
+        this.plannedDayMeals = plannedDayMeals;
     }
 }

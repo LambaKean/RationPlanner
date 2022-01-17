@@ -9,22 +9,20 @@ public class PlannedDay extends BaseEntity {
 
     private String name;
 
-    @ManyToMany
-    @JoinTable(
-            name = "planned_days_meals",
-            joinColumns = { @JoinColumn(name = "planned_day_id") },
-            inverseJoinColumns = { @JoinColumn(name = "meal_id") }
-    )
-    private Set<Meal> meals;
-
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    public PlannedDay(String name, Set<Meal> meals, User user) {
+    @OneToMany(mappedBy = "plannedDay", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<PlannedDayMeal> plannedDayMeals;
+
+    @OneToMany(mappedBy = "plannedDay", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Schedule> schedules;
+
+    public PlannedDay(String name, User user, Set<PlannedDayMeal> plannedDayMeals) {
         this.name = name;
-        this.meals = meals;
         this.user = user;
+        this.plannedDayMeals = plannedDayMeals;
     }
 
     public PlannedDay() {}
@@ -36,14 +34,6 @@ public class PlannedDay extends BaseEntity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Set<Meal> getMeals() {
-        return meals;
-    }
-
-    public void setMeals(Set<Meal> meals) {
-        this.meals = meals;
     }
 
     public User getUser() {
