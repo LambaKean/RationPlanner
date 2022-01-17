@@ -1,5 +1,6 @@
 package com.lambakean.RationPlanner.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lambakean.RationPlanner.model.ProductQuantity;
 
 public class ProductQuantityDto {
@@ -15,6 +16,17 @@ public class ProductQuantityDto {
     }
 
     public ProductQuantityDto() {}
+
+    public ProductQuantity toProductQuantity() {
+
+        ProductQuantity productQuantity = new ProductQuantity();
+
+        productQuantity.setId(id);
+        productQuantity.setAmount(amount);
+        productQuantity.setMeasurementUnit(measurementUnit.toMeasurementUnit());
+
+        return productQuantity;
+    }
 
     public static ProductQuantityDto fromProductQuantity(ProductQuantity productQuantity) {
 
@@ -34,6 +46,7 @@ public class ProductQuantityDto {
         return productQuantityDto;
     }
 
+    @JsonIgnore
     public String getMeasurementUnitId() {
 
         if(measurementUnit == null) {

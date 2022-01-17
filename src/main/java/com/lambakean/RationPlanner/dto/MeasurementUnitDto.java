@@ -14,6 +14,16 @@ public class MeasurementUnitDto {
 
     public MeasurementUnitDto() {}
 
+    public MeasurementUnit toMeasurementUnit() {
+
+        MeasurementUnit measurementUnit = new MeasurementUnit();
+
+        measurementUnit.setId(id);
+        measurementUnit.setName(name);
+
+        return measurementUnit;
+    }
+
     public static MeasurementUnitDto fromMeasurementUnit(MeasurementUnit measurementUnit) {
 
         if(measurementUnit == null) {

@@ -6,19 +6,22 @@ import javax.persistence.*;
 @Table(name = "ingredients")
 public class Ingredient extends BaseEntity {
 
+    private String name;
+
     @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
+    @JoinColumn(name = "product_id")
     private Product product;
 
     @ManyToOne
     @JoinColumn(name = "meal_id", nullable = false)
     private Meal meal;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "product_quantity_id", nullable = false)
     private ProductQuantity productQuantity;
 
-    public Ingredient(Product product, Meal meal, ProductQuantity productQuantity) {
+    public Ingredient(String name, Product product, Meal meal, ProductQuantity productQuantity) {
+        this.name = name;
         this.product = product;
         this.meal = meal;
         this.productQuantity = productQuantity;
@@ -28,13 +31,21 @@ public class Ingredient extends BaseEntity {
 
     public Double getPrice() {
 
-        if(product == null) {
-            throw new NullPointerException("Field \"product\" of Ingredient instance mustn't be null");
+        if(product == null || product.getPrice() == null) {
+            return 0.0;
         }
 
         return product.getPrice() * product.quantityDifferenceCoef(productQuantity);
     }
 
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public Product getProduct() {
         return product;

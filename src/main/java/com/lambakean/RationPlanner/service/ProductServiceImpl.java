@@ -130,7 +130,6 @@ public class ProductServiceImpl implements ProductService {
 
     public void validate(Product product) {
 
-
         DataBinder dataBinder = new DataBinder(product, "product");
         dataBinder.addValidators(productValidator);
 

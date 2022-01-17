@@ -16,10 +16,9 @@ public class Meal extends BaseEntity {
     @Column(name = "cooking_duration", nullable = false)
     private Duration cookingDuration;
 
-    @Column(nullable = false)
     private String recipe;
 
-    @OneToMany(mappedBy = "meal", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "meal", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Ingredient> ingredients;
 
     @ManyToOne
@@ -45,7 +44,7 @@ public class Meal extends BaseEntity {
 
     public Meal() {}
 
-    private Double getPrice() {
+    public Double getPrice() {
 
         if(this.ingredients == null) {
             return 0.0;
@@ -58,6 +57,14 @@ public class Meal extends BaseEntity {
         }
 
         return totalPrice;
+    }
+
+    public String getUserId() {
+        if(user == null) {
+            return null;
+        }
+
+        return user.getId();
     }
 
 
