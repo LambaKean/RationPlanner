@@ -4,17 +4,15 @@ import com.lambakean.RationPlanner.dto.ProductDto;
 import com.lambakean.RationPlanner.dto.converter.ProductDtoConverter;
 import com.lambakean.RationPlanner.exception.AccessDeniedException;
 import com.lambakean.RationPlanner.exception.EntityNotFoundException;
-import com.lambakean.RationPlanner.exception.InvalidEntityException;
 import com.lambakean.RationPlanner.model.MeasurementUnit;
 import com.lambakean.RationPlanner.model.Product;
 import com.lambakean.RationPlanner.model.ProductQuantity;
 import com.lambakean.RationPlanner.model.User;
 import com.lambakean.RationPlanner.repository.MeasurementUnitRepository;
 import com.lambakean.RationPlanner.repository.ProductRepository;
+import com.lambakean.RationPlanner.validator.ProductQuantityValidator;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.DataBinder;
 import org.springframework.validation.Validator;
 
 import java.util.List;
@@ -27,21 +25,24 @@ public class ProductServiceImpl implements ProductService {
     private final MeasurementUnitRepository measurementUnitRepository;
     private final PrincipalService principalService;
     private final Validator productValidator;
-    private final ProductQuantityService productQuantityService;
     private final ProductDtoConverter productDtoConverter;
+    private final ValidationService validationService;
+    private final ProductQuantityValidator productQuantityValidator;
 
     public ProductServiceImpl(ProductRepository productRepository,
                               MeasurementUnitRepository measurementUnitRepository,
                               PrincipalService principalService,
                               Validator productValidator,
-                              ProductQuantityService productQuantityService,
-                              ProductDtoConverter productDtoConverter) {
+                              ProductDtoConverter productDtoConverter,
+                              ValidationService validationService,
+                              ProductQuantityValidator productQuantityValidator) {
         this.productRepository = productRepository;
         this.measurementUnitRepository = measurementUnitRepository;
         this.principalService = principalService;
         this.productValidator = productValidator;
-        this.productQuantityService = productQuantityService;
         this.productDtoConverter = productDtoConverter;
+        this.validationService = validationService;
+        this.productQuantityValidator = productQuantityValidator;
     }
 
     @Override
@@ -93,7 +94,11 @@ public class ProductServiceImpl implements ProductService {
         Double productQuantityAmount = productDto.getQuantityAmount();
         ProductQuantity productQuantity = new ProductQuantity(productQuantityAmount, measurementUnit);
 
-        productQuantityService.validate(productQuantity);
+        validationService.throwExceptionIfObjectIsInvalid(
+                productQuantity,
+                "productQuantity",
+                productQuantityValidator
+        );
 
         Product product = new Product();
         product.setName(productDto.getName());
@@ -102,7 +107,7 @@ public class ProductServiceImpl implements ProductService {
         product.setPrice(productDto.getPrice());
         product.setUser(user);
 
-        validate(product);
+        validationService.throwExceptionIfObjectIsInvalid(product, "product", productValidator);
 
         productRepository.saveAndFlush(product);
 
@@ -121,18 +126,5 @@ public class ProductServiceImpl implements ProductService {
         }
 
         productRepository.deleteById(id);
-    }
-
-    public void validate(Product product) {
-
-        DataBinder dataBinder = new DataBinder(product, "product");
-        dataBinder.addValidators(productValidator);
-
-        dataBinder.validate();
-
-        BindingResult productBindingResult = dataBinder.getBindingResult();
-        if(productBindingResult.hasErrors()) {
-            throw new InvalidEntityException(productBindingResult);
-        }
     }
 }

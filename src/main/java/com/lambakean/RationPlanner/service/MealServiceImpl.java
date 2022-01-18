@@ -5,15 +5,13 @@ import com.lambakean.RationPlanner.dto.converter.MealDtoConverter;
 import com.lambakean.RationPlanner.exception.AccessDeniedException;
 import com.lambakean.RationPlanner.exception.BadRequestException;
 import com.lambakean.RationPlanner.exception.EntityNotFoundException;
-import com.lambakean.RationPlanner.exception.InvalidEntityException;
 import com.lambakean.RationPlanner.model.Meal;
 import com.lambakean.RationPlanner.model.User;
 import com.lambakean.RationPlanner.repository.MealRepository;
+import com.lambakean.RationPlanner.validator.IngredientValidator;
 import com.lambakean.RationPlanner.validator.MealValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.DataBinder;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -22,21 +20,25 @@ import java.util.List;
 public class MealServiceImpl implements MealService {
 
     private final MealValidator mealValidator;
-    private final IngredientService ingredientService;
     private final PrincipalService principalService;
     private final MealRepository mealRepository;
     private final MealDtoConverter mealDtoConverter;
+    private final ValidationService validationService;
+    private final IngredientValidator ingredientValidator;
 
     @Autowired
     public MealServiceImpl(MealValidator mealValidator,
-                           IngredientService ingredientService,
                            PrincipalService principalService,
-                           MealRepository mealRepository, MealDtoConverter mealDtoConverter) {
+                           MealRepository mealRepository,
+                           MealDtoConverter mealDtoConverter,
+                           ValidationService validationService,
+                           IngredientValidator ingredientValidator) {
         this.mealValidator = mealValidator;
-        this.ingredientService = ingredientService;
         this.principalService = principalService;
         this.mealRepository = mealRepository;
         this.mealDtoConverter = mealDtoConverter;
+        this.validationService = validationService;
+        this.ingredientValidator = ingredientValidator;
     }
 
     @Override
@@ -49,13 +51,20 @@ public class MealServiceImpl implements MealService {
             throw new BadRequestException("Данные для создания блюда указаны неверно");
         }
 
-        validate(meal);
+        validationService.throwExceptionIfObjectIsInvalid(meal, "meal", mealValidator);
 
         if(meal.getIngredients() != null) {
             meal.getIngredients()
                     .stream()
                     .peek(ingredient -> ingredient.setMeal(meal))
-                    .forEach(ingredientService::validate);
+                    .forEach(
+                            ingredient ->
+                                    validationService.throwExceptionIfObjectIsInvalid(
+                                            ingredient,
+                                            "ingredient",
+                                            ingredientValidator
+                                    )
+                    );
         }
 
         User user = (User) principalService.getPrincipalOrElseThrowException(
@@ -114,18 +123,5 @@ public class MealServiceImpl implements MealService {
         }
 
         mealRepository.deleteById(id);
-    }
-
-    public void validate(Meal meal) {
-
-        DataBinder dataBinder = new DataBinder(meal, "Meal");
-        dataBinder.addValidators(mealValidator);
-
-        dataBinder.validate();
-
-        BindingResult mealBindingResult = dataBinder.getBindingResult();
-        if(mealBindingResult.hasErrors()) {
-            throw new InvalidEntityException(mealBindingResult);
-        }
     }
 }

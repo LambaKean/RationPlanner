@@ -4,15 +4,12 @@ import com.lambakean.RationPlanner.dto.ScheduleDto;
 import com.lambakean.RationPlanner.dto.converter.ScheduleDtoConverter;
 import com.lambakean.RationPlanner.exception.AccessDeniedException;
 import com.lambakean.RationPlanner.exception.BadRequestException;
-import com.lambakean.RationPlanner.exception.InvalidEntityException;
 import com.lambakean.RationPlanner.model.Schedule;
 import com.lambakean.RationPlanner.model.User;
 import com.lambakean.RationPlanner.repository.ScheduleRepository;
 import com.lambakean.RationPlanner.validator.ScheduleValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.DataBinder;
 
 @Component
 public class ScheduleServiceImpl implements ScheduleService {
@@ -21,16 +18,19 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final ScheduleDtoConverter scheduleDtoConverter;
     private final ScheduleValidator scheduleValidator;
+    private final ValidationService validationService;
 
     @Autowired
     public ScheduleServiceImpl(PrincipalService principalService,
                                ScheduleRepository scheduleRepository,
                                ScheduleDtoConverter scheduleDtoConverter,
-                               ScheduleValidator scheduleValidator) {
+                               ScheduleValidator scheduleValidator,
+                               ValidationService validationService) {
         this.principalService = principalService;
         this.scheduleRepository = scheduleRepository;
         this.scheduleDtoConverter = scheduleDtoConverter;
         this.scheduleValidator = scheduleValidator;
+        this.validationService = validationService;
     }
 
     @Override
@@ -48,7 +48,11 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         schedule.setId(null);
 
-        validate(schedule);
+        validationService.throwExceptionIfObjectIsInvalid(
+                schedule,
+                "schedule",
+                scheduleValidator
+        );
 
         if(schedule.getPlannedDay().getId() == null) {
             throw new BadRequestException("Вы не указали день, для которого хотите создать расписание");
@@ -63,18 +67,5 @@ public class ScheduleServiceImpl implements ScheduleService {
         scheduleRepository.saveAndFlush(schedule);
 
         return scheduleDtoConverter.toScheduleDto(schedule);
-    }
-
-    public void validate(Schedule schedule) {
-
-        DataBinder dataBinder = new DataBinder(schedule, "schedule");
-        dataBinder.addValidators(scheduleValidator);
-
-        dataBinder.validate();
-
-        BindingResult productBindingResult = dataBinder.getBindingResult();
-        if(productBindingResult.hasErrors()) {
-            throw new InvalidEntityException(productBindingResult);
-        }
     }
 }

@@ -5,7 +5,6 @@ import com.lambakean.RationPlanner.dto.UserDto;
 import com.lambakean.RationPlanner.dto.UserWithTokensDto;
 import com.lambakean.RationPlanner.exception.AuthenticationException;
 import com.lambakean.RationPlanner.exception.EntityNotFoundException;
-import com.lambakean.RationPlanner.exception.InvalidEntityException;
 import com.lambakean.RationPlanner.model.User;
 import com.lambakean.RationPlanner.repository.UserRepository;
 import com.lambakean.RationPlanner.security.authentication.JwtTokenProvider;
@@ -14,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.DataBinder;
 import org.springframework.validation.Validator;
 
 import java.util.Optional;
@@ -29,18 +26,21 @@ public class UserServiceImpl implements UserService {
     private final UserUniquenessValidator userUniquenessValidator;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final ValidationService validationService;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
                            Validator userValidator,
                            UserUniquenessValidator userUniquenessValidator,
                            PasswordEncoder passwordEncoder,
-                           JwtTokenProvider jwtTokenProvider) {
+                           JwtTokenProvider jwtTokenProvider,
+                           ValidationService validationService) {
         this.userValidator = userValidator;
         this.userRepository = userRepository;
         this.userUniquenessValidator = userUniquenessValidator;
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.validationService = validationService;
     }
 
     @Override
@@ -51,7 +51,11 @@ public class UserServiceImpl implements UserService {
 
         User user = new User(username, password);
 
-        validate(user);
+        validationService.throwExceptionIfObjectIsInvalid(
+                user,
+                "user",
+                userValidator, userUniquenessValidator
+        );
 
         String encodedPassword = passwordEncoder.encode(password);
         user.setPassword(encodedPassword);
@@ -98,18 +102,5 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> findById(@NonNull String id) {
         return userRepository.findById(id);
-    }
-
-    private void validate(@NonNull User user) {
-
-        DataBinder dataBinder = new DataBinder(user);
-        dataBinder.addValidators(userValidator, userUniquenessValidator);
-
-        dataBinder.validate();
-
-        BindingResult userBindingResult = dataBinder.getBindingResult();
-        if(userBindingResult.hasErrors()) {
-            throw new InvalidEntityException(userBindingResult);
-        }
     }
 }

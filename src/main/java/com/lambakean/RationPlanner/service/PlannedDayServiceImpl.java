@@ -5,16 +5,14 @@ import com.lambakean.RationPlanner.dto.converter.PlannedDayDtoConverter;
 import com.lambakean.RationPlanner.exception.AccessDeniedException;
 import com.lambakean.RationPlanner.exception.BadRequestException;
 import com.lambakean.RationPlanner.exception.EntityNotFoundException;
-import com.lambakean.RationPlanner.exception.InvalidEntityException;
 import com.lambakean.RationPlanner.model.Meal;
 import com.lambakean.RationPlanner.model.PlannedDay;
 import com.lambakean.RationPlanner.model.PlannedDayMeal;
 import com.lambakean.RationPlanner.model.User;
 import com.lambakean.RationPlanner.repository.PlannedDayRepository;
+import com.lambakean.RationPlanner.validator.PlannedDayMealValidator;
 import com.lambakean.RationPlanner.validator.PlannedDayValidator;
 import org.springframework.stereotype.Component;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.DataBinder;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -26,18 +24,21 @@ public class PlannedDayServiceImpl implements PlannedDayService {
     private final PlannedDayRepository plannedDayRepository;
     private final PlannedDayDtoConverter plannedDayDtoConverter;
     private final PlannedDayValidator plannedDayValidator;
-    private final PlannedDayMealService plannedDayMealService;
+    private final ValidationService validationService;
+    private final PlannedDayMealValidator plannedDayMealValidator;
 
     public PlannedDayServiceImpl(PrincipalService principalService,
                                  PlannedDayRepository plannedDayRepository,
                                  PlannedDayDtoConverter plannedDayDtoConverter,
                                  PlannedDayValidator plannedDayValidator,
-                                 PlannedDayMealService plannedDayMealService) {
+                                 ValidationService validationService,
+                                 PlannedDayMealValidator plannedDayMealValidator) {
         this.principalService = principalService;
         this.plannedDayRepository = plannedDayRepository;
         this.plannedDayDtoConverter = plannedDayDtoConverter;
         this.plannedDayValidator = plannedDayValidator;
-        this.plannedDayMealService = plannedDayMealService;
+        this.validationService = validationService;
+        this.plannedDayMealValidator = plannedDayMealValidator;
     }
 
     @Override
@@ -57,9 +58,15 @@ public class PlannedDayServiceImpl implements PlannedDayService {
         plannedDay.getPlannedDayMeals()
                 .stream()
                 .peek(plannedDayMeal -> plannedDayMeal.setId(null))
-                .forEach(plannedDayMealService::validate);
+                .forEach(plannedDayMeal ->
+                        validationService.throwExceptionIfObjectIsInvalid(
+                                plannedDayMeal,
+                                "plannedDayMeal",
+                                plannedDayMealValidator
+                        )
+                );
 
-        validate(plannedDay);
+        validationService.throwExceptionIfObjectIsInvalid(plannedDay, "plannedDay", plannedDayValidator);
 
         for(PlannedDayMeal plannedDayMeal : plannedDay.getPlannedDayMeals()) {
             Meal meal = plannedDayMeal.getMeal();
@@ -94,18 +101,5 @@ public class PlannedDayServiceImpl implements PlannedDayService {
         }
 
         return plannedDayDtoConverter.toPlannedDayDto(plannedDay);
-    }
-
-    private void validate(PlannedDay plannedDay) {
-
-        DataBinder dataBinder = new DataBinder(plannedDay, "plannedDay");
-        dataBinder.addValidators(plannedDayValidator);
-
-        dataBinder.validate();
-
-        BindingResult productBindingResult = dataBinder.getBindingResult();
-        if(productBindingResult.hasErrors()) {
-            throw new InvalidEntityException(productBindingResult);
-        }
     }
 }
