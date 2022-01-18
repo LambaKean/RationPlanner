@@ -43,4 +43,20 @@ public class PlannedDay extends BaseEntity {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public Set<PlannedDayMeal> getPlannedDayMeals() {
+        return plannedDayMeals;
+    }
+
+    public void setPlannedDayMeals(Set<PlannedDayMeal> plannedDayMeals) {
+        this.plannedDayMeals = plannedDayMeals;
+    }
+
+    public Set<Schedule> getSchedules() {
+        return schedules;
+    }
+
+    public void setSchedules(Set<Schedule> schedules) {
+        this.schedules = schedules;
+    }
 }

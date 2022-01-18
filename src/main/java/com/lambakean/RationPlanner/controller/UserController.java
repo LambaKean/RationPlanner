@@ -44,7 +44,7 @@ public class UserController {
     @GetMapping()
     public ResponseEntity<UserDto> getCurrentUser() {
 
-        User user = (User) principalService.getCurrentPrincipal().orElseThrow(
+        User user = (User) principalService.getPrincipal().orElseThrow(
                 () -> new UserNotLoggedInException("Вы должны войти в аккаунт, чтобы просмотреть свой профиль")
         );
 

@@ -49,7 +49,7 @@ public class MealServiceImpl implements MealService {
             meal.getIngredients().forEach(ingredientService::validate);
         }
 
-        User user = (User) principalService.getCurrentPrincipal().orElseThrow(
+        User user = (User) principalService.getPrincipal().orElseThrow(
                 () -> new UserNotLoggedInException(
                         "Вы должны войти в аккаунт, чтобы добавлять рецепты ваших блюд"
                 )
@@ -64,7 +64,7 @@ public class MealServiceImpl implements MealService {
     @Override
     public List<MealDto> getCurrentUserMeals() {
 
-        User user = (User) principalService.getCurrentPrincipal().orElseThrow(
+        User user = (User) principalService.getPrincipal().orElseThrow(
                 () -> new UserNotLoggedInException(
                         "Вы должны войти в аккаунт, чтобы просматривать список своих блюд"
                 )
@@ -85,7 +85,7 @@ public class MealServiceImpl implements MealService {
                 () -> new EntityNotFoundException(String.format("Блюдо с id [%s] не существует", id))
         );
 
-        User user = (User) principalService.getCurrentPrincipal().orElseThrow(
+        User user = (User) principalService.getPrincipal().orElseThrow(
                 () -> new UserNotLoggedInException(
                         "Вы должны войти в аккаунт, чтобы просматривать список своих блюд"
                 )
@@ -101,7 +101,7 @@ public class MealServiceImpl implements MealService {
     @Override
     public void deleteMealById(String id) {
 
-        User user = (User) principalService.getCurrentPrincipal().orElseThrow(
+        User user = (User) principalService.getPrincipal().orElseThrow(
                 () -> new UserNotLoggedInException(
                         "Вы должны войти в аккаунт, чтобы иметь возможность удалять блюда"
                 )

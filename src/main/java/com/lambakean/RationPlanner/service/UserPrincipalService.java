@@ -1,5 +1,6 @@
 package com.lambakean.RationPlanner.service;
 
+import com.lambakean.RationPlanner.exception.UserNotLoggedInException;
 import com.lambakean.RationPlanner.model.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,7 +19,7 @@ public class UserPrincipalService implements PrincipalService {
     }
 
     @Override
-    public Optional<User> getCurrentPrincipal() {
+    public Optional<User> getPrincipal() {
 
         if(!isPrincipalPresent()) {
             return Optional.empty();
@@ -26,6 +27,13 @@ public class UserPrincipalService implements PrincipalService {
 
         return Optional.ofNullable(
                 (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()
+        );
+    }
+
+    @Override
+    public Object getPrincipalOrElseThrowException(String exceptionMsg) {
+        return getPrincipal().orElseThrow(
+                () -> new UserNotLoggedInException(exceptionMsg)
         );
     }
 }

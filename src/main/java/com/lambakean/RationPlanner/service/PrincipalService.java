@@ -6,5 +6,7 @@ public interface PrincipalService {
 
     boolean isPrincipalPresent();
 
-    Optional<?> getCurrentPrincipal();
+    Optional<?> getPrincipal();
+
+    Object getPrincipalOrElseThrowException(String exceptionMsg);
 }

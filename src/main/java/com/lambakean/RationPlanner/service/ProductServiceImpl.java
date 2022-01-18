@@ -48,7 +48,7 @@ public class ProductServiceImpl implements ProductService {
                 () -> new EntityNotFoundException(String.format("Продукт с id [%s] не существует", id))
         );
 
-        User user = (User) principalService.getCurrentPrincipal().orElseThrow(
+        User user = (User) principalService.getPrincipal().orElseThrow(
                 () -> new UserNotLoggedInException(
                         "Вы должны войти в аккаунт, чтобы просмотреть информацию об этом продукте"
                 )
@@ -64,7 +64,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDto> getCurrentUserProducts() {
 
-        User user = (User) principalService.getCurrentPrincipal().orElseThrow(
+        User user = (User) principalService.getPrincipal().orElseThrow(
                 () -> new UserNotLoggedInException(
                         "Вы должны войти в аккаунт, чтобы просматривать список своих продуктов"
                 )
@@ -79,7 +79,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDto createProduct(@NonNull ProductDto productDto) {
 
-        User user = (User) principalService.getCurrentPrincipal().orElseThrow(
+        User user = (User) principalService.getPrincipal().orElseThrow(
                 () -> new UserNotLoggedInException(
                         "Вы должны войти в аккаунт, чтобы иметь возможность добавить продукт"
                 )
@@ -115,7 +115,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void deleteProductById(String id) {
 
-        User user = (User) principalService.getCurrentPrincipal().orElseThrow(
+        User user = (User) principalService.getPrincipal().orElseThrow(
                 () -> new UserNotLoggedInException(
                         "Вы должны войти в аккаунт, чтобы иметь возможность удалять продукты"
                 )
