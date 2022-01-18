@@ -5,9 +5,9 @@ public class PlannedDayMealDto {
     private String id;
     private String plannedDayId;
     private String mealId;
-    private DurationDto time;
+    private TimeDto time;
 
-    public PlannedDayMealDto(String id, String plannedDayId, String mealId, DurationDto time) {
+    public PlannedDayMealDto(String id, String plannedDayId, String mealId, TimeDto time) {
         this.id = id;
         this.plannedDayId = plannedDayId;
         this.mealId = mealId;
@@ -41,11 +41,11 @@ public class PlannedDayMealDto {
         this.mealId = mealId;
     }
 
-    public DurationDto getTime() {
+    public TimeDto getTime() {
         return time;
     }
 
-    public void setTime(DurationDto time) {
+    public void setTime(TimeDto time) {
         this.time = time;
     }
 }

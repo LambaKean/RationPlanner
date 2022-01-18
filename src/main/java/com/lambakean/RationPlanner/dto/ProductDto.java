@@ -1,73 +1,43 @@
 package com.lambakean.RationPlanner.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.lambakean.RationPlanner.model.Product;
 
 public class ProductDto {
 
     private String id;
     private String name;
     private String producer;
-    private ProductQuantityDto quantity;
+    private ProductQuantityDto quantityDto;
     private Double price;
 
-    public ProductDto(String id, String name, String producer, ProductQuantityDto quantity, Double price) {
+    public ProductDto(String id, String name, String producer, ProductQuantityDto quantityDto, Double price) {
         this.id = id;
         this.name = name;
         this.producer = producer;
-        this.quantity = quantity;
+        this.quantityDto = quantityDto;
         this.price = price;
     }
 
     public ProductDto() {}
 
-    public Product toProduct() {
-
-        Product product = new Product();
-
-        product.setId(id);
-        product.setName(name);
-        product.setProducer(producer);
-        product.setQuantity(quantity != null ? quantity.toProductQuantity() : null);
-        product.setPrice(price);
-
-        return product;
-    }
-
-    public static ProductDto fromProduct(Product product) {
-
-        if(product == null) {
-            return null;
-        }
-
-        ProductDto productDto = new ProductDto();
-        productDto.setId(product.getId());
-        productDto.setName(product.getName());
-        productDto.setProducer(product.getProducer());
-        productDto.setQuantity(ProductQuantityDto.fromProductQuantity(product.getQuantity()));
-        productDto.setPrice(product.getPrice());
-
-        return productDto;
-    }
-
     @JsonIgnore
     public String getMeasurementUnitId() {
 
-        if(quantity == null) {
+        if(quantityDto == null) {
             return null;
         }
 
-        return quantity.getMeasurementUnitId();
+        return quantityDto.getMeasurementUnitId();
     }
 
     @JsonIgnore
     public Double getQuantityAmount() {
 
-        if(quantity == null) {
+        if(quantityDto == null) {
             return null;
         }
 
-        return quantity.getAmount();
+        return quantityDto.getAmount();
     }
 
 
@@ -96,11 +66,11 @@ public class ProductDto {
     }
 
     public ProductQuantityDto getQuantity() {
-        return quantity;
+        return quantityDto;
     }
 
-    public void setQuantity(ProductQuantityDto quantity) {
-        this.quantity = quantity;
+    public void setQuantity(ProductQuantityDto quantityDto) {
+        this.quantityDto = quantityDto;
     }
 
     public Double getPrice() {

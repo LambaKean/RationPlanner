@@ -4,20 +4,20 @@ import java.util.Set;
 
 public class ResponseWithExceptionsDto {
 
-    private Set<? extends ExceptionDto> exceptions;
+    private Set<? extends ExceptionDto> exceptionDtos;
 
-    public ResponseWithExceptionsDto(Set<? extends ExceptionDto> exceptions) {
-        this.exceptions = exceptions;
+    public ResponseWithExceptionsDto(Set<? extends ExceptionDto> exceptionDtos) {
+        this.exceptionDtos = exceptionDtos;
     }
 
     public ResponseWithExceptionsDto() {}
 
 
     public Set<? extends ExceptionDto> getExceptions() {
-        return exceptions;
+        return exceptionDtos;
     }
 
-    public void setExceptions(Set<? extends ExceptionDto> exceptions) {
-        this.exceptions = exceptions;
+    public void setExceptions(Set<? extends ExceptionDto> exceptionDtos) {
+        this.exceptionDtos = exceptionDtos;
     }
 }

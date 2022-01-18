@@ -1,53 +1,23 @@
 package com.lambakean.RationPlanner.dto;
 
-import com.lambakean.RationPlanner.model.Ingredient;
-
 public class IngredientDto {
 
     private String id;
     private String name;
-    private ProductDto product;
-    private ProductQuantityDto productQuantity;
+    private ProductDto productDto;
+    private ProductQuantityDto productQuantityDto;
     private Double price;
 
-    public IngredientDto(String id, String name, ProductDto product, ProductQuantityDto productQuantity, Double price) {
+    public IngredientDto(String id, String name, ProductDto productDto, ProductQuantityDto productQuantityDto, Double price) {
         this.id = id;
         this.name = name;
-        this.product = product;
-        this.productQuantity = productQuantity;
+        this.productDto = productDto;
+        this.productQuantityDto = productQuantityDto;
         this.price = price;
     }
 
     public IngredientDto() {}
 
-    public Ingredient toIngredient() {
-
-        Ingredient ingredient = new Ingredient();
-
-        ingredient.setId(id);
-        ingredient.setName(name);
-        ingredient.setProduct(product != null ? product.toProduct() : null);
-        ingredient.setProductQuantity(productQuantity != null ? productQuantity.toProductQuantity() : null);
-
-        return ingredient;
-    }
-
-    public static IngredientDto fromIngredient(Ingredient ingredient) {
-
-        IngredientDto ingredientDto = new IngredientDto();
-
-        ingredientDto.setId(ingredient.getId());
-        ingredientDto.setName(ingredient.getName());
-        ingredientDto.setProduct(
-                ProductDto.fromProduct(ingredient.getProduct())
-        );
-        ingredientDto.setProductQuantity(
-                ProductQuantityDto.fromProductQuantity(ingredient.getProductQuantity())
-        );
-        ingredientDto.setPrice(ingredient.getPrice());
-
-        return ingredientDto;
-    }
 
     public String getId() {
         return id;
@@ -66,19 +36,19 @@ public class IngredientDto {
     }
 
     public ProductDto getProduct() {
-        return product;
+        return productDto;
     }
 
-    public void setProduct(ProductDto product) {
-        this.product = product;
+    public void setProduct(ProductDto productDto) {
+        this.productDto = productDto;
     }
 
     public ProductQuantityDto getProductQuantity() {
-        return productQuantity;
+        return productQuantityDto;
     }
 
-    public void setProductQuantity(ProductQuantityDto productQuantity) {
-        this.productQuantity = productQuantity;
+    public void setProductQuantity(ProductQuantityDto productQuantityDto) {
+        this.productQuantityDto = productQuantityDto;
     }
 
     public Double getPrice() {

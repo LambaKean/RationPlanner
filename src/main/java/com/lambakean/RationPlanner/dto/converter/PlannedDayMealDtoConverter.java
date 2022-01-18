@@ -12,15 +12,15 @@ public class PlannedDayMealDtoConverter {
 
     private final PlannedDayRepository plannedDayRepository;
     private final MealRepository mealRepository;
-    private final DurationDtoConverter durationDtoConverter;
+    private final TimeDtoConverter timeDtoConverter;
 
     @Autowired
     public PlannedDayMealDtoConverter(PlannedDayRepository plannedDayRepository,
                                       MealRepository mealRepository,
-                                      DurationDtoConverter durationDtoConverter) {
+                                      TimeDtoConverter timeDtoConverter) {
         this.plannedDayRepository = plannedDayRepository;
         this.mealRepository = mealRepository;
-        this.durationDtoConverter = durationDtoConverter;
+        this.timeDtoConverter = timeDtoConverter;
     }
 
     public PlannedDayMeal toPlannedDayMeal(PlannedDayMealDto plannedDayMealDto) {
@@ -45,7 +45,7 @@ public class PlannedDayMealDtoConverter {
             );
         }
 
-        plannedDayMeal.setTime(durationDtoConverter.toLocalTime(plannedDayMealDto.getTime()));
+        plannedDayMeal.setTime(timeDtoConverter.toLocalTime(plannedDayMealDto.getTime()));
 
         return plannedDayMeal;
     }
@@ -74,7 +74,7 @@ public class PlannedDayMealDtoConverter {
 
         if(plannedDayMeal.getTime() != null) {
             plannedDayMealDto.setTime(
-                    durationDtoConverter.toDurationDto(plannedDayMeal.getTime())
+                    timeDtoConverter.toTimeDto(plannedDayMeal.getTime())
             );
         }
 

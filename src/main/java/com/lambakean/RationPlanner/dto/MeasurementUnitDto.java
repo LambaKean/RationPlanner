@@ -1,7 +1,5 @@
 package com.lambakean.RationPlanner.dto;
 
-import com.lambakean.RationPlanner.model.MeasurementUnit;
-
 public class MeasurementUnitDto {
 
     private String id;
@@ -13,28 +11,6 @@ public class MeasurementUnitDto {
     }
 
     public MeasurementUnitDto() {}
-
-    public MeasurementUnit toMeasurementUnit() {
-
-        MeasurementUnit measurementUnit = new MeasurementUnit();
-
-        measurementUnit.setId(id);
-        measurementUnit.setName(name);
-
-        return measurementUnit;
-    }
-
-    public static MeasurementUnitDto fromMeasurementUnit(MeasurementUnit measurementUnit) {
-
-        if(measurementUnit == null) {
-            return null;
-        }
-
-        return new MeasurementUnitDto(
-                measurementUnit.getId(),
-                measurementUnit.getName()
-        );
-    }
 
 
     public String getId() {
