@@ -24,7 +24,7 @@ public class PlannedDayValidator implements Validator {
 
     public void validateName(String name, @NonNull Errors errors) {
 
-        if (name == null) {
+        if (name == null || name.equals("")) {
             errors.rejectValue(
                     "name",
                     "name.invalid",

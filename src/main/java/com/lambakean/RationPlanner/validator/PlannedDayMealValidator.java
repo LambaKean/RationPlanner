@@ -33,7 +33,7 @@ public class PlannedDayMealValidator implements Validator {
             errors.rejectValue(
                     "plannedDay",
                     "plannedDay.empty",
-                    "Блюдо, добавляемое в расписание, должно быть привязано к какому-любо дню"
+                    "День, к которому нужно привязать выбранное блюдо, указан неверно"
             );
         }
     }
@@ -44,7 +44,7 @@ public class PlannedDayMealValidator implements Validator {
             errors.rejectValue(
                     "meal",
                     "meal.empty",
-                    "Вы не указали блюдо, которое хотите добавить в расписание"
+                    "Блюдо, которое нужно добавить ко дню, не выбрано или выбрано неверно"
             );
         }
     }
@@ -55,7 +55,7 @@ public class PlannedDayMealValidator implements Validator {
             errors.rejectValue(
                     "time",
                     "time.empty",
-                    "Блюдо, добавляемое в расписание, должно быть привязано к какому-любо времени"
+                    "Время начала приготовления блюда не выбрано или невалидно"
             );
         }
     }

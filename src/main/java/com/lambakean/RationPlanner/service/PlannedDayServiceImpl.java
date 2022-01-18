@@ -44,7 +44,7 @@ public class PlannedDayServiceImpl implements PlannedDayService {
     public PlannedDayDto createPlannedDay(PlannedDayDto plannedDayDto) {
 
         User user = (User) principalService.getPrincipalOrElseThrowException(
-                "Вы должны войти в аккаунт, чтобы иметь возможность создавать расписание"
+                "Вы должны войти в аккаунт, чтобы иметь возможность создавать дни"
         );
 
         PlannedDay plannedDay = Optional.ofNullable(plannedDayDtoConverter.toPlannedDay(plannedDayDto)).orElseThrow(
