@@ -27,6 +27,30 @@ public class PlannedDay extends BaseEntity {
 
     public PlannedDay() {}
 
+    public Double getPrice() {
+
+        if(plannedDayMeals == null) {
+            return 0.0;
+        }
+
+        double totalPrice = 0.0;
+
+        for(PlannedDayMeal plannedDayMeal : plannedDayMeals) {
+            totalPrice += plannedDayMeal.getPrice();
+        }
+
+        return totalPrice;
+    }
+
+    public Integer getAmountOfMeals() {
+
+        if(plannedDayMeals == null) {
+            return 0;
+        }
+
+        return plannedDayMeals.size();
+    }
+
 
     public String getName() {
         return name;

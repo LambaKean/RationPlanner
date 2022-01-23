@@ -7,12 +7,21 @@ public class PlannedDayDto {
     private String id;
     private String name;
     private String userId;
+    private Double price;
+    private Integer amountOfMeals;
     private Set<PlannedDayMealDto> plannedDayMealDtos;
 
-    public PlannedDayDto(String id, String name, String userId, Set<PlannedDayMealDto> plannedDayMealDtos) {
+    public PlannedDayDto(String id,
+                         String name,
+                         String userId,
+                         Double price,
+                         Integer amountOfMeals,
+                         Set<PlannedDayMealDto> plannedDayMealDtos) {
         this.id = id;
         this.name = name;
         this.userId = userId;
+        this.price = price;
+        this.amountOfMeals = amountOfMeals;
         this.plannedDayMealDtos = plannedDayMealDtos;
     }
 
@@ -41,6 +50,22 @@ public class PlannedDayDto {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public Integer getAmountOfMeals() {
+        return amountOfMeals;
+    }
+
+    public void setAmountOfMeals(Integer amountOfMeals) {
+        this.amountOfMeals = amountOfMeals;
     }
 
     public Set<PlannedDayMealDto> getPlannedDayMeals() {

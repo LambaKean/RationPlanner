@@ -1,6 +1,14 @@
 package com.lambakean.RationPlanner.repository;
 
 import com.lambakean.RationPlanner.model.PlannedDay;
+import com.lambakean.RationPlanner.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PlannedDayRepository extends JpaRepository<PlannedDay, String> {}
+import java.util.Set;
+
+public interface PlannedDayRepository extends JpaRepository<PlannedDay, String> {
+
+    Set<PlannedDay> findByUser(User user);
+
+    boolean existsByIdAndUser(String id, User user);
+}

@@ -7,6 +7,7 @@ import com.lambakean.RationPlanner.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
 import java.util.stream.Collectors;
 
 @Component
@@ -46,7 +47,7 @@ public class PlannedDayDtoConverter {
             );
         }
 
-        if(plannedDay.getPlannedDayMeals() != null) {
+        if(plannedDayDto.getPlannedDayMeals() != null) {
             plannedDay.setPlannedDayMeals(
                     plannedDayDto.getPlannedDayMeals()
                             .stream()
@@ -54,12 +55,18 @@ public class PlannedDayDtoConverter {
                             .peek(plannedDayMeal -> plannedDayMeal.setPlannedDay(plannedDay))
                             .collect(Collectors.toSet())
             );
+        } else {
+            plannedDay.setPlannedDayMeals(new HashSet<>());
         }
 
         return plannedDay;
     }
 
     public PlannedDayDto toPlannedDayDto(PlannedDay plannedDay) {
+
+        if(plannedDay == null) {
+            return null;
+        }
 
         PlannedDayDto plannedDayDto = new PlannedDayDto();
 
@@ -69,6 +76,9 @@ public class PlannedDayDtoConverter {
         if(plannedDay.getUser() != null) {
             plannedDayDto.setUserId(plannedDay.getUser().getId());
         }
+
+        plannedDayDto.setPrice(plannedDay.getPrice());
+        plannedDayDto.setAmountOfMeals(plannedDay.getAmountOfMeals());
 
         plannedDayDto.setPlannedDayMeals(
                 plannedDay.getPlannedDayMeals()

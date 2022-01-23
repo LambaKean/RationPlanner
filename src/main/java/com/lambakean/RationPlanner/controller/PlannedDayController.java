@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Set;
+
 @RestController
 @RequestMapping("/api/v1/plannedDay")
 public class PlannedDayController {
@@ -32,5 +34,21 @@ public class PlannedDayController {
         PlannedDayDto plannedDayDto = plannedDayService.getPlannedDayById(id);
 
         return new ResponseEntity<>(plannedDayDto, HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<Set<PlannedDayDto>> getPlannedDays() {
+
+        Set<PlannedDayDto> plannedDayDtos = plannedDayService.getCurrentUserPlannedDays();
+
+        return new ResponseEntity<>(plannedDayDtos, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePlannedDayById(@PathVariable String id) {
+
+        this.plannedDayService.deletePlannedDayById(id);
+
+        return ResponseEntity.noContent().build();
     }
 }

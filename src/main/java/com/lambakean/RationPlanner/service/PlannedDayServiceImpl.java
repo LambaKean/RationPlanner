@@ -16,6 +16,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class PlannedDayServiceImpl implements PlannedDayService {
@@ -101,5 +103,32 @@ public class PlannedDayServiceImpl implements PlannedDayService {
         }
 
         return plannedDayDtoConverter.toPlannedDayDto(plannedDay);
+    }
+
+    @Override
+    public Set<PlannedDayDto> getCurrentUserPlannedDays() {
+
+        User user = (User) principalService.getPrincipalOrElseThrowException(
+                "Вы должны войти в аккаунт, чтобы просмотреть информацию об этом дне"
+        );
+
+        Set<PlannedDay> currentUserPlannedDays = plannedDayRepository.findByUser(user);
+
+        return currentUserPlannedDays
+                .stream()
+                .map(plannedDayDtoConverter::toPlannedDayDto)
+                .collect(Collectors.toSet());
+    }
+
+    public void deletePlannedDayById(String id) {
+        User user = (User) principalService.getPrincipalOrElseThrowException(
+            "Вы должны войти в аккаунт, чтобы иметь возможность удалять дни"
+        );
+
+        if(id == null || !plannedDayRepository.existsByIdAndUser(id, user)) {
+            throw new EntityNotFoundException("Неверно указан идентификатор дня, который вы хотите удалить");
+        }
+
+        plannedDayRepository.deleteById(id);
     }
 }
