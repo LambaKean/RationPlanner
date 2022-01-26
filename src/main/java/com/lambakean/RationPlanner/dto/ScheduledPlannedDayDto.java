@@ -31,7 +31,7 @@ public class ScheduledPlannedDayDto {
         this.dateDto = dateDto;
     }
 
-    public PlannedDayDto getPlannedDayDto() {
+    public PlannedDayDto getPlannedDay() {
         return plannedDayDto;
     }
 
