@@ -11,4 +11,8 @@ public interface ScheduleService {
     ScheduleDto createSchedule(ScheduleDto scheduleDto);
 
     Set<ScheduledPlannedDayDto> getMonthSchedule(LocalDate date);
+
+    ScheduleDto getScheduleById(String id);
+
+    void deleteScheduleById(String id);
 }

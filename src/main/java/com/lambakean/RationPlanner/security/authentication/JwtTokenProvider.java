@@ -15,9 +15,13 @@ public class JwtTokenProvider {
     private String secret;
 
     @Value("${jwt.token.validityTimeMs}")
-    private Long validityTimeMs;
+    private Long defaultValidityTimeMs;
 
     public String createToken(@NonNull String userId) {
+        return createToken(userId, defaultValidityTimeMs);
+    }
+
+    public String createToken(@NonNull String userId, @NonNull Long validityTimeMs) {
 
         Claims claims = Jwts.claims().setSubject(userId);
 
@@ -55,4 +59,8 @@ public class JwtTokenProvider {
         }
     }
 
+
+    public Long getDefaultValidityTimeMs() {
+        return defaultValidityTimeMs;
+    }
 }

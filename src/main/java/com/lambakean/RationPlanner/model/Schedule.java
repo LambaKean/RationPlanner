@@ -26,6 +26,15 @@ public class Schedule extends BaseEntity {
 
     public Schedule() {}
 
+    public User getUser() {
+
+        if(plannedDay == null) {
+            return null;
+        }
+
+        return plannedDay.getUser();
+    }
+
 
     public PlannedDay getPlannedDay() {
         return plannedDay;

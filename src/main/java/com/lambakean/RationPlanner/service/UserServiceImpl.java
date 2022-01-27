@@ -7,7 +7,8 @@ import com.lambakean.RationPlanner.exception.AuthenticationException;
 import com.lambakean.RationPlanner.exception.EntityNotFoundException;
 import com.lambakean.RationPlanner.model.User;
 import com.lambakean.RationPlanner.repository.UserRepository;
-import com.lambakean.RationPlanner.security.authentication.JwtTokenProvider;
+import com.lambakean.RationPlanner.security.authentication.AccessTokenWrapper;
+import com.lambakean.RationPlanner.security.authentication.RefreshTokenWrapper;
 import com.lambakean.RationPlanner.validator.UserUniquenessValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
@@ -25,22 +26,22 @@ public class UserServiceImpl implements UserService {
     private final Validator userValidator;
     private final UserUniquenessValidator userUniquenessValidator;
     private final PasswordEncoder passwordEncoder;
-    private final JwtTokenProvider jwtTokenProvider;
     private final ValidationService validationService;
+    private final SecurityTokensService securityTokensService;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
                            Validator userValidator,
                            UserUniquenessValidator userUniquenessValidator,
                            PasswordEncoder passwordEncoder,
-                           JwtTokenProvider jwtTokenProvider,
-                           ValidationService validationService) {
+                           ValidationService validationService,
+                           SecurityTokensService securityTokensService) {
         this.userValidator = userValidator;
         this.userRepository = userRepository;
         this.userUniquenessValidator = userUniquenessValidator;
         this.passwordEncoder = passwordEncoder;
-        this.jwtTokenProvider = jwtTokenProvider;
         this.validationService = validationService;
+        this.securityTokensService = securityTokensService;
     }
 
     @Override
@@ -63,9 +64,13 @@ public class UserServiceImpl implements UserService {
         userRepository.saveAndFlush(user);
 
         UserDto userDto = new UserDto(user.getId(), user.getUsername());
-        String accessToken = jwtTokenProvider.createToken(user.getId());
 
-        return new UserWithTokensDto(userDto, accessToken);
+        AccessTokenWrapper accessTokenWrapper = securityTokensService.createAccessToken(user);
+        RefreshTokenWrapper refreshTokenWrapper = securityTokensService.createRefreshToken(user);
+
+        securityTokensService.save(refreshTokenWrapper);
+
+        return new UserWithTokensDto(userDto, accessTokenWrapper.getToken(), refreshTokenWrapper.getToken());
     }
 
     @Override
@@ -84,13 +89,17 @@ public class UserServiceImpl implements UserService {
 
 
         UserDto userDto = new UserDto(user.getId(), user.getUsername());
-        String accessToken = jwtTokenProvider.createToken(user.getId());
 
-        return new UserWithTokensDto(userDto, accessToken);
+        AccessTokenWrapper accessTokenWrapper = securityTokensService.createAccessToken(user);
+        RefreshTokenWrapper refreshTokenWrapper = securityTokensService.createRefreshToken(user);
+
+        securityTokensService.save(refreshTokenWrapper);
+
+        return new UserWithTokensDto(userDto, accessTokenWrapper.getToken(), refreshTokenWrapper.getToken());
     }
 
     @Override
-    public UserDto findUserDtoById(@NonNull String id) {
+    public UserDto findUserById(@NonNull String id) {
 
         User user = userRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(String.format("Пользователь с id \"%s\" не найден", id))

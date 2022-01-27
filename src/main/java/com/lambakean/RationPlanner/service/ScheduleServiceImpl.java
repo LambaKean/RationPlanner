@@ -6,6 +6,7 @@ import com.lambakean.RationPlanner.dto.converter.ScheduleDtoConverter;
 import com.lambakean.RationPlanner.dto.converter.ScheduledPlannedDayDtoConverter;
 import com.lambakean.RationPlanner.exception.AccessDeniedException;
 import com.lambakean.RationPlanner.exception.BadRequestException;
+import com.lambakean.RationPlanner.exception.EntityNotFoundException;
 import com.lambakean.RationPlanner.model.Schedule;
 import com.lambakean.RationPlanner.model.User;
 import com.lambakean.RationPlanner.repository.ScheduleRepository;
@@ -121,5 +122,41 @@ public class ScheduleServiceImpl implements ScheduleService {
         }
 
         return scheduledPlannedDayDtos;
+    }
+
+    @Override
+    public ScheduleDto getScheduleById(String id) {
+
+        User user = (User) principalService.getPrincipalOrElseThrowException(
+                "Вы должны войти в аккаунт, чтобы иметь возможность просматривать своё расписание"
+        );
+
+        Schedule schedule = scheduleRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException(String.format("Расписание с id \"%s\" не найдено", id))
+        );
+
+        if(!schedule.getUser().getId().equals(user.getId())) {
+            throw new AccessDeniedException(String.format("Вы не имеете доступа к расписанию с id \"%s\"", id));
+        }
+
+        return scheduleDtoConverter.toScheduleDto(schedule);
+    }
+
+    @Override
+    public void deleteScheduleById(String id) {
+
+        User user = (User) principalService.getPrincipalOrElseThrowException(
+                "Вы должны войти в аккаунт, чтобы иметь возможность удалять своё расписание"
+        );
+
+        Schedule schedule = scheduleRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException(String.format("Расписание с id \"%s\" не найдено", id))
+        );
+
+        if(!schedule.getUser().getId().equals(user.getId())) {
+            throw new AccessDeniedException(String.format("Вы не имеете доступа к расписанию с id \"%s\"", id));
+        }
+
+        scheduleRepository.deleteById(id);
     }
 }

@@ -14,7 +14,7 @@ public interface UserService {
 
     UserWithTokensDto login(@NonNull UserCredentialsDto userCredentialsDto);
 
-    UserDto findUserDtoById(@NonNull String id);
+    UserDto findUserById(@NonNull String id);
 
     Optional<User> findById(@NonNull String id);
 }

@@ -69,7 +69,7 @@ public class ScheduleValidator implements Validator {
             errors.rejectValue(
                     "nextRepeatAfterDays",
                     "nextRepeatAfterDays.invalid",
-                    String.format("Не получится повторять этот день каждые \"%d\" дней", nextRepeatAfterDays)
+                    String.format("Не получится повторять этот день каждые %d дн.", nextRepeatAfterDays)
             );
         }
     }
