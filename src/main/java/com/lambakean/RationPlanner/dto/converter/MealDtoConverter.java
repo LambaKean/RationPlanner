@@ -14,14 +14,17 @@ public class MealDtoConverter {
     private final MealRepository mealRepository;
     private final TimeDtoConverter timeDtoConverter;
     private final IngredientDtoConverter ingredientDtoConverter;
+    private final PhotoDtoConverter photoDtoConverter;
 
     @Autowired
     public MealDtoConverter(MealRepository mealRepository,
                             TimeDtoConverter timeDtoConverter,
-                            IngredientDtoConverter ingredientDtoConverter) {
+                            IngredientDtoConverter ingredientDtoConverter,
+                            PhotoDtoConverter photoDtoConverter) {
         this.mealRepository = mealRepository;
         this.timeDtoConverter = timeDtoConverter;
         this.ingredientDtoConverter = ingredientDtoConverter;
+        this.photoDtoConverter = photoDtoConverter;
     }
 
     public Meal toMeal(MealDto mealDto) {
@@ -40,6 +43,7 @@ public class MealDtoConverter {
         meal.setDescription(mealDto.getDescription());
         meal.setCookingDuration(timeDtoConverter.toDuration(mealDto.getCookingDuration()));
         meal.setRecipe(mealDto.getRecipe());
+        meal.setPhoto(photoDtoConverter.toPhoto(mealDto.getPhoto()));
 
         if(mealDto.getIngredients() != null) {
             meal.setIngredients(
@@ -66,6 +70,7 @@ public class MealDtoConverter {
         mealDto.setDescription(meal.getDescription());
         mealDto.setCookingDuration(timeDtoConverter.toTimeDto(meal.getCookingDuration()));
         mealDto.setRecipe(meal.getRecipe());
+        mealDto.setPhoto(photoDtoConverter.toPhotoDto(meal.getPhoto()));
 
         if(meal.getIngredients() != null) {
             mealDto.setIngredients(

@@ -9,6 +9,7 @@ public class ProductDto {
     private String producer;
     private ProductQuantityDto quantityDto;
     private Double price;
+    private PhotoDto photoDto;
 
     public ProductDto(String id, String name, String producer, ProductQuantityDto quantityDto, Double price) {
         this.id = id;
@@ -79,5 +80,13 @@ public class ProductDto {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public PhotoDto getPhoto() {
+        return photoDto;
+    }
+
+    public void setPhoto(PhotoDto photoDto) {
+        this.photoDto = photoDto;
     }
 }

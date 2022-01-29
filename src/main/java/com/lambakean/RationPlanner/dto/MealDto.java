@@ -11,6 +11,7 @@ public class MealDto {
     private String recipe;
     private Set<IngredientDto> ingredientDtos;
     private Double price;
+    private PhotoDto photoDto;
 
     public MealDto(String id,
                    String name,
@@ -18,7 +19,8 @@ public class MealDto {
                    TimeDto cookingDurationDto,
                    String recipe,
                    Set<IngredientDto> ingredientDtos,
-                   Double price) {
+                   Double price,
+                   PhotoDto photoDto) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -26,6 +28,7 @@ public class MealDto {
         this.recipe = recipe;
         this.ingredientDtos = ingredientDtos;
         this.price = price;
+        this.photoDto = photoDto;
     }
 
     public MealDto() {}
@@ -85,5 +88,13 @@ public class MealDto {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public PhotoDto getPhoto() {
+        return photoDto;
+    }
+
+    public void setPhoto(PhotoDto photoDto) {
+        this.photoDto = photoDto;
     }
 }

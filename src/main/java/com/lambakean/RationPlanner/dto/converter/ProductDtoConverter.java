@@ -10,11 +10,14 @@ public class ProductDtoConverter {
 
     private final ProductRepository productRepository;
     private final ProductQuantityDtoConverter productQuantityDtoConverter;
+    private final PhotoDtoConverter photoDtoConverter;
 
     public ProductDtoConverter(ProductRepository productRepository,
-                               ProductQuantityDtoConverter productQuantityDtoConverter) {
+                               ProductQuantityDtoConverter productQuantityDtoConverter,
+                               PhotoDtoConverter photoDtoConverter) {
         this.productRepository = productRepository;
         this.productQuantityDtoConverter = productQuantityDtoConverter;
+        this.photoDtoConverter = photoDtoConverter;
     }
 
     public Product toProduct(ProductDto productDto) {
@@ -33,6 +36,7 @@ public class ProductDtoConverter {
         product.setProducer(productDto.getProducer());
         product.setPrice(productDto.getPrice());
         product.setQuantity(productQuantityDtoConverter.toProductQuantity(productDto.getQuantity()));
+        product.setPhoto(photoDtoConverter.toPhoto(productDto.getPhoto()));
 
         return product;
     }
@@ -50,6 +54,7 @@ public class ProductDtoConverter {
         productDto.setProducer(product.getProducer());
         productDto.setPrice(product.getPrice());
         productDto.setQuantity(productQuantityDtoConverter.toProductQuantityDto(product.getQuantity()));
+        productDto.setPhoto(photoDtoConverter.toPhotoDto(product.getPhoto()));
 
         return productDto;
     }

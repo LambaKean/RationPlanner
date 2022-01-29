@@ -25,6 +25,10 @@ public class Meal extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "photo_id", referencedColumnName = "id", unique = true)
+    private Photo photo;
+
     @OneToMany(mappedBy = "meal", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PlannedDayMeal> plannedDayMeals;
 
@@ -33,13 +37,15 @@ public class Meal extends BaseEntity {
                 Duration cookingDuration,
                 String recipe,
                 Set<Ingredient> ingredients,
-                User user) {
+                User user,
+                Photo photo) {
         this.name = name;
         this.description = description;
         this.cookingDuration = cookingDuration;
         this.recipe = recipe;
         this.ingredients = ingredients;
         this.user = user;
+        this.photo = photo;
     }
 
     public Meal() {}
@@ -114,6 +120,14 @@ public class Meal extends BaseEntity {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Photo getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(Photo photo) {
+        this.photo = photo;
     }
 
     public Set<PlannedDayMeal> getPlannedDayMeals() {

@@ -23,15 +23,20 @@ public class Product extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "photo_id", referencedColumnName = "id", unique = true)
+    private Photo photo;
+
     @OneToMany(mappedBy = "meal", fetch = FetchType.LAZY)
     private Set<Ingredient> relatedIngredients;
 
-    public Product(String name, String producer, Double price, ProductQuantity quantity, User user) {
+    public Product(String name, String producer, Double price, ProductQuantity quantity, User user, Photo photo) {
         this.name = name;
         this.producer = producer;
         this.price = price;
         this.quantity = quantity;
         this.user = user;
+        this.photo = photo;
     }
 
     public Product() {}
@@ -91,6 +96,14 @@ public class Product extends BaseEntity {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Photo getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(Photo photo) {
+        this.photo = photo;
     }
 
     public Set<Ingredient> getRelatedIngredients() {

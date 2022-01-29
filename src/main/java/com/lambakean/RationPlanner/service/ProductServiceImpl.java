@@ -100,11 +100,7 @@ public class ProductServiceImpl implements ProductService {
                 productQuantityValidator
         );
 
-        Product product = new Product();
-        product.setName(productDto.getName());
-        product.setProducer(productDto.getProducer());
-        product.setQuantity(productQuantity);
-        product.setPrice(productDto.getPrice());
+        Product product = productDtoConverter.toProduct(productDto);
         product.setUser(user);
 
         validationService.throwExceptionIfObjectIsInvalid(product, "product", productValidator);
