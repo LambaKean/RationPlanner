@@ -8,6 +8,9 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
+/**
+ * Класс, позволяющий производить различные манипуляции над jwt токенами
+ */
 @Component
 public class JwtTokenProvider {
 

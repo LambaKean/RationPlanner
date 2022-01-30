@@ -21,6 +21,9 @@ public class PhotosDirectoryCleaner {
         this.photoRepository = photoRepository;
     }
 
+    /**
+     * Удаляет из папки с фотографиями те фотографии, которые не прикреплены ни к какому блюду или продукту
+     */
     @Scheduled(fixedDelay = 172800000)
     public void removeUnusedPhotos() {
 

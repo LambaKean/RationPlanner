@@ -18,6 +18,9 @@ public class RefreshTokenWrappersCleaner {
         this.refreshTokenWrapperRepository = refreshTokenWrapperRepository;
     }
 
+    /**
+     * Удаляет из базы данных просроченные refresh токены
+     */
     @Scheduled(fixedDelay = 172800000)
     public void removeExpiredRefreshTokens() {
 

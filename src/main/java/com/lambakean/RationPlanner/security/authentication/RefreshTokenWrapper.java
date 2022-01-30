@@ -7,6 +7,9 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+/**
+ * Обертка для refresh токенов. Облегчает работу с refresh токенами в коде и позволяет хранить эти токены в базе данных
+ */
 @Entity
 @Table(name = "refresh_tokens")
 public class RefreshTokenWrapper extends BaseEntity {

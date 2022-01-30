@@ -4,6 +4,9 @@ import com.lambakean.RationPlanner.model.User;
 
 import java.time.LocalDateTime;
 
+/**
+ * Обёртка для access токенов
+ */
 public class AccessTokenWrapper {
 
     private String token;

@@ -14,6 +14,9 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+/**
+ * Фильтр навешивает на запрос объект Authentication, если в запросе содержится валидный access токен
+ */
 @Component
 public class JwtAuthenticationFilter extends GenericFilterBean {
 

@@ -6,6 +6,9 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Добавляет к http ответу заголовки, позволяющие использовать CORS
+ */
 @Component
 public class CorsFilter implements Filter {
 

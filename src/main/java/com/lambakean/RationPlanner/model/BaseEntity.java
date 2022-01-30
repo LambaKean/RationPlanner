@@ -6,6 +6,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+/**
+ * Класс, от которого должны наследоваться все сущности, хранимые в базе данных
+ */
 @MappedSuperclass
 public class BaseEntity {
 
