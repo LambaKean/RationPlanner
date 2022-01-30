@@ -15,8 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.time.Period;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Component
@@ -81,43 +82,25 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public Set<ScheduledPlannedDayDto> getMonthSchedule(LocalDate date) {
+    public List<ScheduledPlannedDayDto> getMonthSchedule(LocalDate date) {
 
         User user = (User) principalService.getPrincipalOrElseThrowException(
                 "Вы должны войти в аккаунт, чтобы иметь возможность просматривать своё расписание"
         );
 
-        LocalDate prevMonthLastDay = date.withDayOfMonth(1).minusDays(1);
-        LocalDate nextMonthFirstDay = date.plusMonths(1).withDayOfMonth(1);
-
         Set<Schedule> userSchedules = scheduleRepository.findAllByUser(user);
 
-        Set<ScheduledPlannedDayDto> scheduledPlannedDayDtos = new HashSet<>();
-
+        List<ScheduledPlannedDayDto> scheduledPlannedDayDtos = new ArrayList<>();
         for(Schedule schedule : userSchedules) {
 
-            LocalDate startDate = schedule.getStartDate();
+            LocalDate currentDate = schedule.getStartDate();
 
-            if(nextMonthFirstDay.isBefore(startDate)) {
-                continue;
-            }
+            while (currentDate.getYear() == date.getYear() && currentDate.getMonth() == date.getMonth()) {
+                scheduledPlannedDayDtos.add(
+                        scheduledPlannedDayDtoConverter.toScheduledPlannedDayDto(schedule, currentDate)
+                );
 
-            if(schedule.getNextRepeatAfterDays() == null) {
-                if(startDate.isAfter(prevMonthLastDay) && startDate.isBefore(nextMonthFirstDay)) {
-                    scheduledPlannedDayDtos.add(
-                            scheduledPlannedDayDtoConverter.toScheduledPlannedDayDto(schedule, startDate)
-                    );
-                }
-            } else {
-                startDate
-                        .datesUntil(nextMonthFirstDay, Period.ofDays(schedule.getNextRepeatAfterDays()))
-                        .forEach(currentDate -> {
-                            if(currentDate.isAfter(prevMonthLastDay)) {
-                                scheduledPlannedDayDtos.add(
-                                        scheduledPlannedDayDtoConverter.toScheduledPlannedDayDto(schedule, currentDate)
-                                );
-                            }
-                        });
+                currentDate = currentDate.plusDays(Optional.of(schedule.getNextRepeatAfterDays()).orElse(31));
             }
         }
 

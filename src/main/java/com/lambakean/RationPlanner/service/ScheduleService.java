@@ -4,13 +4,13 @@ import com.lambakean.RationPlanner.dto.ScheduleDto;
 import com.lambakean.RationPlanner.dto.ScheduledPlannedDayDto;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 
 public interface ScheduleService {
 
     ScheduleDto createSchedule(ScheduleDto scheduleDto);
 
-    Set<ScheduledPlannedDayDto> getMonthSchedule(LocalDate date);
+    List<ScheduledPlannedDayDto> getMonthSchedule(LocalDate date);
 
     ScheduleDto getScheduleById(String id);
 

@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/schedule")
@@ -32,7 +32,7 @@ public class ScheduleController {
     }
 
     @GetMapping()
-    public ResponseEntity<Set<ScheduledPlannedDayDto>> getMonthSchedule(
+    public ResponseEntity<List<ScheduledPlannedDayDto>> getMonthSchedule(
             @RequestParam("date") @DateTimeFormat(pattern = "ddMMyyyy") LocalDate date
     ) {
 

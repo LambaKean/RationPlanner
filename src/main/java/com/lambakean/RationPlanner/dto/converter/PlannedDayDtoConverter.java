@@ -83,8 +83,9 @@ public class PlannedDayDtoConverter {
         plannedDayDto.setPlannedDayMeals(
                 plannedDay.getPlannedDayMeals()
                         .stream()
+                        .sorted()
                         .map(plannedDayMealDtoConverter::toPlannedDayMealDto)
-                        .collect(Collectors.toSet())
+                        .collect(Collectors.toList())
         );
 
         return plannedDayDto;

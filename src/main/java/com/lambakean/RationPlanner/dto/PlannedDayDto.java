@@ -1,6 +1,6 @@
 package com.lambakean.RationPlanner.dto;
 
-import java.util.Set;
+import java.util.List;
 
 public class PlannedDayDto {
 
@@ -9,14 +9,14 @@ public class PlannedDayDto {
     private String userId;
     private Double price;
     private Integer amountOfMeals;
-    private Set<PlannedDayMealDto> plannedDayMealDtos;
+    private List<PlannedDayMealDto> plannedDayMealDtos;
 
     public PlannedDayDto(String id,
                          String name,
                          String userId,
                          Double price,
                          Integer amountOfMeals,
-                         Set<PlannedDayMealDto> plannedDayMealDtos) {
+                         List<PlannedDayMealDto> plannedDayMealDtos) {
         this.id = id;
         this.name = name;
         this.userId = userId;
@@ -68,11 +68,11 @@ public class PlannedDayDto {
         this.amountOfMeals = amountOfMeals;
     }
 
-    public Set<PlannedDayMealDto> getPlannedDayMeals() {
+    public List<PlannedDayMealDto> getPlannedDayMeals() {
         return plannedDayMealDtos;
     }
 
-    public void setPlannedDayMeals(Set<PlannedDayMealDto> plannedDayMealDtos) {
+    public void setPlannedDayMeals(List<PlannedDayMealDto> plannedDayMealDtos) {
         this.plannedDayMealDtos = plannedDayMealDtos;
     }
 }
