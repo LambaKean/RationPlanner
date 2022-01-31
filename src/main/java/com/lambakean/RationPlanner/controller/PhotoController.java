@@ -5,6 +5,7 @@ import com.lambakean.RationPlanner.service.PhotoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,10 +29,10 @@ public class PhotoController {
         return new ResponseEntity<>(photoDto, HttpStatus.OK);
     }
 
-    @GetMapping("/{filename}")
-    public ResponseEntity<Resource> getPhoto(@PathVariable String filename) {
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<Resource> getPhoto(@PathVariable String id) {
 
-        Resource resource = photoService.loadPhoto(filename);
+        Resource resource = photoService.loadPhoto(id);
 
         return new ResponseEntity<>(resource, HttpStatus.OK);
     }

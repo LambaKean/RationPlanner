@@ -1,6 +1,7 @@
 package com.lambakean.RationPlanner.model;
 
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -8,7 +9,8 @@ import javax.persistence.Table;
 @Table(name = "photos")
 public class Photo extends BaseEntity {
 
-    private String extension;
+    @Lob
+    private byte[] content;
 
     @OneToOne(mappedBy = "photo")
     private Product product;
@@ -16,19 +18,19 @@ public class Photo extends BaseEntity {
     @OneToOne(mappedBy = "photo")
     private Meal meal;
 
-    public Photo(String extension) {
-        this.extension = extension;
+    public Photo(byte[] content) {
+        this.content = content;
     }
 
     public Photo() {}
 
 
-    public String getExtension() {
-        return extension;
+    public byte[] getContent() {
+        return content;
     }
 
-    public void setExtension(String extension) {
-        this.extension = extension;
+    public void setContent(byte[] content) {
+        this.content = content;
     }
 
     public Product getProduct() {

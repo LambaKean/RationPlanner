@@ -79,6 +79,7 @@ public class MealServiceImpl implements MealService {
     }
 
     @Override
+    @Transactional
     public List<MealDto> getCurrentUserMeals() {
 
         User user = (User) principalService.getPrincipalOrElseThrowException(

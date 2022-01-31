@@ -18,18 +18,11 @@ public class PhotoDtoConverter {
 
     public Photo toPhoto(PhotoDto photoDto) {
 
-        if(photoDto == null || photoDto.getId() == null && photoDto.getExtension() == null) {
+        if(photoDto == null || photoDto.getId() == null) {
             return null;
         }
 
-        if(photoDto.getId() != null) {
-            return photoRepository.findById(photoDto.getId()).orElse(null);
-        }
-
-        Photo photo = new Photo();
-        photo.setExtension(photoDto.getExtension());
-
-        return photo;
+        return photoRepository.findById(photoDto.getId()).orElse(null);
     }
 
     public PhotoDto toPhotoDto(Photo photo) {
@@ -38,6 +31,6 @@ public class PhotoDtoConverter {
             return null;
         }
 
-        return new PhotoDto(photo.getId(), photo.getExtension());
+        return new PhotoDto(photo.getId());
     }
 }
