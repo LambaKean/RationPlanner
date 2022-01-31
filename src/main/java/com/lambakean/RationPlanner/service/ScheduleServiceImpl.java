@@ -95,12 +95,17 @@ public class ScheduleServiceImpl implements ScheduleService {
 
             LocalDate currentDate = schedule.getStartDate();
 
-            while (currentDate.getYear() == date.getYear() && currentDate.getMonth() == date.getMonth()) {
-                scheduledPlannedDayDtos.add(
-                        scheduledPlannedDayDtoConverter.toScheduledPlannedDayDto(schedule, currentDate)
-                );
+            while (currentDate.getYear() <= date.getYear() && currentDate.getMonthValue() <= date.getMonthValue()) {
 
-                currentDate = currentDate.plusDays(Optional.of(schedule.getNextRepeatAfterDays()).orElse(31));
+                if(currentDate.getYear() == date.getYear() && currentDate.getMonthValue() == date.getMonthValue()) {
+                    scheduledPlannedDayDtos.add(
+                            scheduledPlannedDayDtoConverter.toScheduledPlannedDayDto(schedule, currentDate)
+                    );
+                }
+
+                currentDate = currentDate.plusDays(
+                        Optional.ofNullable(schedule.getNextRepeatAfterDays()).orElse(31)
+                );
             }
         }
 
