@@ -13,6 +13,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,7 +26,7 @@ public class EntityRelatedExceptionsHandler {
         ExceptionDto exceptionDto = new ExceptionDto("entityNotFound", e.getMessage());
 
         ResponseWithExceptionsDto responseDto = new ResponseWithExceptionsDto();
-        responseDto.setExceptions(Set.of(exceptionDto));
+        responseDto.setExceptions(Collections.singleton(exceptionDto));
 
         return new ResponseEntity<>(responseDto, HttpStatus.NOT_FOUND);
     }

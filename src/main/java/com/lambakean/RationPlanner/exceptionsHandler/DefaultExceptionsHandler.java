@@ -33,7 +33,7 @@ public class DefaultExceptionsHandler {
         ExceptionDto exceptionDto = new ExceptionDto("fileNotFound", e.getMessage());
 
         ResponseWithExceptionsDto responseDto = new ResponseWithExceptionsDto();
-        responseDto.setExceptions(Set.of(exceptionDto));
+        responseDto.setExceptions(Collections.singleton(exceptionDto));
 
         return new ResponseEntity<>(responseDto, HttpStatus.NOT_FOUND);
     }
@@ -46,7 +46,7 @@ public class DefaultExceptionsHandler {
         );
 
         ResponseWithExceptionsDto responseDto = new ResponseWithExceptionsDto();
-        responseDto.setExceptions(Set.of(exceptionDto));
+        responseDto.setExceptions(Collections.singleton(exceptionDto));
 
         return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
     }

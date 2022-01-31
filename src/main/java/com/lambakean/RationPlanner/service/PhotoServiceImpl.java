@@ -20,12 +20,18 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashSet;
 import java.util.Set;
 
 @Component
 public class PhotoServiceImpl implements PhotoService {
 
-    private final Set<String> PHOTO_CONTENT_TYPES = Set.of("image/jpeg", "image/png");
+    private final Set<String> PHOTO_CONTENT_TYPES = new HashSet<>();
+
+    {
+        PHOTO_CONTENT_TYPES.add("image/jpeg");
+        PHOTO_CONTENT_TYPES.add("image/png");
+    }
 
     private final PhotoRepository photoRepository;
     private final PhotoDtoConverter photoDtoConverter;

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.util.Collections;
 import java.util.Set;
 
 @ControllerAdvice
@@ -26,7 +27,7 @@ public class RestExceptionsHandler extends ResponseEntityExceptionHandler {
 
         ExceptionDto exceptionDto = new ExceptionDto("invalidRequestBody", "Тело запроса невалидно.");
 
-        ResponseWithExceptionsDto responseDto = new ResponseWithExceptionsDto(Set.of(exceptionDto));
+        ResponseWithExceptionsDto responseDto = new ResponseWithExceptionsDto(Collections.singleton(exceptionDto));
         return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
 
     }

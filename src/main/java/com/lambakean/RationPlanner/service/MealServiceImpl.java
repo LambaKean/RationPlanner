@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class MealServiceImpl implements MealService {
@@ -91,7 +92,7 @@ public class MealServiceImpl implements MealService {
         return meals
                 .stream()
                 .map(mealDtoConverter::toMealDto)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     @Override

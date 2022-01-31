@@ -59,8 +59,8 @@ public class TimeDtoConverter {
 
         TimeDto timeDto = new TimeDto();
 
-        timeDto.setHours(duration.toHoursPart());
-        timeDto.setMinutes(duration.toMinutesPart());
+        timeDto.setHours((int) duration.toHours());
+        timeDto.setMinutes((int) duration.toMinutes());
 
         return timeDto;
     }
