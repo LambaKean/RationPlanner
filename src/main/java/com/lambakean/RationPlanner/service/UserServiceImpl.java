@@ -11,6 +11,7 @@ import com.lambakean.RationPlanner.security.authentication.AccessTokenWrapper;
 import com.lambakean.RationPlanner.security.authentication.RefreshTokenWrapper;
 import com.lambakean.RationPlanner.validator.UserUniquenessValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.lang.NonNull;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class UserServiceImpl implements UserService {
     public UserServiceImpl(UserRepository userRepository,
                            Validator userValidator,
                            UserUniquenessValidator userUniquenessValidator,
-                           PasswordEncoder passwordEncoder,
+                           @Qualifier("bCryptPasswordEncoder") PasswordEncoder passwordEncoder,
                            ValidationService validationService,
                            SecurityTokensService securityTokensService) {
         this.userValidator = userValidator;

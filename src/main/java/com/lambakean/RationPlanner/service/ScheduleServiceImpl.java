@@ -14,6 +14,7 @@ import com.lambakean.RationPlanner.validator.ScheduleValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -82,6 +83,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
+    @Transactional
     public List<ScheduledPlannedDayDto> getMonthSchedule(LocalDate date) {
 
         User user = (User) principalService.getPrincipalOrElseThrowException(
@@ -95,7 +97,8 @@ public class ScheduleServiceImpl implements ScheduleService {
 
             LocalDate currentDate = schedule.getStartDate();
 
-            while (currentDate.getYear() <= date.getYear() && currentDate.getMonthValue() <= date.getMonthValue()) {
+            while (currentDate.getYear() < date.getYear() ||
+                    currentDate.getYear() == date.getYear() && currentDate.getMonthValue() <= date.getMonthValue()) {
 
                 if(currentDate.getYear() == date.getYear() && currentDate.getMonthValue() == date.getMonthValue()) {
                     scheduledPlannedDayDtos.add(

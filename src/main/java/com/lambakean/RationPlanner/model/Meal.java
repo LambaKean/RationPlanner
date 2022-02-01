@@ -16,6 +16,7 @@ public class Meal extends BaseEntity {
     @Column(name = "cooking_duration", nullable = false)
     private Duration cookingDuration;
 
+    @Column(length = 10000)
     private String recipe;
 
     @OneToMany(mappedBy = "meal", fetch = FetchType.EAGER, cascade = CascadeType.ALL)

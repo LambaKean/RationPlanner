@@ -60,7 +60,7 @@ public class TimeDtoConverter {
         TimeDto timeDto = new TimeDto();
 
         timeDto.setHours((int) duration.toHours());
-        timeDto.setMinutes((int) duration.toMinutes());
+        timeDto.setMinutes((int) duration.toMinutes() % 60);
 
         return timeDto;
     }

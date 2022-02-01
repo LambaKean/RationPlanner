@@ -77,7 +77,7 @@ public class MealValidator implements Validator {
             return;
         }
 
-        if(1 > recipe.length() || recipe.length() > 950) {
+        if(1 > recipe.length() || recipe.length() > 10000) {
             errors.rejectValue(
                     "recipe",
                     "recipe.invalid",

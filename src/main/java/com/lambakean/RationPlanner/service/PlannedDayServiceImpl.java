@@ -14,6 +14,7 @@ import com.lambakean.RationPlanner.validator.PlannedDayMealValidator;
 import com.lambakean.RationPlanner.validator.PlannedDayValidator;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
@@ -88,6 +89,7 @@ public class PlannedDayServiceImpl implements PlannedDayService {
     }
 
     @Override
+    @Transactional
     public PlannedDayDto getPlannedDayById(String id) {
 
         PlannedDay plannedDay = plannedDayRepository.findById(id).orElseThrow(
@@ -106,10 +108,11 @@ public class PlannedDayServiceImpl implements PlannedDayService {
     }
 
     @Override
+    @Transactional
     public Set<PlannedDayDto> getCurrentUserPlannedDays() {
 
         User user = (User) principalService.getPrincipalOrElseThrowException(
-                "Вы должны войти в аккаунт, чтобы просмотреть информацию об этом дне"
+                "Вы должны войти в аккаунт, чтобы просмотреть список своих дней"
         );
 
         Set<PlannedDay> currentUserPlannedDays = plannedDayRepository.findByUser(user);

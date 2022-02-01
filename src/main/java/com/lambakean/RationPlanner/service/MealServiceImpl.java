@@ -113,6 +113,7 @@ public class MealServiceImpl implements MealService {
         return mealDtoConverter.toMealDto(meal);
     }
 
+    @Transactional
     @Override
     public void deleteMealById(String id) {
 
