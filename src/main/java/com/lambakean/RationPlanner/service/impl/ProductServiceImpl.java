@@ -99,16 +99,12 @@ public class ProductServiceImpl implements ProductService {
         Double productQuantityAmount = productDto.getQuantityAmount();
         ProductQuantity productQuantity = new ProductQuantity(productQuantityAmount, measurementUnit);
 
-        validationService.throwExceptionIfObjectIsInvalid(
-                productQuantity,
-                "productQuantity",
-                productQuantityValidator
-        );
+        validationService.validateThrowExceptionIfInvalid(productQuantity, productQuantityValidator);
 
         Product product = productDtoConverter.toProduct(productDto);
         product.setUser(user);
 
-        validationService.throwExceptionIfObjectIsInvalid(product, "product", productValidator);
+        validationService.validate(product, productValidator);
 
         productRepository.saveAndFlush(product);
 

@@ -2,9 +2,7 @@ package com.lambakean.RationPlanner.service.impl;
 
 import com.lambakean.RationPlanner.dto.MealDto;
 import com.lambakean.RationPlanner.dto.converter.MealDtoConverter;
-import com.lambakean.RationPlanner.exception.AccessDeniedException;
-import com.lambakean.RationPlanner.exception.BadRequestException;
-import com.lambakean.RationPlanner.exception.EntityNotFoundException;
+import com.lambakean.RationPlanner.exception.*;
 import com.lambakean.RationPlanner.model.Meal;
 import com.lambakean.RationPlanner.model.User;
 import com.lambakean.RationPlanner.repository.MealRepository;
@@ -15,6 +13,7 @@ import com.lambakean.RationPlanner.validator.IngredientValidator;
 import com.lambakean.RationPlanner.validator.MealValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -55,19 +54,20 @@ public class MealServiceImpl implements MealService {
             throw new BadRequestException("Данные для создания блюда указаны неверно");
         }
 
-        validationService.throwExceptionIfObjectIsInvalid(meal, "meal", mealValidator);
+        validationService.validateThrowExceptionIfInvalid(meal, mealValidator);
 
         if(meal.getIngredients() != null) {
             meal.getIngredients()
                     .stream()
                     .peek(ingredient -> ingredient.setMeal(meal))
                     .forEach(
-                            ingredient ->
-                                    validationService.throwExceptionIfObjectIsInvalid(
-                                            ingredient,
-                                            "ingredient",
-                                            ingredientValidator
-                                    )
+                            ingredient -> {
+                                BindingResult ingredientValidationResult =
+                                        validationService.validate(meal, mealValidator);
+                                if(ingredientValidationResult.hasErrors()) {
+                                    throw new InvalidEntityException(ingredientValidationResult);
+                                }
+                            }
                     );
         }
 

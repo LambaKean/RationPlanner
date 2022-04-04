@@ -1,6 +1,6 @@
 package com.lambakean.RationPlanner.repository;
 
-import com.lambakean.RationPlanner.security.authentication.RefreshTokenWrapper;
+import com.lambakean.RationPlanner.model.RefreshTokenWrapper;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

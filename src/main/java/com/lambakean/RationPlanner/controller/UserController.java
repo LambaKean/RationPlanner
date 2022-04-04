@@ -14,6 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
 @RequestMapping("/api/v1/user")
 public class UserController {
@@ -32,17 +35,19 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserWithTokensDto> register(@RequestBody UserCredentialsDto userCredentialsDto) {
+    public ResponseEntity<UserWithTokensDto> register(@RequestBody UserCredentialsDto userCredentialsDto,
+                                                      HttpServletResponse httpServletResponse) {
 
-        UserWithTokensDto userWithTokensDto = userService.register(userCredentialsDto);
+        UserWithTokensDto userWithTokensDto = userService.register(userCredentialsDto, httpServletResponse);
 
         return new ResponseEntity<>(userWithTokensDto, HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserWithTokensDto> login(@RequestBody UserCredentialsDto userCredentialsDto) {
+    public ResponseEntity<UserWithTokensDto> login(@RequestBody UserCredentialsDto userCredentialsDto,
+                                                   HttpServletResponse httpServletResponse) {
 
-        UserWithTokensDto userWithTokensDto = userService.login(userCredentialsDto);
+        UserWithTokensDto userWithTokensDto = userService.login(userCredentialsDto, httpServletResponse);
 
         return new ResponseEntity<>(userWithTokensDto, HttpStatus.CREATED);
     }
@@ -58,10 +63,12 @@ public class UserController {
     }
 
     @PostMapping("/token")
-    public ResponseEntity<SecurityTokensDto> updateTokens(@RequestBody SecurityTokensDto securityTokensDto) {
+    public ResponseEntity<SecurityTokensDto> updateTokens(HttpServletRequest httpServletRequest,
+                                                          HttpServletResponse httpServletResponse) {
 
         SecurityTokensDto newSecurityTokensDto = securityTokensService.updateTokens(
-                securityTokensDto.getRefreshToken()
+                httpServletRequest,
+                httpServletResponse
         );
 
         return new ResponseEntity<>(newSecurityTokensDto, HttpStatus.CREATED);

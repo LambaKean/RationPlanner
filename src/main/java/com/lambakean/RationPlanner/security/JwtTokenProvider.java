@@ -1,4 +1,4 @@
-package com.lambakean.RationPlanner.security.authentication;
+package com.lambakean.RationPlanner.security;
 
 import com.lambakean.RationPlanner.model.User;
 import io.jsonwebtoken.*;
@@ -18,9 +18,6 @@ public class JwtTokenProvider {
     @Value("${jwt.secret}")
     private String secret;
 
-    @Value("${access-token.validity-time-in-minutes}")
-    private Long validityTimeInMinutes;
-
     public String createToken(@NonNull User user, @NonNull Long validityTimeInMinutes) {
 
         Claims claims = Jwts.claims().setSubject(user.getId());
@@ -36,16 +33,6 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String resolveToken(@NonNull HttpServletRequest httpServletRequest) {
-        String bearerToken = httpServletRequest.getHeader("Authorization");
-
-        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
-        }
-
-        return null;
-    }
-
     public String getSubject(@NonNull String token) {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
     }
@@ -57,10 +44,5 @@ public class JwtTokenProvider {
         } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
-    }
-
-
-    public Long getValidityTimeInMinutes() {
-        return validityTimeInMinutes;
     }
 }

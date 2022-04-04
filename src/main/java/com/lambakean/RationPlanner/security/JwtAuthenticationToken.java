@@ -1,4 +1,4 @@
-package com.lambakean.RationPlanner.security.authentication;
+package com.lambakean.RationPlanner.security;
 
 import com.lambakean.RationPlanner.model.User;
 import org.springframework.lang.NonNull;

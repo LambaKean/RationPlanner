@@ -1,4 +1,4 @@
-package com.lambakean.RationPlanner.security.authentication;
+package com.lambakean.RationPlanner.model;
 
 import com.lambakean.RationPlanner.model.BaseEntity;
 import com.lambakean.RationPlanner.model.User;

@@ -4,16 +4,21 @@ import com.lambakean.RationPlanner.dto.SecurityTokensDto;
 import com.lambakean.RationPlanner.exception.AuthenticationException;
 import com.lambakean.RationPlanner.model.User;
 import com.lambakean.RationPlanner.repository.RefreshTokenWrapperRepository;
-import com.lambakean.RationPlanner.security.authentication.AccessTokenWrapper;
-import com.lambakean.RationPlanner.security.authentication.JwtTokenProvider;
-import com.lambakean.RationPlanner.security.authentication.RefreshTokenWrapper;
+import com.lambakean.RationPlanner.model.AccessTokenWrapper;
+import com.lambakean.RationPlanner.security.JwtTokenProvider;
+import com.lambakean.RationPlanner.model.RefreshTokenWrapper;
+import com.lambakean.RationPlanner.security.TokenResolver;
 import com.lambakean.RationPlanner.service.SecurityTokensService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Service
 public class SecurityTokensServiceImpl implements SecurityTokensService {
@@ -27,12 +32,15 @@ public class SecurityTokensServiceImpl implements SecurityTokensService {
     private final RefreshTokenWrapperRepository refreshTokenWrapperRepository;
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final TokenResolver refreshTokenResolver;
 
     @Autowired
     public SecurityTokensServiceImpl(RefreshTokenWrapperRepository refreshTokenWrapperRepository,
-                                     JwtTokenProvider jwtTokenProvider) {
+                                     JwtTokenProvider jwtTokenProvider,
+                                     TokenResolver refreshTokenResolver) {
         this.refreshTokenWrapperRepository = refreshTokenWrapperRepository;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.refreshTokenResolver = refreshTokenResolver;
     }
 
     @Override
@@ -59,9 +67,14 @@ public class SecurityTokensServiceImpl implements SecurityTokensService {
     }
 
     @Override
-    public SecurityTokensDto updateTokens(@NonNull String refreshToken) {
+    public SecurityTokensDto updateTokens(HttpServletRequest httpServletRequest,
+                                          HttpServletResponse httpServletResponse) {  // todo refactor
 
         String EXCEPTION_MSG = "Не удалось обновить токены безопасности, войдите в аккаунт заново";
+
+        String refreshToken = refreshTokenResolver.resolveToken(httpServletRequest).orElseThrow(
+                () -> new AuthenticationException(EXCEPTION_MSG)
+        );
 
         RefreshTokenWrapper refreshTokenWrapper = refreshTokenWrapperRepository.findByToken(refreshToken).orElseThrow(
                 () -> new AuthenticationException(EXCEPTION_MSG)
@@ -80,7 +93,21 @@ public class SecurityTokensServiceImpl implements SecurityTokensService {
 
         save(newRefreshTokenWrapper);
 
-        return new SecurityTokensDto(newAccessTokenWrapper.getToken(), newRefreshTokenWrapper.getToken());
+        httpServletResponse.addCookie(createRefreshTokenCookie(newRefreshTokenWrapper));
 
+        return new SecurityTokensDto(newAccessTokenWrapper.getToken(), newRefreshTokenWrapper.getToken());
+    }
+
+    private Cookie createRefreshTokenCookie(RefreshTokenWrapper refreshTokenWrapper) {
+
+        long maxAgeInSeconds = ChronoUnit.SECONDS.between(ZonedDateTime.now(), refreshTokenWrapper.getExpiresAt());
+
+        Cookie cookie = new Cookie("refresh_token", refreshTokenWrapper.getToken());
+        cookie.setSecure(false);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/api/v1/user/token");
+        cookie.setMaxAge((int) maxAgeInSeconds);
+
+        return cookie;
     }
 }

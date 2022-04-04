@@ -7,8 +7,8 @@ import com.lambakean.RationPlanner.exception.AuthenticationException;
 import com.lambakean.RationPlanner.exception.EntityNotFoundException;
 import com.lambakean.RationPlanner.model.User;
 import com.lambakean.RationPlanner.repository.UserRepository;
-import com.lambakean.RationPlanner.security.authentication.AccessTokenWrapper;
-import com.lambakean.RationPlanner.security.authentication.RefreshTokenWrapper;
+import com.lambakean.RationPlanner.model.AccessTokenWrapper;
+import com.lambakean.RationPlanner.model.RefreshTokenWrapper;
 import com.lambakean.RationPlanner.service.SecurityTokensService;
 import com.lambakean.RationPlanner.service.UserService;
 import com.lambakean.RationPlanner.service.ValidationService;
@@ -20,6 +20,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Validator;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 @Service
@@ -49,18 +53,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserWithTokensDto register(@NonNull UserCredentialsDto userCredentialsDto) {
+    public UserWithTokensDto register(@NonNull UserCredentialsDto userCredentialsDto,
+                                      HttpServletResponse httpServletResponse) {
 
         String username = userCredentialsDto.getUsername();
         String password = userCredentialsDto.getPassword();
 
         User user = new User(username, password);
 
-        validationService.throwExceptionIfObjectIsInvalid(
-                user,
-                "user",
-                userValidator, userUniquenessValidator
-        );
+        validationService.validateThrowExceptionIfInvalid(user, userValidator, userUniquenessValidator);
 
         String encodedPassword = passwordEncoder.encode(password);
         user.setPassword(encodedPassword);
@@ -74,11 +75,14 @@ public class UserServiceImpl implements UserService {
 
         securityTokensService.save(refreshTokenWrapper);
 
+        httpServletResponse.addCookie(createRefreshTokenCookie(refreshTokenWrapper));
+
         return new UserWithTokensDto(userDto, accessTokenWrapper.getToken(), refreshTokenWrapper.getToken());
     }
 
     @Override
-    public UserWithTokensDto login(@NonNull UserCredentialsDto userCredentialsDto) {
+    public UserWithTokensDto login(@NonNull UserCredentialsDto userCredentialsDto,
+                                   HttpServletResponse httpServletResponse) {
 
         String username = userCredentialsDto.getUsername();
         String password = userCredentialsDto.getPassword();
@@ -99,6 +103,8 @@ public class UserServiceImpl implements UserService {
 
         securityTokensService.save(refreshTokenWrapper);
 
+        httpServletResponse.addCookie(createRefreshTokenCookie(refreshTokenWrapper));
+
         return new UserWithTokensDto(userDto, accessTokenWrapper.getToken(), refreshTokenWrapper.getToken());
     }
 
@@ -115,5 +121,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> findById(@NonNull String id) {
         return userRepository.findById(id);
+    }
+
+    private Cookie createRefreshTokenCookie(RefreshTokenWrapper refreshTokenWrapper) {
+
+        long maxAgeInSeconds = ChronoUnit.SECONDS.between(ZonedDateTime.now(), refreshTokenWrapper.getExpiresAt());
+
+        Cookie cookie = new Cookie("refresh_token", refreshTokenWrapper.getToken());
+        cookie.setSecure(false);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/api/v1/user/token");
+        cookie.setMaxAge((int) maxAgeInSeconds);
+
+        return cookie;
     }
 }

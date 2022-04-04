@@ -65,14 +65,10 @@ public class PlannedDayServiceImpl implements PlannedDayService {
                 .stream()
                 .peek(plannedDayMeal -> plannedDayMeal.setId(null))
                 .forEach(plannedDayMeal ->
-                        validationService.throwExceptionIfObjectIsInvalid(
-                                plannedDayMeal,
-                                "plannedDayMeal",
-                                plannedDayMealValidator
-                        )
+                        validationService.validateThrowExceptionIfInvalid(plannedDayMeal, plannedDayMealValidator)
                 );
 
-        validationService.throwExceptionIfObjectIsInvalid(plannedDay, "plannedDay", plannedDayValidator);
+        validationService.validateThrowExceptionIfInvalid(plannedDay, plannedDayValidator);
 
         for(PlannedDayMeal plannedDayMeal : plannedDay.getPlannedDayMeals()) {
             Meal meal = plannedDayMeal.getMeal();

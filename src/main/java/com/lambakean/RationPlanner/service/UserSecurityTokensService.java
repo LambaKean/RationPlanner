@@ -1,8 +1,8 @@
 package com.lambakean.RationPlanner.service;
 
 import com.lambakean.RationPlanner.model.User;
-import com.lambakean.RationPlanner.security.authentication.AccessTokenWrapper;
-import com.lambakean.RationPlanner.security.authentication.RefreshTokenWrapper;
+import com.lambakean.RationPlanner.model.AccessTokenWrapper;
+import com.lambakean.RationPlanner.model.RefreshTokenWrapper;
 
 public interface UserSecurityTokensService {
 

@@ -6,13 +6,14 @@ import com.lambakean.RationPlanner.dto.UserWithTokensDto;
 import com.lambakean.RationPlanner.model.User;
 import org.springframework.lang.NonNull;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 public interface UserService {
 
-    UserWithTokensDto register(@NonNull UserCredentialsDto userCredentialsDto);
+    UserWithTokensDto register(@NonNull UserCredentialsDto userCredentialsDto, HttpServletResponse httpServletResponse);
 
-    UserWithTokensDto login(@NonNull UserCredentialsDto userCredentialsDto);
+    UserWithTokensDto login(@NonNull UserCredentialsDto userCredentialsDto, HttpServletResponse httpServletResponse);
 
     UserDto findUserById(@NonNull String id);
 

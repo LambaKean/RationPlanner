@@ -8,6 +8,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import java.util.Objects;
+import java.util.Optional;
+
 @Component
 public class UserUniquenessValidator implements Validator {
 
@@ -27,8 +30,13 @@ public class UserUniquenessValidator implements Validator {
     public void validate(@NonNull Object target, @NonNull Errors errors) {
         
         User user = (User) target;
-        
-        if(userRepository.existsByUsername(user.getUsername())) {
+        String username = user.getUsername();
+
+        if(username == null) return;
+
+        Optional<User> userOptional = userRepository.findByUsername(username);
+
+        if(userOptional.isPresent() && !Objects.equals(userOptional.get().getId(), user.getId())) {
             errors.rejectValue(
                     "username",
                     "username.invalid",

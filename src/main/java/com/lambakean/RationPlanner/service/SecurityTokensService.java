@@ -2,8 +2,11 @@ package com.lambakean.RationPlanner.service;
 
 import com.lambakean.RationPlanner.dto.SecurityTokensDto;
 import com.lambakean.RationPlanner.model.User;
-import com.lambakean.RationPlanner.security.authentication.AccessTokenWrapper;
-import com.lambakean.RationPlanner.security.authentication.RefreshTokenWrapper;
+import com.lambakean.RationPlanner.model.AccessTokenWrapper;
+import com.lambakean.RationPlanner.model.RefreshTokenWrapper;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public interface SecurityTokensService {
 
@@ -13,5 +16,5 @@ public interface SecurityTokensService {
 
     void save(RefreshTokenWrapper refreshTokenWrapper);
 
-    SecurityTokensDto updateTokens(String refreshToken);
+    SecurityTokensDto updateTokens(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse);
 }

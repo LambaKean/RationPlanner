@@ -64,11 +64,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         schedule.setId(null);
 
-        validationService.throwExceptionIfObjectIsInvalid(
-                schedule,
-                "schedule",
-                scheduleValidator
-        );
+        validationService.validateThrowExceptionIfInvalid(schedule, scheduleValidator);
 
         if(schedule.getPlannedDay().getId() == null) {
             throw new BadRequestException("Вы не указали день, для которого хотите создать расписание");

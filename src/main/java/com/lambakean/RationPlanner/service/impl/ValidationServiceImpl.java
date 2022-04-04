@@ -11,16 +11,22 @@ import org.springframework.validation.Validator;
 public class ValidationServiceImpl implements ValidationService {
 
     @Override
-    public void throwExceptionIfObjectIsInvalid(Object target, String objectName, Validator... validators) {
+    public void validateThrowExceptionIfInvalid(Object target, Validator... validators) {
 
-        DataBinder dataBinder = new DataBinder(target, objectName);
+        BindingResult bindingResult = validate(target, validators);
+
+        if(bindingResult.hasErrors()) {
+            throw new InvalidEntityException(bindingResult);
+        }
+    }
+
+    @Override
+    public BindingResult validate(Object target, Validator... validators) {
+        DataBinder dataBinder = new DataBinder(target);
         dataBinder.addValidators(validators);
 
         dataBinder.validate();
 
-        BindingResult bindingResult = dataBinder.getBindingResult();
-        if(bindingResult.hasErrors()) {
-            throw new InvalidEntityException(bindingResult);
-        }
+        return dataBinder.getBindingResult();
     }
 }

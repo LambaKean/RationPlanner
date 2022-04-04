@@ -1,4 +1,4 @@
-package com.lambakean.RationPlanner.security.authentication;
+package com.lambakean.RationPlanner.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -13,6 +13,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * Фильтр навешивает на запрос объект Authentication, если в запросе содержится валидный access токен
@@ -20,12 +21,12 @@ import java.io.IOException;
 @Component
 public class JwtAuthenticationFilter extends GenericFilterBean {
 
-    private final JwtTokenProvider jwtTokenProvider;
+    private final TokenResolver accessTokenResolver;
     private final JwtAuthenticationProvider jwtAuthenticationProvider;
 
     @Autowired
-    public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider, JwtAuthenticationProvider jwtAuthenticationProvider) {
-        this.jwtTokenProvider = jwtTokenProvider;
+    public JwtAuthenticationFilter(TokenResolver accessTokenResolver, JwtAuthenticationProvider jwtAuthenticationProvider) {
+        this.accessTokenResolver = accessTokenResolver;
         this.jwtAuthenticationProvider = jwtAuthenticationProvider;
     }
 
@@ -33,9 +34,12 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
 
-        String accessToken = jwtTokenProvider.resolveToken((HttpServletRequest) servletRequest);
+        Optional<String> accessTokenOptional = accessTokenResolver.resolveToken((HttpServletRequest) servletRequest);
 
-        if(accessToken != null) {
+        if(accessTokenOptional.isPresent()) {
+
+            String accessToken = accessTokenOptional.get();
+
             try {
                 Authentication authentication = jwtAuthenticationProvider.authenticate(
                     new JwtAuthenticationToken(accessToken)

@@ -1,7 +1,7 @@
 package com.lambakean.RationPlanner.scheduling;
 
 import com.lambakean.RationPlanner.repository.RefreshTokenWrapperRepository;
-import com.lambakean.RationPlanner.security.authentication.RefreshTokenWrapper;
+import com.lambakean.RationPlanner.model.RefreshTokenWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
