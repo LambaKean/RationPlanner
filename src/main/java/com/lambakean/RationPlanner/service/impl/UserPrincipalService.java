@@ -1,14 +1,15 @@
-package com.lambakean.RationPlanner.service;
+package com.lambakean.RationPlanner.service.impl;
 
 import com.lambakean.RationPlanner.exception.UserNotLoggedInException;
 import com.lambakean.RationPlanner.model.User;
+import com.lambakean.RationPlanner.service.PrincipalService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Component
+@Service
 public class UserPrincipalService implements PrincipalService {
 
     @Override

@@ -4,7 +4,7 @@ import com.lambakean.RationPlanner.model.BaseEntity;
 import com.lambakean.RationPlanner.model.User;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
@@ -22,18 +22,18 @@ public class RefreshTokenWrapper extends BaseEntity {
     private User user;
 
     @Column(nullable = false)
-    private LocalDateTime expiresIn;
+    private ZonedDateTime expiresAt;
 
-    public RefreshTokenWrapper(String token, User user, LocalDateTime expiresIn) {
+    public RefreshTokenWrapper(String token, User user, ZonedDateTime expiresAt) {
         this.token = token;
         this.user = user;
-        this.expiresIn = expiresIn;
+        this.expiresAt = expiresAt;
     }
 
     public RefreshTokenWrapper() {}
 
-    public boolean isTokenValid() {
-        return this.expiresIn.isAfter(LocalDateTime.now());
+    public boolean isExpired() {
+        return this.expiresAt.isBefore(ZonedDateTime.now());
     }
 
     public boolean tokenBelongsTo(User candidate) {
@@ -41,12 +41,12 @@ public class RefreshTokenWrapper extends BaseEntity {
     }
 
 
-    public LocalDateTime getExpiresIn() {
-        return expiresIn;
+    public ZonedDateTime getExpiresAt() {
+        return expiresAt;
     }
 
-    public void setExpiresIn(LocalDateTime expiresIn) {
-        this.expiresIn = expiresIn;
+    public void setExpiresAt(ZonedDateTime expiresIn) {
+        this.expiresAt = expiresIn;
     }
 
     public User getUser() {

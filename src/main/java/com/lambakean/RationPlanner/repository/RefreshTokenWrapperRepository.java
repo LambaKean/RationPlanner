@@ -9,4 +9,5 @@ public interface RefreshTokenWrapperRepository extends JpaRepository<RefreshToke
 
     Optional<RefreshTokenWrapper> findByToken(String token);
 
+    boolean existsByToken(String token);
 }

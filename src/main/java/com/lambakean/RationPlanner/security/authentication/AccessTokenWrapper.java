@@ -2,7 +2,7 @@ package com.lambakean.RationPlanner.security.authentication;
 
 import com.lambakean.RationPlanner.model.User;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 /**
  * Обёртка для access токенов
@@ -12,12 +12,12 @@ public class AccessTokenWrapper {
     private String token;
 
     private User user;
-    private LocalDateTime expiresIn;
+    private ZonedDateTime expiresAt;
 
-    public AccessTokenWrapper(String token, User user, LocalDateTime expiresIn) {
+    public AccessTokenWrapper(String token, User user, ZonedDateTime expiresAt) {
         this.token = token;
         this.user = user;
-        this.expiresIn = expiresIn;
+        this.expiresAt = expiresAt;
     }
 
     public AccessTokenWrapper() {}
@@ -39,11 +39,11 @@ public class AccessTokenWrapper {
         this.user = user;
     }
 
-    public LocalDateTime getExpiresIn() {
-        return expiresIn;
+    public ZonedDateTime getExpiresAt() {
+        return expiresAt;
     }
 
-    public void setExpiresIn(LocalDateTime expiresIn) {
-        this.expiresIn = expiresIn;
+    public void setExpiresAt(ZonedDateTime expiresAt) {
+        this.expiresAt = expiresAt;
     }
 }

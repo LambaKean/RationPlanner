@@ -27,7 +27,7 @@ public class RefreshTokenWrappersCleaner {
         List<RefreshTokenWrapper> refreshTokenWrappers = refreshTokenWrapperRepository.findAll();
 
         for(RefreshTokenWrapper refreshTokenWrapper : refreshTokenWrappers) {
-            if(!refreshTokenWrapper.isTokenValid()) {
+            if(refreshTokenWrapper.isExpired()) {
                 refreshTokenWrapperRepository.delete(refreshTokenWrapper);
             }
         }

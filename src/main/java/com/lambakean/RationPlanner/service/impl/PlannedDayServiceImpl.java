@@ -1,4 +1,4 @@
-package com.lambakean.RationPlanner.service;
+package com.lambakean.RationPlanner.service.impl;
 
 import com.lambakean.RationPlanner.dto.PlannedDayDto;
 import com.lambakean.RationPlanner.dto.converter.PlannedDayDtoConverter;
@@ -10,9 +10,12 @@ import com.lambakean.RationPlanner.model.PlannedDay;
 import com.lambakean.RationPlanner.model.PlannedDayMeal;
 import com.lambakean.RationPlanner.model.User;
 import com.lambakean.RationPlanner.repository.PlannedDayRepository;
+import com.lambakean.RationPlanner.service.PlannedDayService;
+import com.lambakean.RationPlanner.service.PrincipalService;
+import com.lambakean.RationPlanner.service.ValidationService;
 import com.lambakean.RationPlanner.validator.PlannedDayMealValidator;
 import com.lambakean.RationPlanner.validator.PlannedDayValidator;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Collections;
@@ -20,7 +23,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Component
+@Service
 public class PlannedDayServiceImpl implements PlannedDayService {
 
     private final PrincipalService principalService;

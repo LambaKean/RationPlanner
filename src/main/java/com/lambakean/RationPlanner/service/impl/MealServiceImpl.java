@@ -1,4 +1,4 @@
-package com.lambakean.RationPlanner.service;
+package com.lambakean.RationPlanner.service.impl;
 
 import com.lambakean.RationPlanner.dto.MealDto;
 import com.lambakean.RationPlanner.dto.converter.MealDtoConverter;
@@ -8,16 +8,19 @@ import com.lambakean.RationPlanner.exception.EntityNotFoundException;
 import com.lambakean.RationPlanner.model.Meal;
 import com.lambakean.RationPlanner.model.User;
 import com.lambakean.RationPlanner.repository.MealRepository;
+import com.lambakean.RationPlanner.service.MealService;
+import com.lambakean.RationPlanner.service.PrincipalService;
+import com.lambakean.RationPlanner.service.ValidationService;
 import com.lambakean.RationPlanner.validator.IngredientValidator;
 import com.lambakean.RationPlanner.validator.MealValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
+@Service
 public class MealServiceImpl implements MealService {
 
     private final MealValidator mealValidator;

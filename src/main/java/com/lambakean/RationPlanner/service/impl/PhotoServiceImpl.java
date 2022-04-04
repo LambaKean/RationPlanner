@@ -1,29 +1,24 @@
-package com.lambakean.RationPlanner.service;
+package com.lambakean.RationPlanner.service.impl;
 
 import com.lambakean.RationPlanner.dto.PhotoDto;
 import com.lambakean.RationPlanner.dto.converter.PhotoDtoConverter;
 import com.lambakean.RationPlanner.exception.BadRequestException;
 import com.lambakean.RationPlanner.exception.EntityNotFoundException;
-import com.lambakean.RationPlanner.exception.FileNotFoundException;
 import com.lambakean.RationPlanner.model.Photo;
 import com.lambakean.RationPlanner.repository.PhotoRepository;
+import com.lambakean.RationPlanner.service.PhotoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Set;
 
-@Component
+@Service
 public class PhotoServiceImpl implements PhotoService {
 
     private final Set<String> PHOTO_CONTENT_TYPES = new HashSet<>();

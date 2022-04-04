@@ -1,12 +1,13 @@
-package com.lambakean.RationPlanner.service;
+package com.lambakean.RationPlanner.service.impl;
 
 import com.lambakean.RationPlanner.exception.InvalidEntityException;
-import org.springframework.stereotype.Component;
+import com.lambakean.RationPlanner.service.ValidationService;
+import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.DataBinder;
 import org.springframework.validation.Validator;
 
-@Component
+@Service
 public class ValidationServiceImpl implements ValidationService {
 
     @Override

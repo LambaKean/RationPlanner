@@ -7,9 +7,9 @@ import com.lambakean.RationPlanner.security.authentication.RefreshTokenWrapper;
 
 public interface SecurityTokensService {
 
-    RefreshTokenWrapper createRefreshToken(User user);
+    RefreshTokenWrapper createRefreshTokenWrapper(User user);
 
-    AccessTokenWrapper createAccessToken(User user);
+    AccessTokenWrapper createAccessTokenWrapper(User user);
 
     void save(RefreshTokenWrapper refreshTokenWrapper);
 

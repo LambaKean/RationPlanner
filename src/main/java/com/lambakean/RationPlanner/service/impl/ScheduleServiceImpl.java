@@ -1,4 +1,4 @@
-package com.lambakean.RationPlanner.service;
+package com.lambakean.RationPlanner.service.impl;
 
 import com.lambakean.RationPlanner.dto.ScheduleDto;
 import com.lambakean.RationPlanner.dto.ScheduledPlannedDayDto;
@@ -10,9 +10,12 @@ import com.lambakean.RationPlanner.exception.EntityNotFoundException;
 import com.lambakean.RationPlanner.model.Schedule;
 import com.lambakean.RationPlanner.model.User;
 import com.lambakean.RationPlanner.repository.ScheduleRepository;
+import com.lambakean.RationPlanner.service.PrincipalService;
+import com.lambakean.RationPlanner.service.ScheduleService;
+import com.lambakean.RationPlanner.service.ValidationService;
 import com.lambakean.RationPlanner.validator.ScheduleValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
@@ -21,7 +24,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-@Component
+@Service
 public class ScheduleServiceImpl implements ScheduleService {
 
     private final PrincipalService principalService;

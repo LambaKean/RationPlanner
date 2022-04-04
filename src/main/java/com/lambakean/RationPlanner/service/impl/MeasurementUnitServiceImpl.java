@@ -1,15 +1,16 @@
-package com.lambakean.RationPlanner.service;
+package com.lambakean.RationPlanner.service.impl;
 
 import com.lambakean.RationPlanner.dto.MeasurementUnitDto;
 import com.lambakean.RationPlanner.dto.converter.MeasurementUnitDtoConverter;
 import com.lambakean.RationPlanner.repository.MeasurementUnitRepository;
+import com.lambakean.RationPlanner.service.MeasurementUnitService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
+@Service
 public class MeasurementUnitServiceImpl implements MeasurementUnitService {
 
     private final MeasurementUnitRepository measurementUnitRepository;

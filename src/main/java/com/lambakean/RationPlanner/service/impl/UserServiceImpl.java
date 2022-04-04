@@ -1,4 +1,4 @@
-package com.lambakean.RationPlanner.service;
+package com.lambakean.RationPlanner.service.impl;
 
 import com.lambakean.RationPlanner.dto.UserCredentialsDto;
 import com.lambakean.RationPlanner.dto.UserDto;
@@ -9,6 +9,9 @@ import com.lambakean.RationPlanner.model.User;
 import com.lambakean.RationPlanner.repository.UserRepository;
 import com.lambakean.RationPlanner.security.authentication.AccessTokenWrapper;
 import com.lambakean.RationPlanner.security.authentication.RefreshTokenWrapper;
+import com.lambakean.RationPlanner.service.SecurityTokensService;
+import com.lambakean.RationPlanner.service.UserService;
+import com.lambakean.RationPlanner.service.ValidationService;
 import com.lambakean.RationPlanner.validator.UserUniquenessValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -66,8 +69,8 @@ public class UserServiceImpl implements UserService {
 
         UserDto userDto = new UserDto(user.getId(), user.getUsername());
 
-        AccessTokenWrapper accessTokenWrapper = securityTokensService.createAccessToken(user);
-        RefreshTokenWrapper refreshTokenWrapper = securityTokensService.createRefreshToken(user);
+        AccessTokenWrapper accessTokenWrapper = securityTokensService.createAccessTokenWrapper(user);
+        RefreshTokenWrapper refreshTokenWrapper = securityTokensService.createRefreshTokenWrapper(user);
 
         securityTokensService.save(refreshTokenWrapper);
 
@@ -91,8 +94,8 @@ public class UserServiceImpl implements UserService {
 
         UserDto userDto = new UserDto(user.getId(), user.getUsername());
 
-        AccessTokenWrapper accessTokenWrapper = securityTokensService.createAccessToken(user);
-        RefreshTokenWrapper refreshTokenWrapper = securityTokensService.createRefreshToken(user);
+        AccessTokenWrapper accessTokenWrapper = securityTokensService.createAccessTokenWrapper(user);
+        RefreshTokenWrapper refreshTokenWrapper = securityTokensService.createRefreshTokenWrapper(user);
 
         securityTokensService.save(refreshTokenWrapper);
 

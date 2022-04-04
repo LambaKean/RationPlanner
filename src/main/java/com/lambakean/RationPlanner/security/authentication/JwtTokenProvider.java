@@ -1,5 +1,6 @@
 package com.lambakean.RationPlanner.security.authentication;
 
+import com.lambakean.RationPlanner.model.User;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
@@ -14,22 +15,18 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
 
-    @Value("${jwt.token.secret}")
+    @Value("${jwt.secret}")
     private String secret;
 
-    @Value("${jwt.token.validityTimeMs}")
-    private Long defaultValidityTimeMs;
+    @Value("${access-token.validity-time-in-minutes}")
+    private Long validityTimeInMinutes;
 
-    public String createToken(@NonNull String userId) {
-        return createToken(userId, defaultValidityTimeMs);
-    }
+    public String createToken(@NonNull User user, @NonNull Long validityTimeInMinutes) {
 
-    public String createToken(@NonNull String userId, @NonNull Long validityTimeMs) {
-
-        Claims claims = Jwts.claims().setSubject(userId);
+        Claims claims = Jwts.claims().setSubject(user.getId());
 
         Date now = new Date();
-        Date validUntil = new Date(now.getTime() + validityTimeMs);
+        Date validUntil = new Date(now.getTime() + validityTimeInMinutes * 60 * 1000);
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -63,7 +60,7 @@ public class JwtTokenProvider {
     }
 
 
-    public Long getDefaultValidityTimeMs() {
-        return defaultValidityTimeMs;
+    public Long getValidityTimeInMinutes() {
+        return validityTimeInMinutes;
     }
 }

@@ -1,4 +1,4 @@
-package com.lambakean.RationPlanner.service;
+package com.lambakean.RationPlanner.service.impl;
 
 import com.lambakean.RationPlanner.dto.ProductDto;
 import com.lambakean.RationPlanner.dto.converter.ProductDtoConverter;
@@ -10,16 +10,19 @@ import com.lambakean.RationPlanner.model.ProductQuantity;
 import com.lambakean.RationPlanner.model.User;
 import com.lambakean.RationPlanner.repository.MeasurementUnitRepository;
 import com.lambakean.RationPlanner.repository.ProductRepository;
+import com.lambakean.RationPlanner.service.PrincipalService;
+import com.lambakean.RationPlanner.service.ProductService;
+import com.lambakean.RationPlanner.service.ValidationService;
 import com.lambakean.RationPlanner.validator.ProductQuantityValidator;
 import org.springframework.lang.NonNull;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.validation.Validator;
 
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
+@Service
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
