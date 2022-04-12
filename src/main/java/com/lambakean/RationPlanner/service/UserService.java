@@ -14,7 +14,5 @@ public interface UserService {
 
     SecurityTokensHolder login(@NonNull User userData, HttpServletResponse httpServletResponse);
 
-    UserDto findUserById(@NonNull String id);
-
-    Optional<User> findById(@NonNull String id);
+    User findById(@NonNull String id);
 }

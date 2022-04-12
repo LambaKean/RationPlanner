@@ -81,19 +81,11 @@ public class UserServiceImpl implements UserService {
         return new SecurityTokensHolder(user, accessTokenWrapper, refreshTokenWrapper);
     }
 
-    @Override
-    public UserDto findUserById(@NonNull String id) {
+    public User findById(@NonNull String id) {
 
-        User user = userRepository.findById(id).orElseThrow(
+        return userRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(String.format("Пользователь с id \"%s\" не найден", id))
         );
-
-        return new UserDto(user.getId(), user.getUsername());
-    }
-
-    @Override
-    public Optional<User> findById(@NonNull String id) {
-        return userRepository.findById(id);
     }
 
     private Cookie createRefreshTokenCookie(RefreshTokenWrapper refreshTokenWrapper) {

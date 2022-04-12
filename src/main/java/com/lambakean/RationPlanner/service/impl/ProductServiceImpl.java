@@ -39,9 +39,7 @@ public class ProductServiceImpl implements ProductService {
                 () -> new EntityNotFoundException(String.format("Продукт с id [%s] не существует", id))
         );
 
-        User user = (User) principalService.getPrincipalOrElseThrowException(
-                "Вы должны войти в аккаунт, чтобы просмотреть информацию об этом продукте"
-        );
+        User user = principalService.getPrincipal();
 
         if(!user.getId().equals(product.getUserId())) {
             throw new AccessDeniedException("Вы не имеете доступа к этому продукту.");
@@ -54,9 +52,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public List<Product> getCurrentUserProducts() {
 
-        User user = (User) principalService.getPrincipalOrElseThrowException(
-                "Вы должны войти в аккаунт, чтобы просматривать список своих продуктов"
-        );
+        User user = principalService.getPrincipal();
 
         return productRepository.getAllByUser(user);
     }
@@ -64,9 +60,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product createProduct(@NonNull Product productData) {
 
-        User user = (User) principalService.getPrincipalOrElseThrowException(
-                "Вы должны войти в аккаунт, чтобы иметь возможность добавить продукт"
-        );
+        User user = principalService.getPrincipal();
 
         String measurementUnitId = productData.getMeasurementUnitId();
 
@@ -96,9 +90,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void deleteProductById(String id) {
 
-        User user = (User) principalService.getPrincipalOrElseThrowException(
-                "Вы должны войти в аккаунт, чтобы иметь возможность удалять продукты"
-        );
+        User user = principalService.getPrincipal();
 
         if(id == null || !productRepository.existsByIdAndUser(id, user)) {
             throw new EntityNotFoundException("Неверно указан идентификатор продукта, который вы хотите удалить");

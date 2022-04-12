@@ -37,9 +37,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public Schedule createSchedule(Schedule scheduleData) {
 
-        User user = (User) principalService.getPrincipalOrElseThrowException(
-                "Вы должны войти в аккаунт, чтобы иметь возможность создавать расписание"
-        );
+        User user = principalService.getPrincipal();
 
         validationService.validateThrowExceptionIfInvalid(scheduleData, scheduleValidator);
 
@@ -62,9 +60,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Transactional
     public List<ScheduledPlannedDay> getMonthSchedule(LocalDate date) {
 
-        User user = (User) principalService.getPrincipalOrElseThrowException(
-                "Вы должны войти в аккаунт, чтобы иметь возможность просматривать своё расписание"
-        );
+        User user = principalService.getPrincipal();
 
         Set<Schedule> userSchedules = scheduleRepository.findAllByUser(user);
 
@@ -101,9 +97,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public Schedule getScheduleById(String id) {
 
-        User user = (User) principalService.getPrincipalOrElseThrowException(
-                "Вы должны войти в аккаунт, чтобы иметь возможность просматривать своё расписание"
-        );
+        User user = principalService.getPrincipal();
 
         Schedule schedule = scheduleRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(String.format("Расписание с id [%s] не найдено", id))
@@ -119,9 +113,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public void deleteScheduleById(String id) {
 
-        User user = (User) principalService.getPrincipalOrElseThrowException(
-                "Вы должны войти в аккаунт, чтобы иметь возможность удалять своё расписание"
-        );
+        User user = principalService.getPrincipal();
 
         Schedule schedule = scheduleRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(String.format("Расписание с id [%s] не найдено", id))

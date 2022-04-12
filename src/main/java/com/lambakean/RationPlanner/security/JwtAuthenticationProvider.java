@@ -1,5 +1,6 @@
 package com.lambakean.RationPlanner.security;
 
+import com.lambakean.RationPlanner.exception.EntityNotFoundException;
 import com.lambakean.RationPlanner.model.User;
 import com.lambakean.RationPlanner.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +9,6 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -27,23 +27,27 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 
             String userId = jwtTokenProvider.getSubject(token);
 
-            User user = userService.findById(userId).orElseThrow(
-                    () -> new UsernameNotFoundException(String.format("The user with id [%s] was not found", userId))
-            );
+            User user;
 
-            JwtAuthenticationToken authenticationToken = new JwtAuthenticationToken(token, user);
-            authenticationToken.setAuthenticated(true);
+            try {
+                user = userService.findById(userId);
+            } catch (EntityNotFoundException e) {
+                throw new BadCredentialsException(e.getMessage());
+            }
 
-            return authenticationToken;
+            UserAuthentication userAuthentication = new UserAuthentication(token, user);
+            userAuthentication.setAuthenticated(true);
+
+            return userAuthentication;
 
         } else {
-            throw new BadCredentialsException(String.format("The token [%s] is invalid", token));
+            throw new BadCredentialsException(String.format("The access token [%s] is invalid", token));
         }
 
     }
 
     @Override
     public boolean supports(Class<?> authenticationClass) {
-        return JwtAuthenticationToken.class.equals(authenticationClass);
+        return UserAuthentication.class.equals(authenticationClass);
     }
 }

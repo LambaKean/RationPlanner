@@ -19,7 +19,6 @@ import java.util.Optional;
 /**
  * Фильтр навешивает на запрос объект Authentication, если в запросе содержится валидный access токен
  */
-@Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends GenericFilterBean {
 
@@ -38,7 +37,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
             try {
                 Authentication authentication = jwtAuthenticationProvider.authenticate(
-                    new JwtAuthenticationToken(accessToken)
+                    new UserAuthentication(accessToken)
                 );
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);

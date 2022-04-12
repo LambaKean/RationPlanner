@@ -37,9 +37,8 @@ public class MealServiceImpl implements MealService {
     @Transactional
     public Meal createMeal(@NonNull Meal mealData) {
 
-        User user = (User) principalService.getPrincipalOrElseThrowException(
-                "Вы должны войти в аккаунт, чтобы добавлять рецепты ваших блюд"
-        );
+        User user = principalService.getPrincipal();
+
         mealData.setUser(user);
 
         if(mealData.getIngredients() == null) {
@@ -63,9 +62,7 @@ public class MealServiceImpl implements MealService {
     @Override
     public Meal getMealById(String id) {
 
-        User user = (User) principalService.getPrincipalOrElseThrowException(
-                "Вы должны войти в аккаунт, чтобы иметь возможность просматривать список своих блюд"
-        );
+        User user = principalService.getPrincipal();
 
         Meal meal = mealRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(String.format("Блюдо с id [%s] не существует", id))
@@ -81,9 +78,7 @@ public class MealServiceImpl implements MealService {
     @Override
     public void deleteMealById(String id) {
 
-        User user = (User) principalService.getPrincipalOrElseThrowException(
-                "Вы должны войти в аккаунт, чтобы иметь возможность удалять блюда"
-        );
+        User user = principalService.getPrincipal();
 
         if(id == null || !mealRepository.existsByIdAndUser(id, user)) {
             throw new EntityNotFoundException(String.format("Блюдо с id [%s] не существует", id));
@@ -96,9 +91,7 @@ public class MealServiceImpl implements MealService {
     @Transactional
     public List<Meal> getCurrentUserMeals() {
 
-        User user = (User) principalService.getPrincipalOrElseThrowException(
-                "Вы должны войти в аккаунт, чтобы иметь возможность просматривать список своих блюд"
-        );
+        User user = principalService.getPrincipal();
 
         return mealRepository.findAllByUser(user);
     }

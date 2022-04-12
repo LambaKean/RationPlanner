@@ -1,12 +1,10 @@
 package com.lambakean.RationPlanner.service;
 
+import com.lambakean.RationPlanner.model.User;
+
 import java.util.Optional;
 
 public interface PrincipalService {
 
-    boolean isPrincipalPresent();
-
-    Optional<?> getPrincipal();
-
-    Object getPrincipalOrElseThrowException(String exceptionMsg);
+    User getPrincipal();
 }

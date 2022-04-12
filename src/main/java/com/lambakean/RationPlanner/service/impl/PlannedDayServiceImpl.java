@@ -36,9 +36,7 @@ public class PlannedDayServiceImpl implements PlannedDayService {
     @Transactional
     public PlannedDay createPlannedDay(PlannedDay plannedDayData) {
 
-        User user = (User) principalService.getPrincipalOrElseThrowException(
-                "Вы должны войти в аккаунт, чтобы иметь возможность создавать дни"
-        );
+        User user = principalService.getPrincipal();
 
         plannedDayData.setUser(user);
 
@@ -70,9 +68,7 @@ public class PlannedDayServiceImpl implements PlannedDayService {
     @Override
     public PlannedDay getPlannedDayById(@NonNull String id) {
 
-        User user = (User) principalService.getPrincipalOrElseThrowException(
-                "Вы должны войти в аккаунт, чтобы просмотреть информацию об этом дне"
-        );
+        User user = principalService.getPrincipal();
 
         PlannedDay plannedDay = plannedDayRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(String.format("День с id [%s] не существует", id))
@@ -89,9 +85,7 @@ public class PlannedDayServiceImpl implements PlannedDayService {
     @Transactional
     public Set<PlannedDay> getCurrentUserPlannedDays() {
 
-        User user = (User) principalService.getPrincipalOrElseThrowException(
-                "Вы должны войти в аккаунт, чтобы просмотреть список своих дней"
-        );
+        User user = principalService.getPrincipal();
 
         return plannedDayRepository.findByUser(user);
     }
@@ -99,9 +93,7 @@ public class PlannedDayServiceImpl implements PlannedDayService {
     @Override
     public void deletePlannedDayById(@NonNull String id) {
 
-        User user = (User) principalService.getPrincipalOrElseThrowException(
-                "Вы должны войти в аккаунт, чтобы иметь возможность удалять дни"
-        );
+        User user = principalService.getPrincipal();
 
         PlannedDay plannedDay = plannedDayRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("День с id [%s] не существует")

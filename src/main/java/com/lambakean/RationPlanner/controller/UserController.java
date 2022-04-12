@@ -63,13 +63,12 @@ public class UserController {
     @GetMapping()
     public ResponseEntity<UserDto> getCurrentUser() {
 
-        User user = (User) principalService.getPrincipal().orElseThrow(
-                () -> new UserNotLoggedInException("Вы должны войти в аккаунт, чтобы просмотреть свой профиль")
-        );
+        User user = principalService.getPrincipal();
         UserDto userDto = userMapper.toUserDto(user);
 
         return ResponseEntity.ok(userDto);
     }
+
     @PostMapping("/token")
     public ResponseEntity<SecurityTokensHolderDto> updateTokens(HttpServletRequest httpServletRequest,
                                                                 HttpServletResponse httpServletResponse) {
