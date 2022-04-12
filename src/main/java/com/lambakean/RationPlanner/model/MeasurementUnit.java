@@ -13,12 +13,6 @@ public class MeasurementUnit extends BaseEntity {
     @OneToMany(mappedBy = "measurementUnit", fetch = FetchType.LAZY)
     private Set<ProductQuantity> relatedQuantities;
 
-    public MeasurementUnit(String name) {
-        this.name = name;
-    }
-
-    public MeasurementUnit() {}
-
 
     public String getName() {
         return name;

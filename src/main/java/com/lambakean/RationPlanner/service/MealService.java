@@ -1,17 +1,18 @@
 package com.lambakean.RationPlanner.service;
 
-import com.lambakean.RationPlanner.dto.MealDto;
+import com.lambakean.RationPlanner.model.Meal;
 
 import java.util.List;
 
 public interface MealService {
 
-    MealDto createMeal(MealDto mealDto);
+    Meal createMeal(Meal mealData);
 
-    MealDto getMealById(String id);
+    Meal getMealById(String id);
 
     void deleteMealById(String id);
 
-    List<MealDto> getCurrentUserMeals();
+    List<Meal> getCurrentUserMeals();
 
+    boolean belongsTo(String mealId, String userId);
 }

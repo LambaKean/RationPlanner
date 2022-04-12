@@ -1,7 +1,7 @@
 package com.lambakean.RationPlanner.service.impl;
 
-import com.lambakean.RationPlanner.dto.SecurityTokensDto;
 import com.lambakean.RationPlanner.exception.AuthenticationException;
+import com.lambakean.RationPlanner.model.SecurityTokensHolder;
 import com.lambakean.RationPlanner.model.User;
 import com.lambakean.RationPlanner.repository.RefreshTokenWrapperRepository;
 import com.lambakean.RationPlanner.model.AccessTokenWrapper;
@@ -67,35 +67,33 @@ public class SecurityTokensServiceImpl implements SecurityTokensService {
     }
 
     @Override
-    public SecurityTokensDto updateTokens(HttpServletRequest httpServletRequest,
-                                          HttpServletResponse httpServletResponse) {  // todo refactor
-
-        String EXCEPTION_MSG = "Не удалось обновить токены безопасности, войдите в аккаунт заново";
+    public SecurityTokensHolder updateTokens(HttpServletRequest httpServletRequest,
+                                             HttpServletResponse httpServletResponse) {
 
         String refreshToken = refreshTokenResolver.resolveToken(httpServletRequest).orElseThrow(
-                () -> new AuthenticationException(EXCEPTION_MSG)
+                () -> new AuthenticationException(
+                        "Для обновления токенов безопасности в запросе должен присутствовать refresh токен."
+                )
         );
 
         RefreshTokenWrapper refreshTokenWrapper = refreshTokenWrapperRepository.findByToken(refreshToken).orElseThrow(
-                () -> new AuthenticationException(EXCEPTION_MSG)
+                () -> new AuthenticationException("Refresh токен невалиден или просрочен. Войдите в аккаунт заново.")
         );
 
         if(refreshTokenWrapper.isExpired()) {
-            throw new AuthenticationException(EXCEPTION_MSG);
+            throw new AuthenticationException("Refresh токен просрочен. Войдите в аккаунт заново.");
         }
 
         User user = refreshTokenWrapper.getUser();
 
-        refreshTokenWrapperRepository.delete(refreshTokenWrapper);
-
         AccessTokenWrapper newAccessTokenWrapper = createAccessTokenWrapper(user);
         RefreshTokenWrapper newRefreshTokenWrapper = createRefreshTokenWrapper(user);
 
-        save(newRefreshTokenWrapper);
+        refreshTokenWrapperRepository.save(refreshTokenWrapper);
 
         httpServletResponse.addCookie(createRefreshTokenCookie(newRefreshTokenWrapper));
 
-        return new SecurityTokensDto(newAccessTokenWrapper.getToken(), newRefreshTokenWrapper.getToken());
+        return new SecurityTokensHolder(user, newAccessTokenWrapper, newRefreshTokenWrapper);
     }
 
     private Cookie createRefreshTokenCookie(RefreshTokenWrapper refreshTokenWrapper) {

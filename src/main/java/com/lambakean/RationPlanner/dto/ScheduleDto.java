@@ -3,18 +3,9 @@ package com.lambakean.RationPlanner.dto;
 public class ScheduleDto {
 
     private String id;
-    private PlannedDayDto plannedDayDto;
-    private DateDto startDateDto;
+    private PlannedDayDto plannedDay;
+    private DateDto startDate;
     private Integer nextRepeatAfterDays;
-
-    public ScheduleDto(String id, PlannedDayDto plannedDayDto, DateDto startDateDto, Integer nextRepeatAfterDays) {
-        this.id = id;
-        this.plannedDayDto = plannedDayDto;
-        this.startDateDto = startDateDto;
-        this.nextRepeatAfterDays = nextRepeatAfterDays;
-    }
-
-    public ScheduleDto() {}
 
 
     public String getId() {
@@ -26,19 +17,19 @@ public class ScheduleDto {
     }
 
     public PlannedDayDto getPlannedDay() {
-        return plannedDayDto;
+        return plannedDay;
     }
 
     public void setPlannedDay(PlannedDayDto plannedDayDto) {
-        this.plannedDayDto = plannedDayDto;
+        this.plannedDay = plannedDayDto;
     }
 
     public DateDto getStartDate() {
-        return startDateDto;
+        return startDate;
     }
 
     public void setStartDate(DateDto startDateDto) {
-        this.startDateDto = startDateDto;
+        this.startDate = startDateDto;
     }
 
     public Integer getNextRepeatAfterDays() {

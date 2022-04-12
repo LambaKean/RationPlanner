@@ -6,26 +6,9 @@ public class PlannedDayDto {
 
     private String id;
     private String name;
-    private String userId;
     private Double price;
     private Integer amountOfMeals;
-    private List<PlannedDayMealDto> plannedDayMealDtos;
-
-    public PlannedDayDto(String id,
-                         String name,
-                         String userId,
-                         Double price,
-                         Integer amountOfMeals,
-                         List<PlannedDayMealDto> plannedDayMealDtos) {
-        this.id = id;
-        this.name = name;
-        this.userId = userId;
-        this.price = price;
-        this.amountOfMeals = amountOfMeals;
-        this.plannedDayMealDtos = plannedDayMealDtos;
-    }
-
-    public PlannedDayDto() {}
+    private List<PlannedDayMealDto> plannedDayMeals;
 
 
     public String getId() {
@@ -42,14 +25,6 @@ public class PlannedDayDto {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public Double getPrice() {
@@ -69,10 +44,10 @@ public class PlannedDayDto {
     }
 
     public List<PlannedDayMealDto> getPlannedDayMeals() {
-        return plannedDayMealDtos;
+        return plannedDayMeals;
     }
 
     public void setPlannedDayMeals(List<PlannedDayMealDto> plannedDayMealDtos) {
-        this.plannedDayMealDtos = plannedDayMealDtos;
+        this.plannedDayMeals = plannedDayMealDtos;
     }
 }

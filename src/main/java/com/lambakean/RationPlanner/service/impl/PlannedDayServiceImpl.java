@@ -1,136 +1,126 @@
 package com.lambakean.RationPlanner.service.impl;
 
-import com.lambakean.RationPlanner.dto.PlannedDayDto;
-import com.lambakean.RationPlanner.dto.converter.PlannedDayDtoConverter;
 import com.lambakean.RationPlanner.exception.AccessDeniedException;
-import com.lambakean.RationPlanner.exception.BadRequestException;
 import com.lambakean.RationPlanner.exception.EntityNotFoundException;
 import com.lambakean.RationPlanner.model.Meal;
 import com.lambakean.RationPlanner.model.PlannedDay;
-import com.lambakean.RationPlanner.model.PlannedDayMeal;
 import com.lambakean.RationPlanner.model.User;
 import com.lambakean.RationPlanner.repository.PlannedDayRepository;
+import com.lambakean.RationPlanner.service.MealService;
 import com.lambakean.RationPlanner.service.PlannedDayService;
 import com.lambakean.RationPlanner.service.PrincipalService;
 import com.lambakean.RationPlanner.service.ValidationService;
 import com.lambakean.RationPlanner.validator.PlannedDayMealValidator;
 import com.lambakean.RationPlanner.validator.PlannedDayValidator;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-import java.util.Collections;
-import java.util.Optional;
+import javax.persistence.EntityManager;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class PlannedDayServiceImpl implements PlannedDayService {
 
     private final PrincipalService principalService;
     private final PlannedDayRepository plannedDayRepository;
-    private final PlannedDayDtoConverter plannedDayDtoConverter;
     private final PlannedDayValidator plannedDayValidator;
     private final ValidationService validationService;
     private final PlannedDayMealValidator plannedDayMealValidator;
+    private final MealService mealService;
+    private final EntityManager entityManager;
 
     public PlannedDayServiceImpl(PrincipalService principalService,
                                  PlannedDayRepository plannedDayRepository,
-                                 PlannedDayDtoConverter plannedDayDtoConverter,
                                  PlannedDayValidator plannedDayValidator,
                                  ValidationService validationService,
-                                 PlannedDayMealValidator plannedDayMealValidator) {
+                                 PlannedDayMealValidator plannedDayMealValidator,
+                                 MealService mealService, EntityManager entityManager) {
         this.principalService = principalService;
         this.plannedDayRepository = plannedDayRepository;
-        this.plannedDayDtoConverter = plannedDayDtoConverter;
         this.plannedDayValidator = plannedDayValidator;
         this.validationService = validationService;
         this.plannedDayMealValidator = plannedDayMealValidator;
+        this.mealService = mealService;
+        this.entityManager = entityManager;
     }
 
     @Override
-    public PlannedDayDto createPlannedDay(PlannedDayDto plannedDayDto) {
+    public PlannedDay createPlannedDay(PlannedDay plannedDayData) {
 
         User user = (User) principalService.getPrincipalOrElseThrowException(
                 "Вы должны войти в аккаунт, чтобы иметь возможность создавать дни"
         );
 
-        PlannedDay plannedDay = Optional.ofNullable(plannedDayDtoConverter.toPlannedDay(plannedDayDto)).orElseThrow(
-                () -> new BadRequestException("Данные о создаваемом дне заполнены неверно")
-        );
+        plannedDayData.setUser(user);
 
-        plannedDay.setId(null);
-        plannedDay.setSchedules(Collections.emptySet());
+        plannedDayData.getPlannedDayMeals()
+                .forEach(plannedDayMeal -> {
 
-        plannedDay.getPlannedDayMeals()
-                .stream()
-                .peek(plannedDayMeal -> plannedDayMeal.setId(null))
-                .forEach(plannedDayMeal ->
-                        validationService.validateThrowExceptionIfInvalid(plannedDayMeal, plannedDayMealValidator)
-                );
+                    plannedDayMeal.setPlannedDay(plannedDayData);
 
-        validationService.validateThrowExceptionIfInvalid(plannedDay, plannedDayValidator);
+                    validationService.validateThrowExceptionIfInvalid(plannedDayMeal, plannedDayMealValidator);
 
-        for(PlannedDayMeal plannedDayMeal : plannedDay.getPlannedDayMeals()) {
-            Meal meal = plannedDayMeal.getMeal();
+                    Meal meal = plannedDayMeal.getMeal();
 
-            if(meal != null && !meal.getUserId().equals(user.getId())) {
-                throw new AccessDeniedException(
-                        String.format("У вас нет доступа к блюду \"%s\"", meal.getName())
-                );
-            }
-        }
+                    if(!mealService.belongsTo(meal.getId(), user.getId())) {
+                        throw new AccessDeniedException(
+                                String.format("У вас нет доступа к блюду c id [%s]", meal.getName())
+                        );
+                    }
+                });
 
-        plannedDay.setUser(user);
+        validationService.validateThrowExceptionIfInvalid(plannedDayData, plannedDayValidator);
 
-        plannedDayRepository.saveAndFlush(plannedDay);
+        plannedDayRepository.saveAndFlush(plannedDayData);
 
-        return plannedDayDtoConverter.toPlannedDayDto(plannedDay);
+        entityManager.clear();
+
+        return plannedDayRepository.getById(plannedDayData.getId());
     }
 
     @Override
-    @Transactional
-    public PlannedDayDto getPlannedDayById(String id) {
-
-        PlannedDay plannedDay = plannedDayRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException(String.format("День с id \"%s\" не существует", id))
-        );
+    public PlannedDay getPlannedDayById(@NonNull String id) {
 
         User user = (User) principalService.getPrincipalOrElseThrowException(
                 "Вы должны войти в аккаунт, чтобы просмотреть информацию об этом дне"
         );
 
+        PlannedDay plannedDay = plannedDayRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException(String.format("День с id [%s] не существует", id))
+        );
+
         if(!user.getId().equals(plannedDay.getUser().getId())) {
-            throw new AccessDeniedException("Вы не имеете доступа к этому дню");
+            throw new AccessDeniedException(String.format("Вы не имеете доступа ко дню с id [%s]", id));
         }
 
-        return plannedDayDtoConverter.toPlannedDayDto(plannedDay);
+        return plannedDay;
     }
 
     @Override
-    @Transactional
-    public Set<PlannedDayDto> getCurrentUserPlannedDays() {
+    public Set<PlannedDay> getCurrentUserPlannedDays() {
 
         User user = (User) principalService.getPrincipalOrElseThrowException(
                 "Вы должны войти в аккаунт, чтобы просмотреть список своих дней"
         );
 
-        Set<PlannedDay> currentUserPlannedDays = plannedDayRepository.findByUser(user);
-
-        return currentUserPlannedDays
-                .stream()
-                .map(plannedDayDtoConverter::toPlannedDayDto)
-                .collect(Collectors.toSet());
+        return plannedDayRepository.findByUser(user);
     }
 
-    public void deletePlannedDayById(String id) {
+    @Override
+    public void deletePlannedDayById(@NonNull String id) {
+
         User user = (User) principalService.getPrincipalOrElseThrowException(
-            "Вы должны войти в аккаунт, чтобы иметь возможность удалять дни"
+                "Вы должны войти в аккаунт, чтобы иметь возможность удалять дни"
         );
 
-        if(id == null || !plannedDayRepository.existsByIdAndUser(id, user)) {
-            throw new EntityNotFoundException("Неверно указан идентификатор дня, который вы хотите удалить");
+        PlannedDay plannedDay = plannedDayRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("День с id [%s] не существует")
+        );
+
+        if(!plannedDay.getUserId().equals(user.getId())) {
+            throw new AccessDeniedException(String.format("Вы не имеете доступ ко дню с id [%s]", id));
         }
 
-        plannedDayRepository.deleteById(id);
+        plannedDayRepository.delete(plannedDay);
     }
 }

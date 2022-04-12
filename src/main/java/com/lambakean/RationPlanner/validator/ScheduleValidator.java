@@ -2,6 +2,8 @@ package com.lambakean.RationPlanner.validator;
 
 import com.lambakean.RationPlanner.model.PlannedDay;
 import com.lambakean.RationPlanner.model.Schedule;
+import com.lambakean.RationPlanner.repository.PlannedDayRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -11,6 +13,13 @@ import java.time.LocalDate;
 
 @Component
 public class ScheduleValidator implements Validator {
+
+    private final PlannedDayRepository plannedDayRepository;
+
+    @Autowired
+    public ScheduleValidator(PlannedDayRepository plannedDayRepository) {
+        this.plannedDayRepository = plannedDayRepository;
+    }
 
     @Override
     public boolean supports(@NonNull Class<?> clazz) {
@@ -29,11 +38,11 @@ public class ScheduleValidator implements Validator {
 
     void validatePlannedDay(PlannedDay plannedDay, @NonNull Errors errors) {
 
-        if(plannedDay == null) {
+        if(plannedDay == null || plannedDay.getId() == null || !plannedDayRepository.existsById(plannedDay.getId())) {
             errors.rejectValue(
                     "plannedDay",
                     "plannedDay.empty",
-                    "День, для которого нужно создать расписание, не выбран, либо выбран невалидный день"
+                    "День, который нужно вставить в расписание, не выбран, либо выбран неверно"
             );
         }
     }
@@ -44,11 +53,12 @@ public class ScheduleValidator implements Validator {
             errors.rejectValue(
                     "startDate",
                     "startDate.empty",
-                    "Дата, на которую нужно назначить день, не выбрана, либо выбрана неправильная дата"
+                    "Дата, на которую нужно назначить день, не выбрана, либо выбрана неверно"
             );
             return;
         }
 
+        // -1 день, дабы компенсировать возможное расхождение в датах из-за часового пояса
         if(startDate.isBefore(LocalDate.now().minusDays(1))) {
             errors.rejectValue(
                     "startDate",

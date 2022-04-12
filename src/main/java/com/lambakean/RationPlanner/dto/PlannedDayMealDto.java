@@ -3,18 +3,8 @@ package com.lambakean.RationPlanner.dto;
 public class PlannedDayMealDto {
 
     private String id;
-    private String plannedDayId;
-    private String mealId;
+    private EntityIdReferenceDto meal;
     private TimeDto time;
-
-    public PlannedDayMealDto(String id, String plannedDayId, String mealId, TimeDto time) {
-        this.id = id;
-        this.plannedDayId = plannedDayId;
-        this.mealId = mealId;
-        this.time = time;
-    }
-
-    public PlannedDayMealDto() {}
 
 
     public String getId() {
@@ -25,20 +15,12 @@ public class PlannedDayMealDto {
         this.id = id;
     }
 
-    public String getPlannedDayId() {
-        return plannedDayId;
+    public EntityIdReferenceDto getMeal() {
+        return meal;
     }
 
-    public void setPlannedDayId(String plannedDayId) {
-        this.plannedDayId = plannedDayId;
-    }
-
-    public String getMealId() {
-        return mealId;
-    }
-
-    public void setMealId(String mealId) {
-        this.mealId = mealId;
+    public void setMeal(EntityIdReferenceDto meal) {
+        this.meal = meal;
     }
 
     public TimeDto getTime() {

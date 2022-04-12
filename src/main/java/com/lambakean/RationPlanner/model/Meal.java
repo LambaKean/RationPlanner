@@ -2,6 +2,7 @@ package com.lambakean.RationPlanner.model;
 
 import javax.persistence.*;
 import java.time.Duration;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -20,7 +21,7 @@ public class Meal extends BaseEntity {
     private String recipe;
 
     @OneToMany(mappedBy = "meal", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Ingredient> ingredients;
+    private List<Ingredient> ingredients;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -37,7 +38,7 @@ public class Meal extends BaseEntity {
                 String description,
                 Duration cookingDuration,
                 String recipe,
-                Set<Ingredient> ingredients,
+                List<Ingredient> ingredients,
                 User user,
                 Photo photo) {
         this.name = name;
@@ -107,11 +108,11 @@ public class Meal extends BaseEntity {
         this.recipe = recipe;
     }
 
-    public Set<Ingredient> getIngredients() {
+    public List<Ingredient> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(Set<Ingredient> ingredients) {
+    public void setIngredients(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
     }
 

@@ -2,33 +2,43 @@ package com.lambakean.RationPlanner.controller;
 
 import com.lambakean.RationPlanner.dto.ScheduleDto;
 import com.lambakean.RationPlanner.dto.ScheduledPlannedDayDto;
+import com.lambakean.RationPlanner.dto.form.ScheduleCreationForm;
+import com.lambakean.RationPlanner.mapper.ScheduleMapper;
+import com.lambakean.RationPlanner.mapper.ScheduledPlannedDayMapper;
+import com.lambakean.RationPlanner.model.Schedule;
 import com.lambakean.RationPlanner.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/schedule")
 public class ScheduleController {
 
     private final ScheduleService scheduleService;
+    private final ScheduleMapper scheduleMapper;
+    private final ScheduledPlannedDayMapper scheduledPlannedDayMapper;
 
     @Autowired
-    public ScheduleController(ScheduleService scheduleService) {
+    public ScheduleController(ScheduleService scheduleService,
+                              ScheduleMapper scheduleMapper,
+                              ScheduledPlannedDayMapper scheduledPlannedDayMapper) {
         this.scheduleService = scheduleService;
+        this.scheduleMapper = scheduleMapper;
+        this.scheduledPlannedDayMapper = scheduledPlannedDayMapper;
     }
 
     @PostMapping
-    public ResponseEntity<ScheduleDto> createSchedule(@RequestBody ScheduleDto scheduleDto) {
+    public ResponseEntity<ScheduleDto> createSchedule(@RequestBody ScheduleCreationForm scheduleCreationForm) {
 
-        ScheduleDto createdScheduleDto = scheduleService.createSchedule(scheduleDto);
+        Schedule createdSchedule = scheduleService.createSchedule(scheduleMapper.toSchedule(scheduleCreationForm));
 
-        return new ResponseEntity<>(createdScheduleDto, HttpStatus.CREATED);
+        return ResponseEntity.ok(scheduleMapper.toScheduleDto(createdSchedule));
     }
 
     @GetMapping()
@@ -36,18 +46,20 @@ public class ScheduleController {
             @RequestParam("date") @DateTimeFormat(pattern = "ddMMyyyy") LocalDate date
     ) {
 
-        return new ResponseEntity<>(
-                scheduleService.getMonthSchedule(date),
-                HttpStatus.OK
+        return ResponseEntity.ok(
+                scheduleService.getMonthSchedule(date)
+                        .stream()
+                        .map(scheduledPlannedDayMapper::toScheduledPlannedDayDto)
+                        .collect(Collectors.toList())
         );
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ScheduleDto> getScheduleById(@PathVariable String id) {
 
-        ScheduleDto scheduleDto = this.scheduleService.getScheduleById(id);
+        Schedule schedule = scheduleService.getScheduleById(id);
 
-        return new ResponseEntity<>(scheduleDto, HttpStatus.OK);
+        return ResponseEntity.ok(scheduleMapper.toScheduleDto(schedule));
     }
 
     @DeleteMapping("/{id}")

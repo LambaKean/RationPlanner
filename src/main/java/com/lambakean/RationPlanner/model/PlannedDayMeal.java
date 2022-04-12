@@ -22,14 +22,6 @@ public class PlannedDayMeal extends BaseEntity implements Comparable<PlannedDayM
 
     private LocalTime time;
 
-    public PlannedDayMeal(PlannedDay plannedDay, Meal meal, LocalTime time) {
-        this.plannedDay = plannedDay;
-        this.meal = meal;
-        this.time = time;
-    }
-
-    public PlannedDayMeal() {}
-
     public Double getPrice() {
         if(meal == null) {
             return 0.0;
@@ -42,6 +34,7 @@ public class PlannedDayMeal extends BaseEntity implements Comparable<PlannedDayM
     public int compareTo(@NonNull PlannedDayMeal another) {
         return time.compareTo(another.getTime());
     }
+
 
     public PlannedDay getPlannedDay() {
         return plannedDay;

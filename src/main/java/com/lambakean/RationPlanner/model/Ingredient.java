@@ -8,7 +8,7 @@ public class Ingredient extends BaseEntity {
 
     private String name;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
     private Product product;
 
@@ -36,6 +36,12 @@ public class Ingredient extends BaseEntity {
         }
 
         return product.getPrice() * product.quantityDifferenceCoef(productQuantity);
+    }
+
+    String getProductId() {
+
+        if(product == null) return null;
+        return product.getId();
     }
 
 

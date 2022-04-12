@@ -1,10 +1,10 @@
 package com.lambakean.RationPlanner.service;
 
-import com.lambakean.RationPlanner.dto.MeasurementUnitDto;
+import com.lambakean.RationPlanner.model.MeasurementUnit;
 
 import java.util.List;
 
 public interface MeasurementUnitService {
 
-    List<MeasurementUnitDto> getUnits();
+    List<MeasurementUnit> getUnits();
 }

@@ -1,11 +1,12 @@
 package com.lambakean.RationPlanner.controller;
 
 import com.lambakean.RationPlanner.dto.PhotoDto;
+import com.lambakean.RationPlanner.mapper.PhotoMapper;
+import com.lambakean.RationPlanner.model.Photo;
 import com.lambakean.RationPlanner.service.PhotoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,25 +16,27 @@ import org.springframework.web.multipart.MultipartFile;
 public class PhotoController {
 
     private final PhotoService photoService;
+    private final PhotoMapper photoMapper;
 
     @Autowired
-    public PhotoController(PhotoService photoService) {
+    public PhotoController(PhotoService photoService, PhotoMapper photoMapper) {
         this.photoService = photoService;
+        this.photoMapper = photoMapper;
     }
 
     @PostMapping
     public ResponseEntity<PhotoDto> uploadPhoto(@RequestParam MultipartFile photo) {
 
-        PhotoDto photoDto = photoService.savePhoto(photo);
+        Photo savedPhoto = photoService.savePhoto(photo);
 
-        return new ResponseEntity<>(photoDto, HttpStatus.OK);
+        return ResponseEntity.ok(photoMapper.toPhotoDto(savedPhoto));
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Resource> getPhoto(@PathVariable String id) {
 
         Resource resource = photoService.loadPhoto(id);
 
-        return new ResponseEntity<>(resource, HttpStatus.OK);
+        return ResponseEntity.ok(resource);
     }
 }

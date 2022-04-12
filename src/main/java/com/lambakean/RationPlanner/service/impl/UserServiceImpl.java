@@ -1,10 +1,9 @@
 package com.lambakean.RationPlanner.service.impl;
 
-import com.lambakean.RationPlanner.dto.UserCredentialsDto;
 import com.lambakean.RationPlanner.dto.UserDto;
-import com.lambakean.RationPlanner.dto.UserWithTokensDto;
 import com.lambakean.RationPlanner.exception.AuthenticationException;
 import com.lambakean.RationPlanner.exception.EntityNotFoundException;
+import com.lambakean.RationPlanner.model.SecurityTokensHolder;
 import com.lambakean.RationPlanner.model.User;
 import com.lambakean.RationPlanner.repository.UserRepository;
 import com.lambakean.RationPlanner.model.AccessTokenWrapper;
@@ -53,50 +52,39 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserWithTokensDto register(@NonNull UserCredentialsDto userCredentialsDto,
-                                      HttpServletResponse httpServletResponse) {
+    public SecurityTokensHolder register(@NonNull User userData,
+                                         HttpServletResponse httpServletResponse) {
 
-        String username = userCredentialsDto.getUsername();
-        String password = userCredentialsDto.getPassword();
 
-        User user = new User(username, password);
+        validationService.validateThrowExceptionIfInvalid(userData, userValidator, userUniquenessValidator);
 
-        validationService.validateThrowExceptionIfInvalid(user, userValidator, userUniquenessValidator);
+        userData.setPassword(passwordEncoder.encode(userData.getPassword()));
 
-        String encodedPassword = passwordEncoder.encode(password);
-        user.setPassword(encodedPassword);
+        userRepository.saveAndFlush(userData);
 
-        userRepository.saveAndFlush(user);
+//        UserDto userDto = new UserDto(userData.getId(), userData.getUsername());
 
-        UserDto userDto = new UserDto(user.getId(), user.getUsername());
-
-        AccessTokenWrapper accessTokenWrapper = securityTokensService.createAccessTokenWrapper(user);
-        RefreshTokenWrapper refreshTokenWrapper = securityTokensService.createRefreshTokenWrapper(user);
+        AccessTokenWrapper accessTokenWrapper = securityTokensService.createAccessTokenWrapper(userData);
+        RefreshTokenWrapper refreshTokenWrapper = securityTokensService.createRefreshTokenWrapper(userData);
 
         securityTokensService.save(refreshTokenWrapper);
 
         httpServletResponse.addCookie(createRefreshTokenCookie(refreshTokenWrapper));
 
-        return new UserWithTokensDto(userDto, accessTokenWrapper.getToken(), refreshTokenWrapper.getToken());
+        return new SecurityTokensHolder(userData, accessTokenWrapper, refreshTokenWrapper);
     }
 
     @Override
-    public UserWithTokensDto login(@NonNull UserCredentialsDto userCredentialsDto,
-                                   HttpServletResponse httpServletResponse) {
+    public SecurityTokensHolder login(@NonNull User userData,
+                                      HttpServletResponse httpServletResponse) {
 
-        String username = userCredentialsDto.getUsername();
-        String password = userCredentialsDto.getPassword();
-
-        User user = userRepository.findByUsername(username).orElseThrow(
+        User user = userRepository.findByUsername(userData.getUsername()).orElseThrow(
                 () -> new AuthenticationException("Пользователя с такими логином и паролем не существует")
         );
 
-        if(!passwordEncoder.matches(password, user.getPassword())) {
+        if(!passwordEncoder.matches(userData.getPassword(), user.getPassword())) {
             throw new AuthenticationException("Пользователя с такими логином и паролем не существует");
         }
-
-
-        UserDto userDto = new UserDto(user.getId(), user.getUsername());
 
         AccessTokenWrapper accessTokenWrapper = securityTokensService.createAccessTokenWrapper(user);
         RefreshTokenWrapper refreshTokenWrapper = securityTokensService.createRefreshTokenWrapper(user);
@@ -105,7 +93,7 @@ public class UserServiceImpl implements UserService {
 
         httpServletResponse.addCookie(createRefreshTokenCookie(refreshTokenWrapper));
 
-        return new UserWithTokensDto(userDto, accessTokenWrapper.getToken(), refreshTokenWrapper.getToken());
+        return new SecurityTokensHolder(user, accessTokenWrapper, refreshTokenWrapper);
     }
 
     @Override

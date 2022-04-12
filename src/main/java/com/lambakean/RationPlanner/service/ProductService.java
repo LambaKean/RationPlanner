@@ -1,16 +1,16 @@
 package com.lambakean.RationPlanner.service;
 
-import com.lambakean.RationPlanner.dto.ProductDto;
+import com.lambakean.RationPlanner.model.Product;
 
 import java.util.List;
 
 public interface ProductService {
 
-    ProductDto createProduct(ProductDto productDto);
+    Product createProduct(Product productData);
 
-    ProductDto getProductById(String id);
+    Product getProductById(String id);
 
-    List<ProductDto> getCurrentUserProducts();
+    List<Product> getCurrentUserProducts();
 
     void deleteProductById(String id);
 }

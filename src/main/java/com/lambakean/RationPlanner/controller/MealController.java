@@ -1,45 +1,56 @@
 package com.lambakean.RationPlanner.controller;
 
 import com.lambakean.RationPlanner.dto.MealDto;
+import com.lambakean.RationPlanner.dto.form.MealCreationForm;
+import com.lambakean.RationPlanner.mapper.MealMapper;
+import com.lambakean.RationPlanner.model.Meal;
 import com.lambakean.RationPlanner.service.MealService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/meal")
 public class MealController {
 
     private final MealService mealService;
+    private final MealMapper mealMapper;
 
-    public MealController(MealService mealService) {
+    public MealController(MealService mealService, MealMapper mealMapper) {
         this.mealService = mealService;
+        this.mealMapper = mealMapper;
     }
 
     @PostMapping
-    public ResponseEntity<MealDto> createMeal(@RequestBody MealDto mealDto) {
+    public ResponseEntity<MealDto> createMeal(@RequestBody MealCreationForm mealCreationForm) {
 
-        MealDto outgoingMealDto = mealService.createMeal(mealDto);
+        Meal createdMeal = mealService.createMeal(mealMapper.toMeal(mealCreationForm));
+        MealDto createdMealDto = mealMapper.toMealDto(createdMeal);
 
-        return new ResponseEntity<>(outgoingMealDto, HttpStatus.CREATED);
+        return ResponseEntity.ok(createdMealDto);
     }
 
     @GetMapping
     public ResponseEntity<List<MealDto>> getMeals() {
 
-        List<MealDto> mealDtos = mealService.getCurrentUserMeals();
+        List<Meal> currentUserMeals = mealService.getCurrentUserMeals();
 
-        return new ResponseEntity<>(mealDtos, HttpStatus.OK);
+        return ResponseEntity.ok(
+                currentUserMeals
+                        .stream()
+                        .map(mealMapper::toMealDto)
+                        .collect(Collectors.toList())
+        );
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<MealDto> getMealById(@PathVariable String id) {
 
-        MealDto mealDto = mealService.getMealById(id);
+        Meal meal = mealService.getMealById(id);
 
-        return new ResponseEntity<>(mealDto, HttpStatus.OK);
+        return ResponseEntity.ok(mealMapper.toMealDto(meal));
     }
 
     @DeleteMapping("/{id}")

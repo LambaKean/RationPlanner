@@ -1,10 +1,11 @@
 package com.lambakean.RationPlanner.controller;
 
-import com.lambakean.RationPlanner.dto.SecurityTokensDto;
-import com.lambakean.RationPlanner.dto.UserCredentialsDto;
-import com.lambakean.RationPlanner.dto.UserDto;
-import com.lambakean.RationPlanner.dto.UserWithTokensDto;
+import com.lambakean.RationPlanner.dto.*;
+import com.lambakean.RationPlanner.dto.form.UserAuthenticationForm;
 import com.lambakean.RationPlanner.exception.UserNotLoggedInException;
+import com.lambakean.RationPlanner.mapper.SecurityTokensHolderMapper;
+import com.lambakean.RationPlanner.mapper.UserMapper;
+import com.lambakean.RationPlanner.model.SecurityTokensHolder;
 import com.lambakean.RationPlanner.model.User;
 import com.lambakean.RationPlanner.service.PrincipalService;
 import com.lambakean.RationPlanner.service.SecurityTokensService;
@@ -24,32 +25,50 @@ public class UserController {
     private final UserService userService;
     private final PrincipalService principalService;
     private final SecurityTokensService securityTokensService;
+    private final UserMapper userMapper;
+    private final SecurityTokensHolderMapper securityTokensHolderMapper;
 
     @Autowired
     public UserController(UserService userService,
                           PrincipalService principalService,
-                          SecurityTokensService securityTokensService) {
+                          SecurityTokensService securityTokensService,
+                          UserMapper userMapper,
+                          SecurityTokensHolderMapper securityTokensHolderMapper) {
         this.userService = userService;
         this.principalService = principalService;
         this.securityTokensService = securityTokensService;
+        this.userMapper = userMapper;
+        this.securityTokensHolderMapper = securityTokensHolderMapper;
     }
 
     @PostMapping
-    public ResponseEntity<UserWithTokensDto> register(@RequestBody UserCredentialsDto userCredentialsDto,
-                                                      HttpServletResponse httpServletResponse) {
+    public ResponseEntity<SecurityTokensHolderDto> register(@RequestBody UserAuthenticationForm userAuthenticationForm,
+                                                            HttpServletResponse httpServletResponse) {
 
-        UserWithTokensDto userWithTokensDto = userService.register(userCredentialsDto, httpServletResponse);
+        SecurityTokensHolder securityTokensHolder = userService.register(
+                userMapper.toUser(userAuthenticationForm),
+                httpServletResponse
+        );
 
-        return new ResponseEntity<>(userWithTokensDto, HttpStatus.CREATED);
+        SecurityTokensHolderDto securityTokensHolderDto =
+                securityTokensHolderMapper.toSecurityTokensHolderDto(securityTokensHolder);
+
+        return new ResponseEntity<>(securityTokensHolderDto, HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserWithTokensDto> login(@RequestBody UserCredentialsDto userCredentialsDto,
-                                                   HttpServletResponse httpServletResponse) {
+    public ResponseEntity<SecurityTokensHolderDto> login(@RequestBody UserAuthenticationForm userAuthenticationForm,
+                                                         HttpServletResponse httpServletResponse) {
 
-        UserWithTokensDto userWithTokensDto = userService.login(userCredentialsDto, httpServletResponse);
+        SecurityTokensHolder securityTokensHolder = userService.login(
+                userMapper.toUser(userAuthenticationForm),
+                httpServletResponse
+        );
 
-        return new ResponseEntity<>(userWithTokensDto, HttpStatus.CREATED);
+        SecurityTokensHolderDto securityTokensHolderDto =
+                securityTokensHolderMapper.toSecurityTokensHolderDto(securityTokensHolder);
+
+        return ResponseEntity.ok(securityTokensHolderDto);
     }
 
     @GetMapping()
@@ -58,19 +77,22 @@ public class UserController {
         User user = (User) principalService.getPrincipal().orElseThrow(
                 () -> new UserNotLoggedInException("Вы должны войти в аккаунт, чтобы просмотреть свой профиль")
         );
+        UserDto userDto = userMapper.toUserDto(user);
 
-        return new ResponseEntity<>(new UserDto(user.getId(), user.getUsername()), HttpStatus.OK);
+        return ResponseEntity.ok(userDto);
     }
-
     @PostMapping("/token")
-    public ResponseEntity<SecurityTokensDto> updateTokens(HttpServletRequest httpServletRequest,
-                                                          HttpServletResponse httpServletResponse) {
+    public ResponseEntity<SecurityTokensHolderDto> updateTokens(HttpServletRequest httpServletRequest,
+                                                                HttpServletResponse httpServletResponse) {
 
-        SecurityTokensDto newSecurityTokensDto = securityTokensService.updateTokens(
+        SecurityTokensHolder securityTokensHolder = securityTokensService.updateTokens(
                 httpServletRequest,
                 httpServletResponse
         );
 
-        return new ResponseEntity<>(newSecurityTokensDto, HttpStatus.CREATED);
+        SecurityTokensHolderDto securityTokensHolderDto =
+                securityTokensHolderMapper.toSecurityTokensHolderDto(securityTokensHolder);
+
+        return ResponseEntity.ok(securityTokensHolderDto);
     }
 }

@@ -1,122 +1,95 @@
 package com.lambakean.RationPlanner.service.impl;
 
-import com.lambakean.RationPlanner.dto.MealDto;
-import com.lambakean.RationPlanner.dto.converter.MealDtoConverter;
-import com.lambakean.RationPlanner.exception.*;
+import com.lambakean.RationPlanner.exception.AccessDeniedException;
+import com.lambakean.RationPlanner.exception.EntityNotFoundException;
 import com.lambakean.RationPlanner.model.Meal;
 import com.lambakean.RationPlanner.model.User;
 import com.lambakean.RationPlanner.repository.MealRepository;
 import com.lambakean.RationPlanner.service.MealService;
 import com.lambakean.RationPlanner.service.PrincipalService;
 import com.lambakean.RationPlanner.service.ValidationService;
-import com.lambakean.RationPlanner.validator.IngredientValidator;
 import com.lambakean.RationPlanner.validator.MealValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class MealServiceImpl implements MealService {
 
-    private final MealValidator mealValidator;
     private final PrincipalService principalService;
+
     private final MealRepository mealRepository;
-    private final MealDtoConverter mealDtoConverter;
+    private final EntityManager entityManager;
+
     private final ValidationService validationService;
-    private final IngredientValidator ingredientValidator;
+    private final MealValidator mealValidator;
+    private final Validator ingredientValidator;
 
     @Autowired
     public MealServiceImpl(MealValidator mealValidator,
                            PrincipalService principalService,
-                           MealRepository mealRepository,
-                           MealDtoConverter mealDtoConverter,
                            ValidationService validationService,
-                           IngredientValidator ingredientValidator) {
+                           MealRepository mealRepository,
+                           EntityManager entityManager, Validator ingredientValidator) {
         this.mealValidator = mealValidator;
         this.principalService = principalService;
-        this.mealRepository = mealRepository;
-        this.mealDtoConverter = mealDtoConverter;
         this.validationService = validationService;
+        this.mealRepository = mealRepository;
+        this.entityManager = entityManager;
         this.ingredientValidator = ingredientValidator;
     }
 
     @Override
     @Transactional
-    public MealDto createMeal(MealDto mealDto) {
-
-        Meal meal = mealDtoConverter.toMeal(mealDto);
-
-        if(meal == null) {
-            throw new BadRequestException("Данные для создания блюда указаны неверно");
-        }
-
-        validationService.validateThrowExceptionIfInvalid(meal, mealValidator);
-
-        if(meal.getIngredients() != null) {
-            meal.getIngredients()
-                    .stream()
-                    .peek(ingredient -> ingredient.setMeal(meal))
-                    .forEach(
-                            ingredient -> {
-                                BindingResult ingredientValidationResult =
-                                        validationService.validate(meal, mealValidator);
-                                if(ingredientValidationResult.hasErrors()) {
-                                    throw new InvalidEntityException(ingredientValidationResult);
-                                }
-                            }
-                    );
-        }
+    public Meal createMeal(@NonNull Meal mealData) {
 
         User user = (User) principalService.getPrincipalOrElseThrowException(
                 "Вы должны войти в аккаунт, чтобы добавлять рецепты ваших блюд"
         );
+        mealData.setUser(user);
 
-        meal.setUser(user);
+        if(mealData.getIngredients() == null) {
+            mealData.setIngredients(new ArrayList<>());
+        }
+        mealData.getIngredients()
+                .forEach(ingredient -> {
+                    ingredient.setMeal(mealData);
+                    validationService.validateThrowExceptionIfInvalid(ingredient, ingredientValidator);
+                });
 
-        mealRepository.saveAndFlush(meal);
+        validationService.validateThrowExceptionIfInvalid(mealData, mealValidator);
 
-        return mealDtoConverter.toMealDto(meal);
+        mealRepository.saveAndFlush(mealData);
+
+        entityManager.clear();
+
+        return mealRepository.getById(mealData.getId());
     }
 
     @Override
-    @Transactional
-    public List<MealDto> getCurrentUserMeals() {
+    public Meal getMealById(String id) {
 
         User user = (User) principalService.getPrincipalOrElseThrowException(
-                "Вы должны войти в аккаунт, чтобы просматривать список своих блюд"
+                "Вы должны войти в аккаунт, чтобы иметь возможность просматривать список своих блюд"
         );
-
-        List<Meal> meals = mealRepository.findAllByUser(user);
-
-        return meals
-                .stream()
-                .map(mealDtoConverter::toMealDto)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public MealDto getMealById(String id) {
 
         Meal meal = mealRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(String.format("Блюдо с id [%s] не существует", id))
         );
 
-        User user = (User) principalService.getPrincipalOrElseThrowException(
-                "Вы должны войти в аккаунт, чтобы просматривать список своих блюд"
-        );
-
         if(!user.getId().equals(meal.getUserId())) {
-            throw new AccessDeniedException("Вы не имеете доступа к этому блюду.");
+            throw new AccessDeniedException(String.format("Вы не имеете доступа к блюду с id [%s].", id));
         }
 
-        return mealDtoConverter.toMealDto(meal);
+        return meal;
     }
 
-    @Transactional
     @Override
     public void deleteMealById(String id) {
 
@@ -125,9 +98,27 @@ public class MealServiceImpl implements MealService {
         );
 
         if(id == null || !mealRepository.existsByIdAndUser(id, user)) {
-            throw new EntityNotFoundException("Неверно указан идентификатор блюда, которое вы хотите удалить");
+            throw new EntityNotFoundException(String.format("Блюдо с id [%s] не существует", id));
         }
 
         mealRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Meal> getCurrentUserMeals() {
+
+        User user = (User) principalService.getPrincipalOrElseThrowException(
+                "Вы должны войти в аккаунт, чтобы иметь возможность просматривать список своих блюд"
+        );
+
+        return mealRepository.findAllByUser(user);
+    }
+
+    @Override
+    public boolean belongsTo(@NonNull String mealId, @NonNull String userId) {
+
+        Meal meal = getMealById(mealId);
+
+        return meal.getUserId().equals(userId);
     }
 }

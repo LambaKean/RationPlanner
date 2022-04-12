@@ -1,6 +1,9 @@
 package com.lambakean.RationPlanner.validator;
 
 import com.lambakean.RationPlanner.model.Ingredient;
+import com.lambakean.RationPlanner.model.Product;
+import com.lambakean.RationPlanner.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -8,6 +11,13 @@ import org.springframework.validation.Validator;
 
 @Component
 public class IngredientValidator implements Validator {
+
+    private final ProductRepository productRepository;
+
+    @Autowired
+    public IngredientValidator(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     @Override
     public boolean supports(@NonNull Class<?> clazz) {
@@ -19,10 +29,13 @@ public class IngredientValidator implements Validator {
 
         Ingredient ingredient = (Ingredient) target;
 
-        validateName(ingredient.getName(), errors);
+        validateName(ingredient, errors);
+        validateProduct(ingredient, errors);
     }
 
-    public void validateName(String name, @NonNull Errors errors) {
+    public void validateName(@NonNull Ingredient ingredient, @NonNull Errors errors) {
+
+        String name = ingredient.getName();
 
         if (name == null) {
             errors.rejectValue(
@@ -33,11 +46,26 @@ public class IngredientValidator implements Validator {
             return;
         }
 
-        if(2 > name.length() || name.length() > 50) {
+        if(name.length() < 2 || name.length() > 50) {
             errors.rejectValue(
                     "name",
                     "name.invalid",
                     "Название ингредиента должно иметь длину от 2 до 50 символов"
+            );
+        }
+    }
+
+    public void validateProduct(@NonNull Ingredient ingredient, @NonNull Errors errors) {
+
+        Product product = ingredient.getProduct();
+
+        if(product == null) return;
+
+        if(product.getId() == null || !productRepository.existsById(product.getId())) {
+            errors.rejectValue(
+                    "product",
+                    "product.invalid",
+                    "Продукт, выбранный для одного из ингридиентов блюда, не существует"
             );
         }
     }

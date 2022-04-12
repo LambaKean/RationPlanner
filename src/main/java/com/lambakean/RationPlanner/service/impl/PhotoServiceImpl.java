@@ -1,7 +1,5 @@
 package com.lambakean.RationPlanner.service.impl;
 
-import com.lambakean.RationPlanner.dto.PhotoDto;
-import com.lambakean.RationPlanner.dto.converter.PhotoDtoConverter;
 import com.lambakean.RationPlanner.exception.BadRequestException;
 import com.lambakean.RationPlanner.exception.EntityNotFoundException;
 import com.lambakean.RationPlanner.model.Photo;
@@ -29,17 +27,14 @@ public class PhotoServiceImpl implements PhotoService {
     }
 
     private final PhotoRepository photoRepository;
-    private final PhotoDtoConverter photoDtoConverter;
 
     @Autowired
-    public PhotoServiceImpl(PhotoRepository photoRepository,
-                            PhotoDtoConverter photoDtoConverter) {
+    public PhotoServiceImpl(PhotoRepository photoRepository) {
         this.photoRepository = photoRepository;
-        this.photoDtoConverter = photoDtoConverter;
     }
 
     @Override
-    public PhotoDto savePhoto(MultipartFile multipartFile) {
+    public Photo savePhoto(MultipartFile multipartFile) {
 
         if(!PHOTO_CONTENT_TYPES.contains(multipartFile.getContentType())) {
             throw new BadRequestException("Фотография должна иметь расширение jpg, jpeg, png, jpe или jfif");
@@ -54,7 +49,7 @@ public class PhotoServiceImpl implements PhotoService {
 
         photoRepository.saveAndFlush(photo);
 
-        return photoDtoConverter.toPhotoDto(photo);
+        return photo;
     }
 
     @Override
@@ -63,7 +58,7 @@ public class PhotoServiceImpl implements PhotoService {
 
         byte[] resource = photoRepository.findById(id)
                 .orElseThrow(
-                        () -> new EntityNotFoundException(String.format("Фотография с id \"%s\" не найдена", id))
+                        () -> new EntityNotFoundException(String.format("Фотография с id [%s] не найдена", id))
                 )
                 .getContent();
 

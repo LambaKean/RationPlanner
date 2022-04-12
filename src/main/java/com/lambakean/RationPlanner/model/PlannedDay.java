@@ -1,6 +1,7 @@
 package com.lambakean.RationPlanner.model;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -14,12 +15,12 @@ public class PlannedDay extends BaseEntity {
     private User user;
 
     @OneToMany(mappedBy = "plannedDay", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<PlannedDayMeal> plannedDayMeals;
+    private List<PlannedDayMeal> plannedDayMeals;
 
     @OneToMany(mappedBy = "plannedDay", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Schedule> schedules;
 
-    public PlannedDay(String name, User user, Set<PlannedDayMeal> plannedDayMeals) {
+    public PlannedDay(String name, User user, List<PlannedDayMeal> plannedDayMeals) {
         this.name = name;
         this.user = user;
         this.plannedDayMeals = plannedDayMeals;
@@ -29,9 +30,7 @@ public class PlannedDay extends BaseEntity {
 
     public Double getPrice() {
 
-        if(plannedDayMeals == null) {
-            return 0.0;
-        }
+        if(plannedDayMeals == null) return 0.0;
 
         double totalPrice = 0.0;
 
@@ -44,11 +43,14 @@ public class PlannedDay extends BaseEntity {
 
     public Integer getAmountOfMeals() {
 
-        if(plannedDayMeals == null) {
-            return 0;
-        }
-
+        if(plannedDayMeals == null) return 0;
         return plannedDayMeals.size();
+    }
+
+    public String getUserId() {
+
+        if(user == null) return null;
+        return user.getId();
     }
 
 
@@ -68,11 +70,11 @@ public class PlannedDay extends BaseEntity {
         this.user = user;
     }
 
-    public Set<PlannedDayMeal> getPlannedDayMeals() {
+    public List<PlannedDayMeal> getPlannedDayMeals() {
         return plannedDayMeals;
     }
 
-    public void setPlannedDayMeals(Set<PlannedDayMeal> plannedDayMeals) {
+    public void setPlannedDayMeals(List<PlannedDayMeal> plannedDayMeals) {
         this.plannedDayMeals = plannedDayMeals;
     }
 

@@ -46,15 +46,27 @@ public class Product extends BaseEntity {
     }
 
     public Double getQuantityAmount() {
-        return this.quantity.getAmount();
+
+        if(quantity == null) return null;
+        return quantity.getAmount();
     }
 
-    public String getQuantityMeasurementUnitName() {
-        return this.quantity.getMeasurementUnitName();
+    public String getMeasurementUnitName() {
+
+        if(quantity == null) return null;
+        return quantity.getMeasurementUnitName();
     }
 
     public String getUserId() {
-        return this.user.getId();
+
+        if(user == null) return null;
+        return user.getId();
+    }
+
+    public String getMeasurementUnitId() {
+
+        if(quantity == null) return null;
+        return quantity.getMeasurementUnitId();
     }
 
 

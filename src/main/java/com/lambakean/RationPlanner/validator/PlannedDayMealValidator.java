@@ -23,13 +23,13 @@ public class PlannedDayMealValidator implements Validator {
 
         PlannedDayMeal plannedDayMeal = (PlannedDayMeal) target;
 
-        validatePlannedDay(plannedDayMeal.getPlannedDay(), errors);
-        validateMeal(plannedDayMeal.getMeal(), errors);
-        validateTime(plannedDayMeal.getTime(), errors);
+        validatePlannedDay(plannedDayMeal, errors);
+        validateMeal(plannedDayMeal, errors);
+        validateTime(plannedDayMeal, errors);
     }
 
-    public void validatePlannedDay(PlannedDay plannedDay, @NonNull Errors errors) {
-        if(plannedDay == null) {
+    public void validatePlannedDay(@NonNull PlannedDayMeal plannedDayMeal, @NonNull Errors errors) {
+        if(plannedDayMeal.getPlannedDay() == null) {
             errors.rejectValue(
                     "plannedDay",
                     "plannedDay.empty",
@@ -38,9 +38,11 @@ public class PlannedDayMealValidator implements Validator {
         }
     }
 
-    public void validateMeal(Meal meal, @NonNull Errors errors) {
+    public void validateMeal(@NonNull PlannedDayMeal plannedDayMeal, @NonNull Errors errors) {
 
-        if(meal == null) {
+        Meal meal = plannedDayMeal.getMeal();
+
+        if(meal == null || meal.getId() == null) {
             errors.rejectValue(
                     "meal",
                     "meal.empty",
@@ -49,9 +51,9 @@ public class PlannedDayMealValidator implements Validator {
         }
     }
 
-    public void validateTime(LocalTime time, @NonNull Errors errors) {
+    public void validateTime(@NonNull PlannedDayMeal plannedDayMeal, @NonNull Errors errors) {
 
-        if(time == null) {
+        if(plannedDayMeal.getTime() == null) {
             errors.rejectValue(
                     "time",
                     "time.empty",

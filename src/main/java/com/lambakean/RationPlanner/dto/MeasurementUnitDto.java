@@ -5,13 +5,6 @@ public class MeasurementUnitDto {
     private String id;
     private String name;
 
-    public MeasurementUnitDto(String id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public MeasurementUnitDto() {}
-
 
     public String getId() {
         return id;

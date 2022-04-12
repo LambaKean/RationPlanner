@@ -2,40 +2,32 @@ package com.lambakean.RationPlanner.dto;
 
 public class ScheduledPlannedDayDto {
 
-    private String scheduleId;
-    private DateDto dateDto;
-    private PlannedDayDto plannedDayDto;
+    private EntityIdReferenceDto schedule;
+    private PlannedDayDto plannedDay;
+    private DateDto date;
 
-    public ScheduledPlannedDayDto(String scheduleId, DateDto dateDto, PlannedDayDto plannedDayDto) {
-        this.scheduleId = scheduleId;
-        this.dateDto = dateDto;
-        this.plannedDayDto = plannedDayDto;
+
+    public EntityIdReferenceDto getSchedule() {
+        return schedule;
     }
 
-    public ScheduledPlannedDayDto() {}
-
-
-    public String getScheduleId() {
-        return scheduleId;
-    }
-
-    public void setScheduleId(String scheduleId) {
-        this.scheduleId = scheduleId;
-    }
-
-    public DateDto getDate() {
-        return dateDto;
-    }
-
-    public void setDate(DateDto dateDto) {
-        this.dateDto = dateDto;
+    public void setSchedule(EntityIdReferenceDto schedule) {
+        this.schedule = schedule;
     }
 
     public PlannedDayDto getPlannedDay() {
-        return plannedDayDto;
+        return plannedDay;
     }
 
-    public void setPlannedDay(PlannedDayDto plannedDayDto) {
-        this.plannedDayDto = plannedDayDto;
+    public void setPlannedDay(PlannedDayDto plannedDay) {
+        this.plannedDay = plannedDay;
+    }
+
+    public DateDto getDate() {
+        return date;
+    }
+
+    public void setDate(DateDto date) {
+        this.date = date;
     }
 }

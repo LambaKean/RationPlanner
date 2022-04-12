@@ -1,8 +1,7 @@
 package com.lambakean.RationPlanner.service.impl;
 
-import com.lambakean.RationPlanner.dto.ProductDto;
-import com.lambakean.RationPlanner.dto.converter.ProductDtoConverter;
 import com.lambakean.RationPlanner.exception.AccessDeniedException;
+import com.lambakean.RationPlanner.exception.BadRequestException;
 import com.lambakean.RationPlanner.exception.EntityNotFoundException;
 import com.lambakean.RationPlanner.model.MeasurementUnit;
 import com.lambakean.RationPlanner.model.Product;
@@ -20,7 +19,6 @@ import org.springframework.validation.Validator;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -29,7 +27,6 @@ public class ProductServiceImpl implements ProductService {
     private final MeasurementUnitRepository measurementUnitRepository;
     private final PrincipalService principalService;
     private final Validator productValidator;
-    private final ProductDtoConverter productDtoConverter;
     private final ValidationService validationService;
     private final ProductQuantityValidator productQuantityValidator;
 
@@ -37,20 +34,18 @@ public class ProductServiceImpl implements ProductService {
                               MeasurementUnitRepository measurementUnitRepository,
                               PrincipalService principalService,
                               Validator productValidator,
-                              ProductDtoConverter productDtoConverter,
                               ValidationService validationService,
                               ProductQuantityValidator productQuantityValidator) {
         this.productRepository = productRepository;
         this.measurementUnitRepository = measurementUnitRepository;
         this.principalService = principalService;
         this.productValidator = productValidator;
-        this.productDtoConverter = productDtoConverter;
         this.validationService = validationService;
         this.productQuantityValidator = productQuantityValidator;
     }
 
     @Override
-    public ProductDto getProductById(String id) {
+    public Product getProductById(String id) {
 
         Product product = productRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(String.format("Продукт с id [%s] не существует", id))
@@ -64,51 +59,50 @@ public class ProductServiceImpl implements ProductService {
             throw new AccessDeniedException("Вы не имеете доступа к этому продукту.");
         }
 
-        return productDtoConverter.toProductDto(product);
+        return product;
     }
 
     @Override
     @Transactional
-    public List<ProductDto> getCurrentUserProducts() {
+    public List<Product> getCurrentUserProducts() {
 
         User user = (User) principalService.getPrincipalOrElseThrowException(
                 "Вы должны войти в аккаунт, чтобы просматривать список своих продуктов"
         );
 
-        return productRepository.getAllByUser(user)
-                .stream()
-                .map(productDtoConverter::toProductDto)
-                .collect(Collectors.toList());
+        return productRepository.getAllByUser(user);
     }
 
     @Override
-    public ProductDto createProduct(@NonNull ProductDto productDto) {
+    public Product createProduct(@NonNull Product productData) {
 
         User user = (User) principalService.getPrincipalOrElseThrowException(
                 "Вы должны войти в аккаунт, чтобы иметь возможность добавить продукт"
         );
 
-        String measurementUnitId = productDto.getMeasurementUnitId();
+        String measurementUnitId = productData.getMeasurementUnitId();
 
-        if(measurementUnitId == null || !measurementUnitRepository.existsById(measurementUnitId)) {
-            throw new EntityNotFoundException("Вы выбрали невалидную единицу измерения количества продукта");
+        if(measurementUnitId == null) {
+            throw new BadRequestException("Вы не выбрали единицу измерения количества продукта");
         }
 
-        MeasurementUnit measurementUnit = measurementUnitRepository.getById(measurementUnitId);
+        MeasurementUnit measurementUnit = measurementUnitRepository.findById(measurementUnitId).orElseThrow(
+                () -> new EntityNotFoundException("Вы выбрали невалидную единицу измерения количества продукта")
+        );
 
-        Double productQuantityAmount = productDto.getQuantityAmount();
+        Double productQuantityAmount = productData.getQuantityAmount();
         ProductQuantity productQuantity = new ProductQuantity(productQuantityAmount, measurementUnit);
 
         validationService.validateThrowExceptionIfInvalid(productQuantity, productQuantityValidator);
 
-        Product product = productDtoConverter.toProduct(productDto);
-        product.setUser(user);
+        productData.setUser(user);
+        productData.setQuantity(productQuantity);
 
-        validationService.validate(product, productValidator);
+        validationService.validateThrowExceptionIfInvalid(productData, productValidator);
 
-        productRepository.saveAndFlush(product);
+        productRepository.saveAndFlush(productData);
 
-        return productDtoConverter.toProductDto(product);
+        return productData;
     }
 
     @Override

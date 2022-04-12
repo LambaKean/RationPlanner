@@ -17,12 +17,12 @@ public class User extends BaseEntity {
     private Set<Product> products;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private Set<Product> meals;
+    private Set<Meal> meals;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<PlannedDay> plannedDays;
 
-    public User(String username, String password, Set<Product> products, Set<Product> meals) {
+    public User(String username, String password, Set<Product> products, Set<Meal> meals) {
         this.username = username;
         this.password = password;
         this.products = products;
@@ -61,11 +61,11 @@ public class User extends BaseEntity {
         this.products = products;
     }
 
-    public Set<Product> getMeals() {
+    public Set<Meal> getMeals() {
         return meals;
     }
 
-    public void setMeals(Set<Product> meals) {
+    public void setMeals(Set<Meal> meals) {
         this.meals = meals;
     }
 

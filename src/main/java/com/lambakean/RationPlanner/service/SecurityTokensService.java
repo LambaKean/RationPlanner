@@ -1,6 +1,7 @@
 package com.lambakean.RationPlanner.service;
 
 import com.lambakean.RationPlanner.dto.SecurityTokensDto;
+import com.lambakean.RationPlanner.model.SecurityTokensHolder;
 import com.lambakean.RationPlanner.model.User;
 import com.lambakean.RationPlanner.model.AccessTokenWrapper;
 import com.lambakean.RationPlanner.model.RefreshTokenWrapper;
@@ -16,5 +17,5 @@ public interface SecurityTokensService {
 
     void save(RefreshTokenWrapper refreshTokenWrapper);
 
-    SecurityTokensDto updateTokens(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse);
+    SecurityTokensHolder updateTokens(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse);
 }

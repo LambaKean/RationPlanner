@@ -1,16 +1,17 @@
 package com.lambakean.RationPlanner.service;
 
 import com.lambakean.RationPlanner.dto.PlannedDayDto;
+import com.lambakean.RationPlanner.model.PlannedDay;
 
 import java.util.Set;
 
 public interface PlannedDayService {
 
-    PlannedDayDto createPlannedDay(PlannedDayDto plannedDayDto);
+    PlannedDay createPlannedDay(PlannedDay plannedDayData);
 
-    PlannedDayDto getPlannedDayById(String id);
+    PlannedDay getPlannedDayById(String id);
 
-    Set<PlannedDayDto> getCurrentUserPlannedDays();
+    Set<PlannedDay> getCurrentUserPlannedDays();
 
     void deletePlannedDayById(String id);
 }

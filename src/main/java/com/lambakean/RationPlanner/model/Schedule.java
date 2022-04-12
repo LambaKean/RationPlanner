@@ -18,21 +18,10 @@ public class Schedule extends BaseEntity {
 
     private Integer nextRepeatAfterDays;
 
-    public Schedule(PlannedDay plannedDay, LocalDate startDate, Integer nextRepeatAfterDays) {
-        this.plannedDay = plannedDay;
-        this.startDate = startDate;
-        this.nextRepeatAfterDays = nextRepeatAfterDays;
-    }
+    public String getPlannedDayId() {
 
-    public Schedule() {}
-
-    public User getUser() {
-
-        if(plannedDay == null) {
-            return null;
-        }
-
-        return plannedDay.getUser();
+        if(plannedDay == null) return null;
+        return plannedDay.getId();
     }
 
 

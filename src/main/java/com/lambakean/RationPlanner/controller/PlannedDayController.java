@@ -1,47 +1,59 @@
 package com.lambakean.RationPlanner.controller;
 
 import com.lambakean.RationPlanner.dto.PlannedDayDto;
+import com.lambakean.RationPlanner.dto.form.PlannedDayCreationForm;
+import com.lambakean.RationPlanner.mapper.PlannedDayMapper;
+import com.lambakean.RationPlanner.model.PlannedDay;
 import com.lambakean.RationPlanner.service.PlannedDayService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/plannedDay")
 public class PlannedDayController {
 
     private final PlannedDayService plannedDayService;
+    private final PlannedDayMapper plannedDayMapper;
 
     @Autowired
-    public PlannedDayController(PlannedDayService plannedDayService) {
+    public PlannedDayController(PlannedDayService plannedDayService,
+                                PlannedDayMapper plannedDayMapper) {
         this.plannedDayService = plannedDayService;
+        this.plannedDayMapper = plannedDayMapper;
     }
 
     @PostMapping
-    public ResponseEntity<PlannedDayDto> createPlannedDay(@RequestBody PlannedDayDto plannedDayDto) {
+    public ResponseEntity<PlannedDayDto> createPlannedDay(@RequestBody PlannedDayCreationForm plannedDayCreationForm) {
 
-        PlannedDayDto createdPlannedDay = plannedDayService.createPlannedDay(plannedDayDto);
+        PlannedDay plannedDayData = plannedDayMapper.toPlannedDay(plannedDayCreationForm);
+        PlannedDay createdPlannedDay = plannedDayService.createPlannedDay(plannedDayData);
 
-        return new ResponseEntity<>(createdPlannedDay, HttpStatus.CREATED);
+        return ResponseEntity.ok(plannedDayMapper.toPlannedDayDto(createdPlannedDay));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<PlannedDayDto> getPlannedDayById(@PathVariable String id) {
 
-        PlannedDayDto plannedDayDto = plannedDayService.getPlannedDayById(id);
+        PlannedDay plannedDay = plannedDayService.getPlannedDayById(id);
 
-        return new ResponseEntity<>(plannedDayDto, HttpStatus.OK);
+        return ResponseEntity.ok(plannedDayMapper.toPlannedDayDto(plannedDay));
     }
 
     @GetMapping
     public ResponseEntity<Set<PlannedDayDto>> getPlannedDays() {
 
-        Set<PlannedDayDto> plannedDayDtos = plannedDayService.getCurrentUserPlannedDays();
+        Set<PlannedDay> plannedDays = plannedDayService.getCurrentUserPlannedDays();
 
-        return new ResponseEntity<>(plannedDayDtos, HttpStatus.OK);
+        return ResponseEntity.ok(
+                plannedDays
+                        .stream()
+                        .map(plannedDayMapper::toPlannedDayDto)
+                        .collect(Collectors.toSet())
+        );
     }
 
     @DeleteMapping("/{id}")

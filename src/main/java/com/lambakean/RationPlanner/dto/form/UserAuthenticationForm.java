@@ -1,16 +1,16 @@
-package com.lambakean.RationPlanner.dto;
+package com.lambakean.RationPlanner.dto.form;
 
-public class UserCredentialsDto {
+public class UserAuthenticationForm {
 
     private String username;
     private String password;
 
-    public UserCredentialsDto(String username, String password) {
+    public UserAuthenticationForm(String username, String password) {
         this.username = username;
         this.password = password;
     }
 
-    public UserCredentialsDto() {}
+    public UserAuthenticationForm() {}
 
 
     public String getUsername() {

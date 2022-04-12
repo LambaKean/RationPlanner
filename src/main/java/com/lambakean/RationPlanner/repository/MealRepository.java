@@ -11,5 +11,4 @@ public interface MealRepository extends JpaRepository<Meal, String> {
     boolean existsByIdAndUser(String id, User user);
 
     List<Meal> findAllByUser(User user);
-
 }

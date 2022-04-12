@@ -19,27 +19,23 @@ public class ProductQuantity extends BaseEntity {
     @OneToOne(mappedBy = "productQuantity")
     private Ingredient ingredient;
 
-    public ProductQuantity(Double amount, MeasurementUnit measurementUnit, Product product) {
-        this.amount = amount;
-        this.measurementUnit = measurementUnit;
-        this.product = product;
-    }
-
-    public ProductQuantity(Double amount, MeasurementUnit measurementUnit, Ingredient ingredient) {
-        this.amount = amount;
-        this.measurementUnit = measurementUnit;
-        this.ingredient = ingredient;
-    }
+    public ProductQuantity() {}
 
     public ProductQuantity(Double amount, MeasurementUnit measurementUnit) {
         this.amount = amount;
         this.measurementUnit = measurementUnit;
     }
 
-    public ProductQuantity() {}
-
     public String getMeasurementUnitName() {
+
+        if(measurementUnit == null) return null;
         return measurementUnit.getName();
+    }
+
+    public String getMeasurementUnitId() {
+
+        if(measurementUnit == null) return null;
+        return measurementUnit.getId();
     }
 
 
