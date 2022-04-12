@@ -3,6 +3,7 @@ package com.lambakean.RationPlanner.validator;
 import com.lambakean.RationPlanner.model.PlannedDay;
 import com.lambakean.RationPlanner.model.Schedule;
 import com.lambakean.RationPlanner.repository.PlannedDayRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
@@ -12,14 +13,10 @@ import org.springframework.validation.Validator;
 import java.time.LocalDate;
 
 @Component
+@RequiredArgsConstructor
 public class ScheduleValidator implements Validator {
 
     private final PlannedDayRepository plannedDayRepository;
-
-    @Autowired
-    public ScheduleValidator(PlannedDayRepository plannedDayRepository) {
-        this.plannedDayRepository = plannedDayRepository;
-    }
 
     @Override
     public boolean supports(@NonNull Class<?> clazz) {

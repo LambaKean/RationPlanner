@@ -5,6 +5,7 @@ import com.lambakean.RationPlanner.dto.form.MealCreationForm;
 import com.lambakean.RationPlanner.mapper.MealMapper;
 import com.lambakean.RationPlanner.model.Meal;
 import com.lambakean.RationPlanner.service.MealService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,15 +14,11 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/meal")
+@RequiredArgsConstructor
 public class MealController {
 
     private final MealService mealService;
     private final MealMapper mealMapper;
-
-    public MealController(MealService mealService, MealMapper mealMapper) {
-        this.mealService = mealService;
-        this.mealMapper = mealMapper;
-    }
 
     @PostMapping
     public ResponseEntity<MealDto> createMeal(@RequestBody MealCreationForm mealCreationForm) {

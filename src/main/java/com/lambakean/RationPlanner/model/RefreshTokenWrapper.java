@@ -2,6 +2,10 @@ package com.lambakean.RationPlanner.model;
 
 import com.lambakean.RationPlanner.model.BaseEntity;
 import com.lambakean.RationPlanner.model.User;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
@@ -12,6 +16,10 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "refresh_tokens")
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class RefreshTokenWrapper extends BaseEntity {
 
     @Column(nullable = false, unique = true)
@@ -24,44 +32,7 @@ public class RefreshTokenWrapper extends BaseEntity {
     @Column(nullable = false)
     private ZonedDateTime expiresAt;
 
-    public RefreshTokenWrapper(String token, User user, ZonedDateTime expiresAt) {
-        this.token = token;
-        this.user = user;
-        this.expiresAt = expiresAt;
-    }
-
-    public RefreshTokenWrapper() {}
-
     public boolean isExpired() {
         return this.expiresAt.isBefore(ZonedDateTime.now());
-    }
-
-    public boolean tokenBelongsTo(User candidate) {
-        return Objects.equals(user.getId(), candidate.getId());
-    }
-
-
-    public ZonedDateTime getExpiresAt() {
-        return expiresAt;
-    }
-
-    public void setExpiresAt(ZonedDateTime expiresIn) {
-        this.expiresAt = expiresIn;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 }

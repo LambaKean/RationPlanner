@@ -1,5 +1,8 @@
 package com.lambakean.RationPlanner.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -8,6 +11,8 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "schedules")
+@Getter
+@Setter
 public class Schedule extends BaseEntity {
 
     @ManyToOne
@@ -22,30 +27,5 @@ public class Schedule extends BaseEntity {
 
         if(plannedDay == null) return null;
         return plannedDay.getId();
-    }
-
-
-    public PlannedDay getPlannedDay() {
-        return plannedDay;
-    }
-
-    public void setPlannedDay(PlannedDay plannedDay) {
-        this.plannedDay = plannedDay;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public Integer getNextRepeatAfterDays() {
-        return nextRepeatAfterDays;
-    }
-
-    public void setNextRepeatAfterDays(Integer nextRepeatAfterDays) {
-        this.nextRepeatAfterDays = nextRepeatAfterDays;
     }
 }

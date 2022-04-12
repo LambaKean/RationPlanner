@@ -5,7 +5,7 @@ import com.lambakean.RationPlanner.dto.form.PlannedDayCreationForm;
 import com.lambakean.RationPlanner.mapper.PlannedDayMapper;
 import com.lambakean.RationPlanner.model.PlannedDay;
 import com.lambakean.RationPlanner.service.PlannedDayService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,17 +14,11 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/plannedDay")
+@RequiredArgsConstructor
 public class PlannedDayController {
 
     private final PlannedDayService plannedDayService;
     private final PlannedDayMapper plannedDayMapper;
-
-    @Autowired
-    public PlannedDayController(PlannedDayService plannedDayService,
-                                PlannedDayMapper plannedDayMapper) {
-        this.plannedDayService = plannedDayService;
-        this.plannedDayMapper = plannedDayMapper;
-    }
 
     @PostMapping
     public ResponseEntity<PlannedDayDto> createPlannedDay(@RequestBody PlannedDayCreationForm plannedDayCreationForm) {

@@ -1,6 +1,7 @@
 package com.lambakean.RationPlanner.security;
 
 import com.lambakean.RationPlanner.model.User;
+import lombok.AllArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,14 +13,6 @@ public class JwtAuthenticationToken extends AbstractAuthenticationToken {
 
     private final String token;
     private User user;
-
-    public JwtAuthenticationToken(@NonNull String token,
-                                  User user,
-                                  Collection<? extends GrantedAuthority> authorities) {
-        super(authorities);
-        this.token = token;
-        this.user = user;
-    }
 
     public JwtAuthenticationToken(@NonNull String token,
                                   User user) {

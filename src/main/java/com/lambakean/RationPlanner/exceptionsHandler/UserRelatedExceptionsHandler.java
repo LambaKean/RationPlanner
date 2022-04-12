@@ -27,5 +27,4 @@ public class UserRelatedExceptionsHandler {
 
         return new ResponseEntity<>(responseDto, HttpStatus.UNAUTHORIZED);
     }
-
 }

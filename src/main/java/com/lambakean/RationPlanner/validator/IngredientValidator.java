@@ -3,6 +3,7 @@ package com.lambakean.RationPlanner.validator;
 import com.lambakean.RationPlanner.model.Ingredient;
 import com.lambakean.RationPlanner.model.Product;
 import com.lambakean.RationPlanner.repository.ProductRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
@@ -10,14 +11,10 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 @Component
+@RequiredArgsConstructor
 public class IngredientValidator implements Validator {
 
     private final ProductRepository productRepository;
-
-    @Autowired
-    public IngredientValidator(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
 
     @Override
     public boolean supports(@NonNull Class<?> clazz) {

@@ -1,11 +1,16 @@
 package com.lambakean.RationPlanner.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "planned_days")
+@Getter
+@Setter
 public class PlannedDay extends BaseEntity {
 
     private String name;
@@ -19,14 +24,6 @@ public class PlannedDay extends BaseEntity {
 
     @OneToMany(mappedBy = "plannedDay", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Schedule> schedules;
-
-    public PlannedDay(String name, User user, List<PlannedDayMeal> plannedDayMeals) {
-        this.name = name;
-        this.user = user;
-        this.plannedDayMeals = plannedDayMeals;
-    }
-
-    public PlannedDay() {}
 
     public Double getPrice() {
 
@@ -51,38 +48,5 @@ public class PlannedDay extends BaseEntity {
 
         if(user == null) return null;
         return user.getId();
-    }
-
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public List<PlannedDayMeal> getPlannedDayMeals() {
-        return plannedDayMeals;
-    }
-
-    public void setPlannedDayMeals(List<PlannedDayMeal> plannedDayMeals) {
-        this.plannedDayMeals = plannedDayMeals;
-    }
-
-    public Set<Schedule> getSchedules() {
-        return schedules;
-    }
-
-    public void setSchedules(Set<Schedule> schedules) {
-        this.schedules = schedules;
     }
 }

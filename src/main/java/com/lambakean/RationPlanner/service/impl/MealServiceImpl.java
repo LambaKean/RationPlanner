@@ -9,6 +9,7 @@ import com.lambakean.RationPlanner.service.MealService;
 import com.lambakean.RationPlanner.service.PrincipalService;
 import com.lambakean.RationPlanner.service.ValidationService;
 import com.lambakean.RationPlanner.validator.MealValidator;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class MealServiceImpl implements MealService {
 
     private final PrincipalService principalService;
@@ -30,20 +32,6 @@ public class MealServiceImpl implements MealService {
     private final ValidationService validationService;
     private final MealValidator mealValidator;
     private final Validator ingredientValidator;
-
-    @Autowired
-    public MealServiceImpl(MealValidator mealValidator,
-                           PrincipalService principalService,
-                           ValidationService validationService,
-                           MealRepository mealRepository,
-                           EntityManager entityManager, Validator ingredientValidator) {
-        this.mealValidator = mealValidator;
-        this.principalService = principalService;
-        this.validationService = validationService;
-        this.mealRepository = mealRepository;
-        this.entityManager = entityManager;
-        this.ingredientValidator = ingredientValidator;
-    }
 
     @Override
     @Transactional
@@ -69,7 +57,7 @@ public class MealServiceImpl implements MealService {
 
         entityManager.clear();
 
-        return mealRepository.getById(mealData.getId());
+        return mealRepository.findById(mealData.getId()).get();
     }
 
     @Override
@@ -105,6 +93,7 @@ public class MealServiceImpl implements MealService {
     }
 
     @Override
+    @Transactional
     public List<Meal> getCurrentUserMeals() {
 
         User user = (User) principalService.getPrincipalOrElseThrowException(

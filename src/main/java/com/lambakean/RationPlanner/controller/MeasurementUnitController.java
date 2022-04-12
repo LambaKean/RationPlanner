@@ -4,8 +4,7 @@ import com.lambakean.RationPlanner.dto.MeasurementUnitDto;
 import com.lambakean.RationPlanner.mapper.MeasurementUnitMapper;
 import com.lambakean.RationPlanner.model.MeasurementUnit;
 import com.lambakean.RationPlanner.service.MeasurementUnitService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,17 +15,11 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/measurementUnit")
+@RequiredArgsConstructor
 public class MeasurementUnitController {
 
     private final MeasurementUnitService measurementUnitService;
     private final MeasurementUnitMapper measurementUnitMapper;
-
-    @Autowired
-    public MeasurementUnitController(MeasurementUnitService measurementUnitService,
-                                     MeasurementUnitMapper measurementUnitMapper) {
-        this.measurementUnitService = measurementUnitService;
-        this.measurementUnitMapper = measurementUnitMapper;
-    }
 
     @GetMapping
     public ResponseEntity<List<MeasurementUnitDto>> getUnits() {

@@ -1,5 +1,6 @@
 package com.lambakean.RationPlanner.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -19,16 +20,11 @@ import java.util.Optional;
  * Фильтр навешивает на запрос объект Authentication, если в запросе содержится валидный access токен
  */
 @Component
+@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends GenericFilterBean {
 
     private final TokenResolver accessTokenResolver;
     private final JwtAuthenticationProvider jwtAuthenticationProvider;
-
-    @Autowired
-    public JwtAuthenticationFilter(TokenResolver accessTokenResolver, JwtAuthenticationProvider jwtAuthenticationProvider) {
-        this.accessTokenResolver = accessTokenResolver;
-        this.jwtAuthenticationProvider = jwtAuthenticationProvider;
-    }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)

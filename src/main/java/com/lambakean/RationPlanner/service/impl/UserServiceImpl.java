@@ -12,6 +12,7 @@ import com.lambakean.RationPlanner.service.SecurityTokensService;
 import com.lambakean.RationPlanner.service.UserService;
 import com.lambakean.RationPlanner.service.ValidationService;
 import com.lambakean.RationPlanner.validator.UserUniquenessValidator;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.lang.NonNull;
@@ -26,6 +27,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -35,21 +37,6 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final ValidationService validationService;
     private final SecurityTokensService securityTokensService;
-
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository,
-                           Validator userValidator,
-                           UserUniquenessValidator userUniquenessValidator,
-                           @Qualifier("bCryptPasswordEncoder") PasswordEncoder passwordEncoder,
-                           ValidationService validationService,
-                           SecurityTokensService securityTokensService) {
-        this.userValidator = userValidator;
-        this.userRepository = userRepository;
-        this.userUniquenessValidator = userUniquenessValidator;
-        this.passwordEncoder = passwordEncoder;
-        this.validationService = validationService;
-        this.securityTokensService = securityTokensService;
-    }
 
     @Override
     public SecurityTokensHolder register(@NonNull User userData,
@@ -61,8 +48,6 @@ public class UserServiceImpl implements UserService {
         userData.setPassword(passwordEncoder.encode(userData.getPassword()));
 
         userRepository.saveAndFlush(userData);
-
-//        UserDto userDto = new UserDto(userData.getId(), userData.getUsername());
 
         AccessTokenWrapper accessTokenWrapper = securityTokensService.createAccessTokenWrapper(userData);
         RefreshTokenWrapper refreshTokenWrapper = securityTokensService.createRefreshTokenWrapper(userData);

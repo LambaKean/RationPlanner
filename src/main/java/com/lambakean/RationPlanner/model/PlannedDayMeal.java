@@ -1,5 +1,7 @@
 package com.lambakean.RationPlanner.model;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.Entity;
@@ -10,6 +12,8 @@ import java.time.LocalTime;
 
 @Entity
 @Table(name = "planned_day_meals")
+@Getter
+@Setter
 public class PlannedDayMeal extends BaseEntity implements Comparable<PlannedDayMeal> {
 
     @ManyToOne
@@ -33,30 +37,5 @@ public class PlannedDayMeal extends BaseEntity implements Comparable<PlannedDayM
     @Override
     public int compareTo(@NonNull PlannedDayMeal another) {
         return time.compareTo(another.getTime());
-    }
-
-
-    public PlannedDay getPlannedDay() {
-        return plannedDay;
-    }
-
-    public void setPlannedDay(PlannedDay plannedDay) {
-        this.plannedDay = plannedDay;
-    }
-
-    public Meal getMeal() {
-        return meal;
-    }
-
-    public void setMeal(Meal meal) {
-        this.meal = meal;
-    }
-
-    public LocalTime getTime() {
-        return time;
-    }
-
-    public void setTime(LocalTime time) {
-        this.time = time;
     }
 }

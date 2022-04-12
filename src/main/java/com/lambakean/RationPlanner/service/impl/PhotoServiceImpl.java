@@ -5,6 +5,7 @@ import com.lambakean.RationPlanner.exception.EntityNotFoundException;
 import com.lambakean.RationPlanner.model.Photo;
 import com.lambakean.RationPlanner.repository.PhotoRepository;
 import com.lambakean.RationPlanner.service.PhotoService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -17,6 +18,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
 public class PhotoServiceImpl implements PhotoService {
 
     private final Set<String> PHOTO_CONTENT_TYPES = new HashSet<>();
@@ -27,11 +29,6 @@ public class PhotoServiceImpl implements PhotoService {
     }
 
     private final PhotoRepository photoRepository;
-
-    @Autowired
-    public PhotoServiceImpl(PhotoRepository photoRepository) {
-        this.photoRepository = photoRepository;
-    }
 
     @Override
     public Photo savePhoto(MultipartFile multipartFile) {

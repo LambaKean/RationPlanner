@@ -1,5 +1,8 @@
 package com.lambakean.RationPlanner.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.time.Duration;
 import java.util.List;
@@ -7,6 +10,8 @@ import java.util.Set;
 
 @Entity
 @Table(name = "meals")
+@Getter
+@Setter
 public class Meal extends BaseEntity {
 
     @Column(nullable = false)
@@ -27,30 +32,12 @@ public class Meal extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "photo_id", referencedColumnName = "id", unique = true)
     private Photo photo;
 
     @OneToMany(mappedBy = "meal", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PlannedDayMeal> plannedDayMeals;
-
-    public Meal(String name,
-                String description,
-                Duration cookingDuration,
-                String recipe,
-                List<Ingredient> ingredients,
-                User user,
-                Photo photo) {
-        this.name = name;
-        this.description = description;
-        this.cookingDuration = cookingDuration;
-        this.recipe = recipe;
-        this.ingredients = ingredients;
-        this.user = user;
-        this.photo = photo;
-    }
-
-    public Meal() {}
 
     public Double getPrice() {
 
@@ -73,70 +60,5 @@ public class Meal extends BaseEntity {
         }
 
         return user.getId();
-    }
-
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Duration getCookingDuration() {
-        return cookingDuration;
-    }
-
-    public void setCookingDuration(Duration cookingDuration) {
-        this.cookingDuration = cookingDuration;
-    }
-
-    public String getRecipe() {
-        return recipe;
-    }
-
-    public void setRecipe(String recipe) {
-        this.recipe = recipe;
-    }
-
-    public List<Ingredient> getIngredients() {
-        return ingredients;
-    }
-
-    public void setIngredients(List<Ingredient> ingredients) {
-        this.ingredients = ingredients;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Photo getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(Photo photo) {
-        this.photo = photo;
-    }
-
-    public Set<PlannedDayMeal> getPlannedDayMeals() {
-        return plannedDayMeals;
-    }
-
-    public void setPlannedDayMeals(Set<PlannedDayMeal> plannedDayMeals) {
-        this.plannedDayMeals = plannedDayMeals;
     }
 }

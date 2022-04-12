@@ -10,6 +10,7 @@ import com.lambakean.RationPlanner.model.User;
 import com.lambakean.RationPlanner.service.PrincipalService;
 import com.lambakean.RationPlanner.service.SecurityTokensService;
 import com.lambakean.RationPlanner.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/api/v1/user")
+@RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
@@ -27,19 +29,6 @@ public class UserController {
     private final SecurityTokensService securityTokensService;
     private final UserMapper userMapper;
     private final SecurityTokensHolderMapper securityTokensHolderMapper;
-
-    @Autowired
-    public UserController(UserService userService,
-                          PrincipalService principalService,
-                          SecurityTokensService securityTokensService,
-                          UserMapper userMapper,
-                          SecurityTokensHolderMapper securityTokensHolderMapper) {
-        this.userService = userService;
-        this.principalService = principalService;
-        this.securityTokensService = securityTokensService;
-        this.userMapper = userMapper;
-        this.securityTokensHolderMapper = securityTokensHolderMapper;
-    }
 
     @PostMapping
     public ResponseEntity<SecurityTokensHolderDto> register(@RequestBody UserAuthenticationForm userAuthenticationForm,

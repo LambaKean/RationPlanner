@@ -69,5 +69,4 @@ public class EntityRelatedExceptionsHandler {
         return new ResponseEntity<>(responseDto, HttpStatus.FORBIDDEN);
 
     }
-
 }

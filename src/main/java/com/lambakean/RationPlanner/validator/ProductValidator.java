@@ -8,6 +8,7 @@ import org.springframework.validation.Validator;
 
 @Component
 public class ProductValidator implements Validator {
+
     @Override
     public boolean supports(@NonNull Class<?> clazz) {
         return Product.class.equals(clazz);

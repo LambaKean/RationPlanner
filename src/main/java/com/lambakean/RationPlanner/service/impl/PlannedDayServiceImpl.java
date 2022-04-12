@@ -12,13 +12,16 @@ import com.lambakean.RationPlanner.service.PrincipalService;
 import com.lambakean.RationPlanner.service.ValidationService;
 import com.lambakean.RationPlanner.validator.PlannedDayMealValidator;
 import com.lambakean.RationPlanner.validator.PlannedDayValidator;
+import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
 public class PlannedDayServiceImpl implements PlannedDayService {
 
     private final PrincipalService principalService;
@@ -29,22 +32,8 @@ public class PlannedDayServiceImpl implements PlannedDayService {
     private final MealService mealService;
     private final EntityManager entityManager;
 
-    public PlannedDayServiceImpl(PrincipalService principalService,
-                                 PlannedDayRepository plannedDayRepository,
-                                 PlannedDayValidator plannedDayValidator,
-                                 ValidationService validationService,
-                                 PlannedDayMealValidator plannedDayMealValidator,
-                                 MealService mealService, EntityManager entityManager) {
-        this.principalService = principalService;
-        this.plannedDayRepository = plannedDayRepository;
-        this.plannedDayValidator = plannedDayValidator;
-        this.validationService = validationService;
-        this.plannedDayMealValidator = plannedDayMealValidator;
-        this.mealService = mealService;
-        this.entityManager = entityManager;
-    }
-
     @Override
+    @Transactional
     public PlannedDay createPlannedDay(PlannedDay plannedDayData) {
 
         User user = (User) principalService.getPrincipalOrElseThrowException(
@@ -75,7 +64,7 @@ public class PlannedDayServiceImpl implements PlannedDayService {
 
         entityManager.clear();
 
-        return plannedDayRepository.getById(plannedDayData.getId());
+        return plannedDayRepository.findById(plannedDayData.getId()).get();
     }
 
     @Override
@@ -97,6 +86,7 @@ public class PlannedDayServiceImpl implements PlannedDayService {
     }
 
     @Override
+    @Transactional
     public Set<PlannedDay> getCurrentUserPlannedDays() {
 
         User user = (User) principalService.getPrincipalOrElseThrowException(

@@ -2,6 +2,7 @@ package com.lambakean.RationPlanner.scheduling;
 
 import com.lambakean.RationPlanner.repository.RefreshTokenWrapperRepository;
 import com.lambakean.RationPlanner.model.RefreshTokenWrapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -9,14 +10,10 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class RefreshTokenWrappersCleaner {
 
     private final RefreshTokenWrapperRepository refreshTokenWrapperRepository;
-
-    @Autowired
-    public RefreshTokenWrappersCleaner(RefreshTokenWrapperRepository refreshTokenWrapperRepository) {
-        this.refreshTokenWrapperRepository = refreshTokenWrapperRepository;
-    }
 
     /**
      * Удаляет из базы данных просроченные refresh токены

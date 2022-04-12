@@ -13,6 +13,7 @@ import com.lambakean.RationPlanner.service.PrincipalService;
 import com.lambakean.RationPlanner.service.ProductService;
 import com.lambakean.RationPlanner.service.ValidationService;
 import com.lambakean.RationPlanner.validator.ProductQuantityValidator;
+import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Validator;
@@ -21,6 +22,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
@@ -29,20 +31,6 @@ public class ProductServiceImpl implements ProductService {
     private final Validator productValidator;
     private final ValidationService validationService;
     private final ProductQuantityValidator productQuantityValidator;
-
-    public ProductServiceImpl(ProductRepository productRepository,
-                              MeasurementUnitRepository measurementUnitRepository,
-                              PrincipalService principalService,
-                              Validator productValidator,
-                              ValidationService validationService,
-                              ProductQuantityValidator productQuantityValidator) {
-        this.productRepository = productRepository;
-        this.measurementUnitRepository = measurementUnitRepository;
-        this.principalService = principalService;
-        this.productValidator = productValidator;
-        this.validationService = validationService;
-        this.productQuantityValidator = productQuantityValidator;
-    }
 
     @Override
     public Product getProductById(String id) {

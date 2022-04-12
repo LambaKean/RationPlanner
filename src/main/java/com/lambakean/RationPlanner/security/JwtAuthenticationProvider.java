@@ -2,6 +2,7 @@ package com.lambakean.RationPlanner.security;
 
 import com.lambakean.RationPlanner.model.User;
 import com.lambakean.RationPlanner.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -11,15 +12,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class JwtAuthenticationProvider implements AuthenticationProvider {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final UserService userService;
-
-    public JwtAuthenticationProvider(JwtTokenProvider jwtTokenProvider, UserService userService) {
-        this.jwtTokenProvider = jwtTokenProvider;
-        this.userService = userService;
-    }
 
     @Override
     public Authentication authenticate(@NonNull Authentication authentication) throws AuthenticationException {

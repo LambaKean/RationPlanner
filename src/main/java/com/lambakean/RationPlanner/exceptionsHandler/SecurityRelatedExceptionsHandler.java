@@ -24,7 +24,4 @@ public class SecurityRelatedExceptionsHandler {
 
         return new ResponseEntity<>(responseDto, HttpStatus.UNAUTHORIZED);
     }
-
-
-
 }

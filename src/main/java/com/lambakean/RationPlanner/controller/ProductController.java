@@ -5,6 +5,7 @@ import com.lambakean.RationPlanner.dto.form.ProductCreationForm;
 import com.lambakean.RationPlanner.mapper.ProductMapper;
 import com.lambakean.RationPlanner.model.Product;
 import com.lambakean.RationPlanner.service.ProductService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,16 +16,11 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/product")
+@RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
     private final ProductMapper productMapper;
-
-    @Autowired
-    public ProductController(ProductService productService, ProductMapper productMapper) {
-        this.productService = productService;
-        this.productMapper = productMapper;
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductDto> getProductById(@PathVariable String id) {

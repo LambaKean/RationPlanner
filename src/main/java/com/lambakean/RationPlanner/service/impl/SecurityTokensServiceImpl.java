@@ -9,6 +9,7 @@ import com.lambakean.RationPlanner.security.JwtTokenProvider;
 import com.lambakean.RationPlanner.model.RefreshTokenWrapper;
 import com.lambakean.RationPlanner.security.TokenResolver;
 import com.lambakean.RationPlanner.service.SecurityTokensService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
@@ -21,6 +22,7 @@ import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 
 @Service
+@RequiredArgsConstructor
 public class SecurityTokensServiceImpl implements SecurityTokensService {
 
     @Value("${access-token.validity-time-in-minutes}")
@@ -33,15 +35,6 @@ public class SecurityTokensServiceImpl implements SecurityTokensService {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final TokenResolver refreshTokenResolver;
-
-    @Autowired
-    public SecurityTokensServiceImpl(RefreshTokenWrapperRepository refreshTokenWrapperRepository,
-                                     JwtTokenProvider jwtTokenProvider,
-                                     TokenResolver refreshTokenResolver) {
-        this.refreshTokenWrapperRepository = refreshTokenWrapperRepository;
-        this.jwtTokenProvider = jwtTokenProvider;
-        this.refreshTokenResolver = refreshTokenResolver;
-    }
 
     @Override
     public RefreshTokenWrapper createRefreshTokenWrapper(@NonNull User user) {

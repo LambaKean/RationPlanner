@@ -12,9 +12,11 @@ import com.lambakean.RationPlanner.service.PrincipalService;
 import com.lambakean.RationPlanner.service.ScheduleService;
 import com.lambakean.RationPlanner.service.ValidationService;
 import com.lambakean.RationPlanner.validator.ScheduleValidator;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
 public class ScheduleServiceImpl implements ScheduleService {
 
     private final PrincipalService principalService;
@@ -30,19 +33,6 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final ScheduleValidator scheduleValidator;
     private final ValidationService validationService;
     private final PlannedDayRepository plannedDayRepository;
-
-    @Autowired
-    public ScheduleServiceImpl(PrincipalService principalService,
-                               ScheduleRepository scheduleRepository,
-                               ScheduleValidator scheduleValidator,
-                               ValidationService validationService,
-                               PlannedDayRepository plannedDayRepository) {
-        this.principalService = principalService;
-        this.scheduleRepository = scheduleRepository;
-        this.scheduleValidator = scheduleValidator;
-        this.validationService = validationService;
-        this.plannedDayRepository = plannedDayRepository;
-    }
 
     @Override
     public Schedule createSchedule(Schedule scheduleData) {
@@ -53,7 +43,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         validationService.validateThrowExceptionIfInvalid(scheduleData, scheduleValidator);
 
-        PlannedDay loadedPlannedDayFromDb = plannedDayRepository.getById(scheduleData.getPlannedDayId());
+        PlannedDay loadedPlannedDayFromDb = plannedDayRepository.findById(scheduleData.getPlannedDayId()).get();
 
         if(!user.getId().equals(loadedPlannedDayFromDb.getUserId())) {
             throw new AccessDeniedException(
@@ -69,6 +59,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
+    @Transactional
     public List<ScheduledPlannedDay> getMonthSchedule(LocalDate date) {
 
         User user = (User) principalService.getPrincipalOrElseThrowException(

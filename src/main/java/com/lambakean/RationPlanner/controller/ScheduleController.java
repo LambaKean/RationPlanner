@@ -7,6 +7,7 @@ import com.lambakean.RationPlanner.mapper.ScheduleMapper;
 import com.lambakean.RationPlanner.mapper.ScheduledPlannedDayMapper;
 import com.lambakean.RationPlanner.model.Schedule;
 import com.lambakean.RationPlanner.service.ScheduleService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -18,20 +19,12 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/schedule")
+@RequiredArgsConstructor
 public class ScheduleController {
 
     private final ScheduleService scheduleService;
     private final ScheduleMapper scheduleMapper;
     private final ScheduledPlannedDayMapper scheduledPlannedDayMapper;
-
-    @Autowired
-    public ScheduleController(ScheduleService scheduleService,
-                              ScheduleMapper scheduleMapper,
-                              ScheduledPlannedDayMapper scheduledPlannedDayMapper) {
-        this.scheduleService = scheduleService;
-        this.scheduleMapper = scheduleMapper;
-        this.scheduledPlannedDayMapper = scheduledPlannedDayMapper;
-    }
 
     @PostMapping
     public ResponseEntity<ScheduleDto> createSchedule(@RequestBody ScheduleCreationForm scheduleCreationForm) {

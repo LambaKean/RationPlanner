@@ -2,6 +2,7 @@ package com.lambakean.RationPlanner.validator;
 
 import com.lambakean.RationPlanner.model.User;
 import com.lambakean.RationPlanner.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
@@ -12,14 +13,10 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Component
+@RequiredArgsConstructor
 public class UserUniquenessValidator implements Validator {
 
     private final UserRepository userRepository;
-
-    @Autowired
-    public UserUniquenessValidator(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @Override
     public boolean supports(@NonNull Class<?> clazz) {

@@ -4,25 +4,19 @@ import com.lambakean.RationPlanner.dto.PhotoDto;
 import com.lambakean.RationPlanner.mapper.PhotoMapper;
 import com.lambakean.RationPlanner.model.Photo;
 import com.lambakean.RationPlanner.service.PhotoService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/v1/photo")
+@RequiredArgsConstructor
 public class PhotoController {
 
     private final PhotoService photoService;
     private final PhotoMapper photoMapper;
-
-    @Autowired
-    public PhotoController(PhotoService photoService, PhotoMapper photoMapper) {
-        this.photoService = photoService;
-        this.photoMapper = photoMapper;
-    }
 
     @PostMapping
     public ResponseEntity<PhotoDto> uploadPhoto(@RequestParam MultipartFile photo) {
