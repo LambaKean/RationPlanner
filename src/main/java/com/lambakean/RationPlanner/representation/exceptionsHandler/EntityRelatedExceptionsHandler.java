@@ -43,9 +43,7 @@ public class EntityRelatedExceptionsHandler {
             InvalidFieldExceptionDto exceptionDto = new InvalidFieldExceptionDto();
 
             exceptionDto.setCode("invalidField");
-            exceptionDto.setTargetObjectName(fieldError.getObjectName());
             exceptionDto.setField(fieldError.getField());
-            exceptionDto.setFieldCode(fieldError.getCode());
             exceptionDto.setMessage(fieldError.getDefaultMessage());
 
             exceptionDtos.add(exceptionDto);

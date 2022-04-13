@@ -7,7 +7,5 @@ import lombok.Setter;
 @Setter
 public class InvalidFieldExceptionDto extends ExceptionDto {
 
-    private String targetObjectName;
     private String field;
-    private String fieldCode;
 }
