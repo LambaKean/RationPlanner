@@ -1,14 +1,13 @@
 package com.lambakean.RationPlanner.domain.service.impl;
 
-import com.lambakean.RationPlanner.domain.exception.AccessDeniedException;
-import com.lambakean.RationPlanner.domain.exception.EntityNotFoundException;
 import com.lambakean.RationPlanner.data.model.Meal;
 import com.lambakean.RationPlanner.data.model.User;
 import com.lambakean.RationPlanner.data.repository.MealRepository;
+import com.lambakean.RationPlanner.domain.exception.AccessDeniedException;
+import com.lambakean.RationPlanner.domain.exception.EntityNotFoundException;
 import com.lambakean.RationPlanner.domain.service.MealService;
 import com.lambakean.RationPlanner.domain.service.PrincipalService;
 import com.lambakean.RationPlanner.domain.service.ValidationService;
-import com.lambakean.RationPlanner.domain.validator.MealValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
@@ -29,7 +28,7 @@ public class MealServiceImpl implements MealService {
     private final EntityManager entityManager;
 
     private final ValidationService validationService;
-    private final MealValidator mealValidator;
+    private final Validator mealValidator;
     private final Validator ingredientValidator;
 
     @Override

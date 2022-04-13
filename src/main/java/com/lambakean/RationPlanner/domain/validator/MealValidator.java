@@ -28,14 +28,16 @@ public class MealValidator implements Validator {
 
         Meal meal = (Meal) target;
 
-        validateName(meal.getName(), errors);
-        validateDescription(meal.getDescription(), errors);
-        validateCookingDuration(meal.getCookingDuration(), errors);
-        validateRecipe(meal.getRecipe(), errors);
+        validateName(meal, errors);
+        validateDescription(meal, errors);
+        validateCookingDuration(meal, errors);
+        validateRecipe(meal, errors);
         validatePhoto(meal, errors);
     }
 
-    public void validateName(String name, @NonNull Errors errors) {
+    public void validateName(@NonNull Meal meal, @NonNull Errors errors) {
+
+        String name = meal.getName();
 
         if (name == null) {
             errors.rejectValue(
@@ -55,7 +57,9 @@ public class MealValidator implements Validator {
         }
     }
 
-    public void validateDescription(String description, @NonNull Errors errors) {
+    public void validateDescription(@NonNull Meal meal, @NonNull Errors errors) {
+
+        String description = meal.getDescription();
 
         if(description == null) {
             return;
@@ -70,8 +74,9 @@ public class MealValidator implements Validator {
         }
     }
 
-    public void validateCookingDuration(Duration duration, @NonNull Errors errors) {
-        if(duration == null) {
+    public void validateCookingDuration(@NonNull Meal meal, @NonNull Errors errors) {
+
+        if(meal.getCookingDuration() == null) {
             errors.rejectValue(
                     "cookingDuration",
                     "cookingDuration.invalid",
@@ -80,7 +85,10 @@ public class MealValidator implements Validator {
         }
     }
 
-    public void validateRecipe(String recipe, @NonNull Errors errors) {
+    public void validateRecipe(@NonNull Meal meal, @NonNull Errors errors) {
+
+        String recipe = meal.getRecipe();
+
         if(recipe == null || recipe.equals("")) {
             return;
         }

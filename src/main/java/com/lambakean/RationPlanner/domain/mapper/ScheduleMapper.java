@@ -1,10 +1,10 @@
 package com.lambakean.RationPlanner.domain.mapper;
 
+import com.lambakean.RationPlanner.data.model.Schedule;
 import com.lambakean.RationPlanner.representation.dto.DateDto;
 import com.lambakean.RationPlanner.representation.dto.ScheduleDto;
 import com.lambakean.RationPlanner.representation.dto.TimeDto;
 import com.lambakean.RationPlanner.representation.dto.form.ScheduleCreationForm;
-import com.lambakean.RationPlanner.data.model.Schedule;
 import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -1,16 +1,15 @@
 package com.lambakean.RationPlanner.domain.service.impl;
 
-import com.lambakean.RationPlanner.domain.exception.AuthenticationException;
-import com.lambakean.RationPlanner.domain.exception.EntityNotFoundException;
+import com.lambakean.RationPlanner.data.model.AccessTokenWrapper;
+import com.lambakean.RationPlanner.data.model.RefreshTokenWrapper;
 import com.lambakean.RationPlanner.data.model.SecurityTokensHolder;
 import com.lambakean.RationPlanner.data.model.User;
 import com.lambakean.RationPlanner.data.repository.UserRepository;
-import com.lambakean.RationPlanner.data.model.AccessTokenWrapper;
-import com.lambakean.RationPlanner.data.model.RefreshTokenWrapper;
+import com.lambakean.RationPlanner.domain.exception.AuthenticationException;
+import com.lambakean.RationPlanner.domain.exception.EntityNotFoundException;
 import com.lambakean.RationPlanner.domain.service.SecurityTokensService;
 import com.lambakean.RationPlanner.domain.service.UserService;
 import com.lambakean.RationPlanner.domain.service.ValidationService;
-import com.lambakean.RationPlanner.domain.validator.UserUniquenessValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,12 +26,12 @@ import java.time.temporal.ChronoUnit;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-
-    private final Validator userValidator;
-    private final UserUniquenessValidator userUniquenessValidator;
     private final PasswordEncoder passwordEncoder;
-    private final ValidationService validationService;
     private final SecurityTokensService securityTokensService;
+
+    private final ValidationService validationService;
+    private final Validator userValidator;
+    private final Validator userUniquenessValidator;
 
     @Override
     public SecurityTokensHolder register(@NonNull User userData,

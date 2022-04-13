@@ -19,10 +19,12 @@ public class ProductQuantityValidator implements Validator {
 
         ProductQuantity productQuantity = (ProductQuantity) target;
 
-        validateAmount(productQuantity.getAmount(), errors);
+        validateAmount(productQuantity, errors);
     }
 
-    public void validateAmount(Double amount, @NonNull Errors errors) {
+    public void validateAmount(@NonNull ProductQuantity productQuantity, @NonNull Errors errors) {
+
+        Double amount = productQuantity.getAmount();
 
         if(amount == null) {
             errors.rejectValue(

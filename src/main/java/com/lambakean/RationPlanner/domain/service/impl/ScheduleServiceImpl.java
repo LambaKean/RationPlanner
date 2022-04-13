@@ -1,13 +1,13 @@
 package com.lambakean.RationPlanner.domain.service.impl;
 
-import com.lambakean.RationPlanner.domain.exception.AccessDeniedException;
-import com.lambakean.RationPlanner.domain.exception.EntityNotFoundException;
 import com.lambakean.RationPlanner.data.model.PlannedDay;
 import com.lambakean.RationPlanner.data.model.Schedule;
 import com.lambakean.RationPlanner.data.model.ScheduledPlannedDay;
 import com.lambakean.RationPlanner.data.model.User;
 import com.lambakean.RationPlanner.data.repository.PlannedDayRepository;
 import com.lambakean.RationPlanner.data.repository.ScheduleRepository;
+import com.lambakean.RationPlanner.domain.exception.AccessDeniedException;
+import com.lambakean.RationPlanner.domain.exception.EntityNotFoundException;
 import com.lambakean.RationPlanner.domain.service.PrincipalService;
 import com.lambakean.RationPlanner.domain.service.ScheduleService;
 import com.lambakean.RationPlanner.domain.service.ValidationService;
@@ -29,9 +29,10 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     private final PrincipalService principalService;
     private final ScheduleRepository scheduleRepository;
-    private final ScheduleValidator scheduleValidator;
-    private final ValidationService validationService;
     private final PlannedDayRepository plannedDayRepository;
+
+    private final ValidationService validationService;
+    private final ScheduleValidator scheduleValidator;
 
     @Override
     public Schedule createSchedule(Schedule scheduleData) {

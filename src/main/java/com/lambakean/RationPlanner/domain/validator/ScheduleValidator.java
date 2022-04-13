@@ -27,12 +27,14 @@ public class ScheduleValidator implements Validator {
 
         Schedule schedule = (Schedule) target;
 
-        validatePlannedDay(schedule.getPlannedDay(), errors);
-        validateStartDate(schedule.getStartDate(), errors);
-        validateNextRepeatAfterDays(schedule.getNextRepeatAfterDays(), errors);
+        validatePlannedDay(schedule, errors);
+        validateStartDate(schedule, errors);
+        validateNextRepeatAfterDays(schedule, errors);
     }
 
-    void validatePlannedDay(PlannedDay plannedDay, @NonNull Errors errors) {
+    void validatePlannedDay(@NonNull Schedule schedule, @NonNull Errors errors) {
+
+        PlannedDay plannedDay = schedule.getPlannedDay();
 
         if(plannedDay == null || plannedDay.getId() == null || !plannedDayRepository.existsById(plannedDay.getId())) {
             errors.rejectValue(
@@ -43,7 +45,9 @@ public class ScheduleValidator implements Validator {
         }
     }
 
-    void validateStartDate(LocalDate startDate, @NonNull Errors errors) {
+    void validateStartDate(@NonNull Schedule schedule, @NonNull Errors errors) {
+
+        LocalDate startDate = schedule.getStartDate();
 
         if(startDate == null) {
             errors.rejectValue(
@@ -65,7 +69,9 @@ public class ScheduleValidator implements Validator {
         }
     }
 
-    void validateNextRepeatAfterDays(Integer nextRepeatAfterDays, @NonNull Errors errors) {
+    void validateNextRepeatAfterDays(@NonNull Schedule schedule, @NonNull Errors errors) {
+
+        Integer nextRepeatAfterDays = schedule.getNextRepeatAfterDays();
 
         if(nextRepeatAfterDays == null) {
             return;

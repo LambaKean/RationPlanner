@@ -1,7 +1,5 @@
 package com.lambakean.RationPlanner.data.model;
 
-import com.lambakean.RationPlanner.data.model.BaseEntity;
-import com.lambakean.RationPlanner.data.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -19,10 +19,12 @@ public class PlannedDayValidator implements Validator {
 
         PlannedDay plannedDay = (PlannedDay) target;
 
-        validateName(plannedDay.getName(), errors);
+        validateName(plannedDay, errors);
     }
 
-    public void validateName(String name, @NonNull Errors errors) {
+    public void validateName(@NonNull PlannedDay plannedDay, @NonNull Errors errors) {
+
+        String name = plannedDay.getName();
 
         if (name == null || name.equals("")) {
             errors.rejectValue(

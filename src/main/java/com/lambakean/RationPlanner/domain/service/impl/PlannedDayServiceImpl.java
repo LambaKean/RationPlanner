@@ -1,20 +1,19 @@
 package com.lambakean.RationPlanner.domain.service.impl;
 
-import com.lambakean.RationPlanner.domain.exception.AccessDeniedException;
-import com.lambakean.RationPlanner.domain.exception.EntityNotFoundException;
 import com.lambakean.RationPlanner.data.model.Meal;
 import com.lambakean.RationPlanner.data.model.PlannedDay;
 import com.lambakean.RationPlanner.data.model.User;
 import com.lambakean.RationPlanner.data.repository.PlannedDayRepository;
+import com.lambakean.RationPlanner.domain.exception.AccessDeniedException;
+import com.lambakean.RationPlanner.domain.exception.EntityNotFoundException;
 import com.lambakean.RationPlanner.domain.service.MealService;
 import com.lambakean.RationPlanner.domain.service.PlannedDayService;
 import com.lambakean.RationPlanner.domain.service.PrincipalService;
 import com.lambakean.RationPlanner.domain.service.ValidationService;
-import com.lambakean.RationPlanner.domain.validator.PlannedDayMealValidator;
-import com.lambakean.RationPlanner.domain.validator.PlannedDayValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -26,11 +25,15 @@ public class PlannedDayServiceImpl implements PlannedDayService {
 
     private final PrincipalService principalService;
     private final PlannedDayRepository plannedDayRepository;
-    private final PlannedDayValidator plannedDayValidator;
-    private final ValidationService validationService;
-    private final PlannedDayMealValidator plannedDayMealValidator;
     private final MealService mealService;
     private final EntityManager entityManager;
+
+    private final ValidationService validationService;
+
+    private final Validator plannedDayValidator;
+    private final Validator plannedDayMealValidator;
+
+
 
     @Override
     @Transactional

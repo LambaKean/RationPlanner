@@ -19,11 +19,14 @@ public class UserValidator implements Validator {
 
         User user = (User) target;
 
-        validateUsername(user.getUsername(), errors);
-        validatePassword(user.getPassword(), errors);
+        validateUsername(user, errors);
+        validatePassword(user, errors);
     }
 
-    public void validateUsername(String username, @NonNull Errors errors) {
+    public void validateUsername(@NonNull User user, @NonNull Errors errors) {
+
+        String username = user.getUsername();
+
         if (username == null) {
             errors.rejectValue(
                     "username",
@@ -69,7 +72,9 @@ public class UserValidator implements Validator {
         }
     }
 
-    public void validatePassword(String password, @NonNull Errors errors) {
+    public void validatePassword(@NonNull User user, @NonNull Errors errors) {
+
+        String password = user.getPassword();
 
         if(password == null) {
             errors.rejectValue(

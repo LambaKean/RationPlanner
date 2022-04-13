@@ -1,7 +1,7 @@
 package com.lambakean.RationPlanner.domain.security;
 
-import com.lambakean.RationPlanner.domain.exception.EntityNotFoundException;
 import com.lambakean.RationPlanner.data.model.User;
+import com.lambakean.RationPlanner.domain.exception.EntityNotFoundException;
 import com.lambakean.RationPlanner.domain.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;

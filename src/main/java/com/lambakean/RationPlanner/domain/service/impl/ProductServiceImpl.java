@@ -1,18 +1,17 @@
 package com.lambakean.RationPlanner.domain.service.impl;
 
-import com.lambakean.RationPlanner.domain.exception.AccessDeniedException;
-import com.lambakean.RationPlanner.domain.exception.BadRequestException;
-import com.lambakean.RationPlanner.domain.exception.EntityNotFoundException;
 import com.lambakean.RationPlanner.data.model.MeasurementUnit;
 import com.lambakean.RationPlanner.data.model.Product;
 import com.lambakean.RationPlanner.data.model.ProductQuantity;
 import com.lambakean.RationPlanner.data.model.User;
 import com.lambakean.RationPlanner.data.repository.MeasurementUnitRepository;
 import com.lambakean.RationPlanner.data.repository.ProductRepository;
+import com.lambakean.RationPlanner.domain.exception.AccessDeniedException;
+import com.lambakean.RationPlanner.domain.exception.BadRequestException;
+import com.lambakean.RationPlanner.domain.exception.EntityNotFoundException;
 import com.lambakean.RationPlanner.domain.service.PrincipalService;
 import com.lambakean.RationPlanner.domain.service.ProductService;
 import com.lambakean.RationPlanner.domain.service.ValidationService;
-import com.lambakean.RationPlanner.domain.validator.ProductQuantityValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
@@ -28,9 +27,10 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final MeasurementUnitRepository measurementUnitRepository;
     private final PrincipalService principalService;
-    private final Validator productValidator;
+
     private final ValidationService validationService;
-    private final ProductQuantityValidator productQuantityValidator;
+    private final Validator productQuantityValidator;
+    private final Validator productValidator;
 
     @Override
     public Product getProductById(String id) {

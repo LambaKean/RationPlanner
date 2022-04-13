@@ -25,13 +25,15 @@ public class ProductValidator implements Validator {
 
         Product product = (Product) target;
 
-        validateName(product.getName(), errors);
-        validateProducer(product.getProducer(), errors);
-        validatePrice(product.getPrice(), errors);
+        validateName(product, errors);
+        validateProducer(product, errors);
+        validatePrice(product, errors);
         validatePhoto(product, errors);
     }
 
-    public void validateName(String name, @NonNull Errors errors) {
+    public void validateName(@NonNull Product product, @NonNull Errors errors) {
+
+        String name = product.getName();
 
         if (name == null) {
             errors.rejectValue(
@@ -51,7 +53,9 @@ public class ProductValidator implements Validator {
         }
     }
 
-    public void validateProducer(String producer, @NonNull Errors errors) {
+    public void validateProducer(@NonNull Product product, @NonNull Errors errors) {
+
+        String producer = product.getProducer();
 
         if(producer != null) {
 
@@ -65,7 +69,10 @@ public class ProductValidator implements Validator {
         }
     }
 
-    public void validatePrice(Double price, @NonNull Errors errors) {
+    public void validatePrice(@NonNull Product product, @NonNull Errors errors) {
+
+        Double price = product.getPrice();
+
         if(price == null) {
             errors.rejectValue(
                     "price",

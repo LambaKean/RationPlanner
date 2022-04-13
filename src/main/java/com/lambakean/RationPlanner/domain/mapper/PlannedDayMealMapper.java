@@ -1,9 +1,9 @@
 package com.lambakean.RationPlanner.domain.mapper;
 
+import com.lambakean.RationPlanner.data.model.PlannedDayMeal;
 import com.lambakean.RationPlanner.representation.dto.PlannedDayMealDto;
 import com.lambakean.RationPlanner.representation.dto.TimeDto;
 import com.lambakean.RationPlanner.representation.dto.form.PlannedDayCreationForm;
-import com.lambakean.RationPlanner.data.model.PlannedDayMeal;
 import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
