@@ -4,6 +4,7 @@ import com.lambakean.RationPlanner.representation.dto.MeasurementUnitDto;
 import com.lambakean.RationPlanner.domain.mapper.MeasurementUnitMapper;
 import com.lambakean.RationPlanner.data.model.MeasurementUnit;
 import com.lambakean.RationPlanner.domain.service.MeasurementUnitService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,7 @@ public class MeasurementUnitController {
     private final MeasurementUnitService measurementUnitService;
     private final MeasurementUnitMapper measurementUnitMapper;
 
+    @ApiOperation("Получение списка всех доступных единиц измерения (гр, мл и т.п.)")
     @GetMapping
     public ResponseEntity<List<MeasurementUnitDto>> getUnits() {
 

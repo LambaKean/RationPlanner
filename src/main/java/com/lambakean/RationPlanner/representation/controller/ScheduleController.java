@@ -7,6 +7,7 @@ import com.lambakean.RationPlanner.domain.mapper.ScheduleMapper;
 import com.lambakean.RationPlanner.domain.mapper.ScheduledPlannedDayMapper;
 import com.lambakean.RationPlanner.data.model.Schedule;
 import com.lambakean.RationPlanner.domain.service.ScheduleService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,11 @@ public class ScheduleController {
     private final ScheduleMapper scheduleMapper;
     private final ScheduledPlannedDayMapper scheduledPlannedDayMapper;
 
+    @ApiOperation(
+            value = "Добавление нового расписания",
+            notes = "Расписание - это, по сути, план питания на день, который назначается на определённую календарную " +
+                    "дату и который можно сделать повторяемым с определённой периодичностью (например, раз в 7 дней)."
+    )
     @PostMapping
     public ResponseEntity<ScheduleDto> createSchedule(@RequestBody ScheduleCreationForm scheduleCreationForm) {
 
@@ -33,7 +39,12 @@ public class ScheduleController {
         return ResponseEntity.ok(scheduleMapper.toScheduleDto(createdSchedule));
     }
 
-    @GetMapping()
+    @ApiOperation(
+            value = "Получение расписания питания текущего пользователя на месяц",
+            notes = "Месяц, для которого будет возвращено расписание, будет определён по дате в параметре date." +
+                    " К какому месяцу будет пренадлежать дата в date, на тот месяц и вернётся расписание."
+    )
+    @GetMapping
     public ResponseEntity<List<ScheduledPlannedDayDto>> getMonthSchedule(
             @RequestParam("date") @DateTimeFormat(pattern = "ddMMyyyy") LocalDate date
     ) {
@@ -46,6 +57,7 @@ public class ScheduleController {
         );
     }
 
+    @ApiOperation("Получение информации о расписании питания по его id")
     @GetMapping("/{id}")
     public ResponseEntity<ScheduleDto> getScheduleById(@PathVariable String id) {
 
@@ -54,6 +66,7 @@ public class ScheduleController {
         return ResponseEntity.ok(scheduleMapper.toScheduleDto(schedule));
     }
 
+    @ApiOperation("Удаление расписания питания по его id")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteScheduleById(@PathVariable String id) {
 

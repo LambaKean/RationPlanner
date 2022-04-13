@@ -5,6 +5,7 @@ import com.lambakean.RationPlanner.representation.dto.form.PlannedDayCreationFor
 import com.lambakean.RationPlanner.domain.mapper.PlannedDayMapper;
 import com.lambakean.RationPlanner.data.model.PlannedDay;
 import com.lambakean.RationPlanner.domain.service.PlannedDayService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,12 @@ public class PlannedDayController {
     private final PlannedDayService plannedDayService;
     private final PlannedDayMapper plannedDayMapper;
 
+    @ApiOperation(
+            value = "Создание нового шаблона плана питания на день",
+            notes = "Здесь создаётся не расписание питания, привязанное к конкретной календарной дате, а именно шаблон" +
+                    " плана питания на день. Затем этот шаблон можно будет многоразово использовать, назначая его на" +
+                    " конкретные даты в календаре."
+    )
     @PostMapping
     public ResponseEntity<PlannedDayDto> createPlannedDay(@RequestBody PlannedDayCreationForm plannedDayCreationForm) {
 
@@ -29,6 +36,7 @@ public class PlannedDayController {
         return ResponseEntity.ok(plannedDayMapper.toPlannedDayDto(createdPlannedDay));
     }
 
+    @ApiOperation("Получение информации о шаблоне плана питания на день по его id")
     @GetMapping("/{id}")
     public ResponseEntity<PlannedDayDto> getPlannedDayById(@PathVariable String id) {
 
@@ -37,6 +45,7 @@ public class PlannedDayController {
         return ResponseEntity.ok(plannedDayMapper.toPlannedDayDto(plannedDay));
     }
 
+    @ApiOperation("Получение списка шаблонов планов питания на день текущего пользователя")
     @GetMapping
     public ResponseEntity<Set<PlannedDayDto>> getPlannedDays() {
 
@@ -50,6 +59,7 @@ public class PlannedDayController {
         );
     }
 
+    @ApiOperation("Удаление шаблона плана питания на день по его id")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePlannedDayById(@PathVariable String id) {
 

@@ -5,6 +5,7 @@ import com.lambakean.RationPlanner.representation.dto.form.MealCreationForm;
 import com.lambakean.RationPlanner.domain.mapper.MealMapper;
 import com.lambakean.RationPlanner.data.model.Meal;
 import com.lambakean.RationPlanner.domain.service.MealService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ public class MealController {
     private final MealService mealService;
     private final MealMapper mealMapper;
 
+    @ApiOperation("Создание блюда")
     @PostMapping
     public ResponseEntity<MealDto> createMeal(@RequestBody MealCreationForm mealCreationForm) {
 
@@ -29,6 +31,7 @@ public class MealController {
         return ResponseEntity.ok(createdMealDto);
     }
 
+    @ApiOperation("Получение списка блюд текущего пользователя")
     @GetMapping
     public ResponseEntity<List<MealDto>> getMeals() {
 
@@ -42,6 +45,7 @@ public class MealController {
         );
     }
 
+    @ApiOperation("Получение информации о блюде по его id")
     @GetMapping("/{id}")
     public ResponseEntity<MealDto> getMealById(@PathVariable String id) {
 
@@ -50,6 +54,7 @@ public class MealController {
         return ResponseEntity.ok(mealMapper.toMealDto(meal));
     }
 
+    @ApiOperation("Удаление блюда по его id")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteMealById(@PathVariable String id) {
 

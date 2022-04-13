@@ -1,9 +1,10 @@
 package com.lambakean.RationPlanner.representation.controller;
 
-import com.lambakean.RationPlanner.representation.dto.PhotoDto;
-import com.lambakean.RationPlanner.domain.mapper.PhotoMapper;
 import com.lambakean.RationPlanner.data.model.Photo;
+import com.lambakean.RationPlanner.domain.mapper.PhotoMapper;
 import com.lambakean.RationPlanner.domain.service.PhotoService;
+import com.lambakean.RationPlanner.representation.dto.PhotoDto;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ public class PhotoController {
     private final PhotoService photoService;
     private final PhotoMapper photoMapper;
 
+    @ApiOperation("Загрузка изображения на сервер")
     @PostMapping
     public ResponseEntity<PhotoDto> uploadPhoto(@RequestParam MultipartFile photo) {
 
@@ -26,6 +28,7 @@ public class PhotoController {
         return ResponseEntity.ok(photoMapper.toPhotoDto(savedPhoto));
     }
 
+    @ApiOperation("Получение изображения по его id")
     @GetMapping("/{id}")
     public ResponseEntity<Resource> getPhoto(@PathVariable String id) {
 

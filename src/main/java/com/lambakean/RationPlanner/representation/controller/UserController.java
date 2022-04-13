@@ -1,14 +1,16 @@
 package com.lambakean.RationPlanner.representation.controller;
 
-import com.lambakean.RationPlanner.representation.dto.*;
-import com.lambakean.RationPlanner.representation.dto.form.UserAuthenticationForm;
-import com.lambakean.RationPlanner.domain.mapper.SecurityTokensHolderMapper;
-import com.lambakean.RationPlanner.domain.mapper.UserMapper;
 import com.lambakean.RationPlanner.data.model.SecurityTokensHolder;
 import com.lambakean.RationPlanner.data.model.User;
+import com.lambakean.RationPlanner.domain.mapper.SecurityTokensHolderMapper;
+import com.lambakean.RationPlanner.domain.mapper.UserMapper;
 import com.lambakean.RationPlanner.domain.service.PrincipalService;
 import com.lambakean.RationPlanner.domain.service.SecurityTokensService;
 import com.lambakean.RationPlanner.domain.service.UserService;
+import com.lambakean.RationPlanner.representation.dto.SecurityTokensHolderDto;
+import com.lambakean.RationPlanner.representation.dto.UserDto;
+import com.lambakean.RationPlanner.representation.dto.form.UserAuthenticationForm;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +30,10 @@ public class UserController {
     private final UserMapper userMapper;
     private final SecurityTokensHolderMapper securityTokensHolderMapper;
 
+    @ApiOperation(
+            value = "Регистрация пользователя",
+            notes = "При регистрации пользователя также создаётся cookie с refresh токеном."
+    )
     @PostMapping
     public ResponseEntity<SecurityTokensHolderDto> register(@RequestBody UserAuthenticationForm userAuthenticationForm,
                                                             HttpServletResponse httpServletResponse) {
@@ -43,6 +49,10 @@ public class UserController {
         return new ResponseEntity<>(securityTokensHolderDto, HttpStatus.CREATED);
     }
 
+    @ApiOperation(
+            value = "Вход пользователя в аккаунт",
+            notes = "При входе пользователя в аккаунт также создаётся cookie с refresh токеном."
+    )
     @PostMapping("/login")
     public ResponseEntity<SecurityTokensHolderDto> login(@RequestBody UserAuthenticationForm userAuthenticationForm,
                                                          HttpServletResponse httpServletResponse) {
@@ -58,7 +68,8 @@ public class UserController {
         return ResponseEntity.ok(securityTokensHolderDto);
     }
 
-    @GetMapping()
+    @ApiOperation("Получение информации о залогиненном пользователе")
+    @GetMapping
     public ResponseEntity<UserDto> getCurrentUser() {
 
         User user = principalService.getPrincipal();
@@ -67,6 +78,11 @@ public class UserController {
         return ResponseEntity.ok(userDto);
     }
 
+    @ApiOperation(
+            value = "Обновление токенов безопасности",
+            notes = "В запросе должен зодержаться cookie файл с валидным refresh токеном." +
+                    " При обновлении токенов создаётся новый cookie с refresh токеном."
+    )
     @PostMapping("/token")
     public ResponseEntity<SecurityTokensHolderDto> updateTokens(HttpServletRequest httpServletRequest,
                                                                 HttpServletResponse httpServletResponse) {
