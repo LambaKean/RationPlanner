@@ -26,16 +26,16 @@ RationPlanner это приложение, позволяющее вам сос�
 Приложение Ration Planner собрано при помощи сборщика Maven. Для запуска приложения вы можете собрать JAR файл при
 помощи Maven и запустить собранный файл из командной строки:
 ```
-git clone https://github.com/LambaKean/RationPlanner.git
-cd RationPlanner
+git clone https://github.com/LambaKean/ration-planner.git
+cd ration-planner
 ./mvnw package
 java -jar target/*.jar
 ```
 
 Либо вы можете запустить это напрямую при помощи Spring Boot Maven plugin:
 ```
-git clone https://github.com/LambaKean/RationPlanner.git
-cd RationPlanner
+git clone https://github.com/LambaKean/ration-planner.git
+cd ration-planner
 ./mvnw spring-boot:run
 ```
 
