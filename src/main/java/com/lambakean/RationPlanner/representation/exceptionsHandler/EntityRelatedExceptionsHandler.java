@@ -1,11 +1,11 @@
-package com.lambakean.RationPlanner.representation.exceptionsHandler;
+package com.lambakean.rationplanner.representation.exceptionsHandler;
 
-import com.lambakean.RationPlanner.representation.dto.InvalidFieldExceptionDto;
-import com.lambakean.RationPlanner.representation.dto.ResponseWithExceptionsDto;
-import com.lambakean.RationPlanner.representation.dto.ExceptionDto;
-import com.lambakean.RationPlanner.domain.exception.AccessDeniedException;
-import com.lambakean.RationPlanner.domain.exception.EntityNotFoundException;
-import com.lambakean.RationPlanner.domain.exception.InvalidEntityException;
+import com.lambakean.rationplanner.representation.dto.InvalidFieldExceptionDto;
+import com.lambakean.rationplanner.representation.dto.ResponseWithExceptionsDto;
+import com.lambakean.rationplanner.representation.dto.ExceptionDto;
+import com.lambakean.rationplanner.domain.exception.AccessDeniedException;
+import com.lambakean.rationplanner.domain.exception.EntityNotFoundException;
+import com.lambakean.rationplanner.domain.exception.InvalidEntityException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;

@@ -1,16 +1,13 @@
-package com.lambakean.RationPlanner.domain.validator;
+package com.lambakean.rationplanner.domain.validator;
 
-import com.lambakean.RationPlanner.data.model.Meal;
-import com.lambakean.RationPlanner.data.model.Photo;
-import com.lambakean.RationPlanner.data.model.Product;
-import com.lambakean.RationPlanner.data.repository.PhotoRepository;
+import com.lambakean.rationplanner.data.model.Meal;
+import com.lambakean.rationplanner.data.model.Photo;
+import com.lambakean.rationplanner.data.repository.PhotoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-
-import java.time.Duration;
 
 @Component
 @RequiredArgsConstructor

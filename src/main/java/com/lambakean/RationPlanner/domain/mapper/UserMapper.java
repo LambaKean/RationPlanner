@@ -1,8 +1,8 @@
-package com.lambakean.RationPlanner.domain.mapper;
+package com.lambakean.rationplanner.domain.mapper;
 
-import com.lambakean.RationPlanner.data.model.User;
-import com.lambakean.RationPlanner.representation.dto.UserDto;
-import com.lambakean.RationPlanner.representation.dto.form.UserAuthenticationForm;
+import com.lambakean.rationplanner.data.model.User;
+import com.lambakean.rationplanner.representation.dto.UserDto;
+import com.lambakean.rationplanner.representation.dto.form.UserAuthenticationForm;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

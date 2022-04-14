@@ -1,7 +1,7 @@
-package com.lambakean.RationPlanner.data.repository;
+package com.lambakean.rationplanner.data.repository;
 
-import com.lambakean.RationPlanner.data.model.Schedule;
-import com.lambakean.RationPlanner.data.model.User;
+import com.lambakean.rationplanner.data.model.Schedule;
+import com.lambakean.rationplanner.data.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

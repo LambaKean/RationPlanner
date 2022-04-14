@@ -1,7 +1,7 @@
-package com.lambakean.RationPlanner.domain.service.impl;
+package com.lambakean.rationplanner.domain.service.impl;
 
-import com.lambakean.RationPlanner.domain.exception.InvalidEntityException;
-import com.lambakean.RationPlanner.domain.service.ValidationService;
+import com.lambakean.rationplanner.domain.exception.InvalidEntityException;
+import com.lambakean.rationplanner.domain.service.ValidationService;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.DataBinder;

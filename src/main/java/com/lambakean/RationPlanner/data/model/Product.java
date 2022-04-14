@@ -1,4 +1,4 @@
-package com.lambakean.RationPlanner.data.model;
+package com.lambakean.rationplanner.data.model;
 
 import lombok.Getter;
 import lombok.Setter;

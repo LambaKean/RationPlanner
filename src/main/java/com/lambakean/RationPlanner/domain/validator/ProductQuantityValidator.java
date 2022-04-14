@@ -1,6 +1,6 @@
-package com.lambakean.RationPlanner.domain.validator;
+package com.lambakean.rationplanner.domain.validator;
 
-import com.lambakean.RationPlanner.data.model.ProductQuantity;
+import com.lambakean.rationplanner.data.model.ProductQuantity;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

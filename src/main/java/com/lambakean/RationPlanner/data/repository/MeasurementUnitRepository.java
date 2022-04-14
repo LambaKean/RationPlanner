@@ -1,6 +1,6 @@
-package com.lambakean.RationPlanner.data.repository;
+package com.lambakean.rationplanner.data.repository;
 
-import com.lambakean.RationPlanner.data.model.MeasurementUnit;
+import com.lambakean.rationplanner.data.model.MeasurementUnit;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MeasurementUnitRepository extends JpaRepository<MeasurementUnit, String> {}

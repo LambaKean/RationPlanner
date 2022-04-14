@@ -1,6 +1,6 @@
-package com.lambakean.RationPlanner.domain.security;
+package com.lambakean.rationplanner.domain.security;
 
-import com.lambakean.RationPlanner.data.model.User;
+import com.lambakean.rationplanner.data.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

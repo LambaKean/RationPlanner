@@ -1,10 +1,10 @@
-package com.lambakean.RationPlanner.representation.controller;
+package com.lambakean.rationplanner.representation.controller;
 
-import com.lambakean.RationPlanner.representation.dto.MealDto;
-import com.lambakean.RationPlanner.representation.dto.form.MealCreationForm;
-import com.lambakean.RationPlanner.domain.mapper.MealMapper;
-import com.lambakean.RationPlanner.data.model.Meal;
-import com.lambakean.RationPlanner.domain.service.MealService;
+import com.lambakean.rationplanner.representation.dto.MealDto;
+import com.lambakean.rationplanner.representation.dto.form.MealCreationForm;
+import com.lambakean.rationplanner.domain.mapper.MealMapper;
+import com.lambakean.rationplanner.data.model.Meal;
+import com.lambakean.rationplanner.domain.service.MealService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

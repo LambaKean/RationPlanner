@@ -1,4 +1,4 @@
-package com.lambakean.RationPlanner;
+package com.lambakean.rationplanner;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,15 +1,15 @@
-package com.lambakean.RationPlanner.representation.controller;
+package com.lambakean.rationplanner.representation.controller;
 
-import com.lambakean.RationPlanner.data.model.SecurityTokensHolder;
-import com.lambakean.RationPlanner.data.model.User;
-import com.lambakean.RationPlanner.domain.mapper.SecurityTokensHolderMapper;
-import com.lambakean.RationPlanner.domain.mapper.UserMapper;
-import com.lambakean.RationPlanner.domain.service.PrincipalService;
-import com.lambakean.RationPlanner.domain.service.SecurityTokensService;
-import com.lambakean.RationPlanner.domain.service.UserService;
-import com.lambakean.RationPlanner.representation.dto.SecurityTokensHolderDto;
-import com.lambakean.RationPlanner.representation.dto.UserDto;
-import com.lambakean.RationPlanner.representation.dto.form.UserAuthenticationForm;
+import com.lambakean.rationplanner.data.model.SecurityTokensHolder;
+import com.lambakean.rationplanner.data.model.User;
+import com.lambakean.rationplanner.domain.mapper.SecurityTokensHolderMapper;
+import com.lambakean.rationplanner.domain.mapper.UserMapper;
+import com.lambakean.rationplanner.domain.service.PrincipalService;
+import com.lambakean.rationplanner.domain.service.SecurityTokensService;
+import com.lambakean.rationplanner.domain.service.UserService;
+import com.lambakean.rationplanner.representation.dto.SecurityTokensHolderDto;
+import com.lambakean.rationplanner.representation.dto.UserDto;
+import com.lambakean.rationplanner.representation.dto.form.UserAuthenticationForm;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

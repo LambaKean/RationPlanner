@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.lambakean</groupId>
-    <artifactId>RationPlanner</artifactId>
+    <artifactId>rationplanner</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -145,7 +145,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>dependency-jars/</classpathPrefix>
-                            <mainClass>com.lambakean.RationPlanner.Application</mainClass>
+                            <mainClass>com.lambakean.rationplanner.Application</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

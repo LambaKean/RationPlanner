@@ -1,4 +1,4 @@
-package com.lambakean.RationPlanner.domain.exception;
+package com.lambakean.rationplanner.domain.exception;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

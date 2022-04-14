@@ -1,6 +1,6 @@
-package com.lambakean.RationPlanner.domain.service;
+package com.lambakean.rationplanner.domain.service;
 
-import com.lambakean.RationPlanner.data.model.Meal;
+import com.lambakean.rationplanner.data.model.Meal;
 
 import java.util.List;
 

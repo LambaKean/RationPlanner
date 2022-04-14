@@ -1,7 +1,7 @@
-package com.lambakean.RationPlanner.representation.dto.form;
+package com.lambakean.rationplanner.representation.dto.form;
 
-import com.lambakean.RationPlanner.representation.dto.EntityIdReferenceDto;
-import com.lambakean.RationPlanner.representation.dto.PhotoDto;
+import com.lambakean.rationplanner.representation.dto.EntityIdReferenceDto;
+import com.lambakean.rationplanner.representation.dto.PhotoDto;
 import lombok.Getter;
 import lombok.Setter;
 

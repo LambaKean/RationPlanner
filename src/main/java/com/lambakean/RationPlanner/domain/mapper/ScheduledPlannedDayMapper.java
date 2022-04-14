@@ -1,8 +1,8 @@
-package com.lambakean.RationPlanner.domain.mapper;
+package com.lambakean.rationplanner.domain.mapper;
 
-import com.lambakean.RationPlanner.data.model.ScheduledPlannedDay;
-import com.lambakean.RationPlanner.representation.dto.DateDto;
-import com.lambakean.RationPlanner.representation.dto.ScheduledPlannedDayDto;
+import com.lambakean.rationplanner.data.model.ScheduledPlannedDay;
+import com.lambakean.rationplanner.representation.dto.DateDto;
+import com.lambakean.rationplanner.representation.dto.ScheduledPlannedDayDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;

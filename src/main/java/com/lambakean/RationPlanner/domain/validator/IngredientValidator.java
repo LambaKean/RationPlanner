@@ -1,8 +1,8 @@
-package com.lambakean.RationPlanner.domain.validator;
+package com.lambakean.rationplanner.domain.validator;
 
-import com.lambakean.RationPlanner.data.model.Ingredient;
-import com.lambakean.RationPlanner.data.model.Product;
-import com.lambakean.RationPlanner.data.repository.ProductRepository;
+import com.lambakean.rationplanner.data.model.Ingredient;
+import com.lambakean.rationplanner.data.model.Product;
+import com.lambakean.rationplanner.data.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;

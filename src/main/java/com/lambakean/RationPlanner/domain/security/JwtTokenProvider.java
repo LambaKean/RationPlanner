@@ -1,6 +1,6 @@
-package com.lambakean.RationPlanner.domain.security;
+package com.lambakean.rationplanner.domain.security;
 
-import com.lambakean.RationPlanner.data.model.User;
+import com.lambakean.rationplanner.data.model.User;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;

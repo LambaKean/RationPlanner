@@ -1,9 +1,9 @@
-package com.lambakean.RationPlanner.representation.exceptionsHandler;
+package com.lambakean.rationplanner.representation.exceptionsHandler;
 
-import com.lambakean.RationPlanner.representation.dto.ExceptionDto;
-import com.lambakean.RationPlanner.representation.dto.ResponseWithExceptionsDto;
-import com.lambakean.RationPlanner.domain.exception.BadRequestException;
-import com.lambakean.RationPlanner.domain.exception.FileNotFoundException;
+import com.lambakean.rationplanner.representation.dto.ExceptionDto;
+import com.lambakean.rationplanner.representation.dto.ResponseWithExceptionsDto;
+import com.lambakean.rationplanner.domain.exception.BadRequestException;
+import com.lambakean.rationplanner.domain.exception.FileNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

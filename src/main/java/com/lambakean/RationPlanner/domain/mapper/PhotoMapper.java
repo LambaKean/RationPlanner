@@ -1,7 +1,7 @@
-package com.lambakean.RationPlanner.domain.mapper;
+package com.lambakean.rationplanner.domain.mapper;
 
-import com.lambakean.RationPlanner.data.model.Photo;
-import com.lambakean.RationPlanner.representation.dto.PhotoDto;
+import com.lambakean.rationplanner.data.model.Photo;
+import com.lambakean.rationplanner.representation.dto.PhotoDto;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

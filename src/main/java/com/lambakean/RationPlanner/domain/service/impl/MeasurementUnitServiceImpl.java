@@ -1,8 +1,8 @@
-package com.lambakean.RationPlanner.domain.service.impl;
+package com.lambakean.rationplanner.domain.service.impl;
 
-import com.lambakean.RationPlanner.data.model.MeasurementUnit;
-import com.lambakean.RationPlanner.data.repository.MeasurementUnitRepository;
-import com.lambakean.RationPlanner.domain.service.MeasurementUnitService;
+import com.lambakean.rationplanner.data.model.MeasurementUnit;
+import com.lambakean.rationplanner.data.repository.MeasurementUnitRepository;
+import com.lambakean.rationplanner.domain.service.MeasurementUnitService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

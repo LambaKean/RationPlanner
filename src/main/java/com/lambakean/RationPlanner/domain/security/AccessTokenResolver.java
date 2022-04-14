@@ -1,4 +1,4 @@
-package com.lambakean.RationPlanner.domain.security;
+package com.lambakean.rationplanner.domain.security;
 
 import org.springframework.stereotype.Component;
 

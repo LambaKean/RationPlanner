@@ -1,7 +1,7 @@
-package com.lambakean.RationPlanner.domain.mapper;
+package com.lambakean.rationplanner.domain.mapper;
 
-import com.lambakean.RationPlanner.data.model.MeasurementUnit;
-import com.lambakean.RationPlanner.representation.dto.MeasurementUnitDto;
+import com.lambakean.rationplanner.data.model.MeasurementUnit;
+import com.lambakean.rationplanner.representation.dto.MeasurementUnitDto;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

@@ -1,8 +1,8 @@
-package com.lambakean.RationPlanner.domain.security;
+package com.lambakean.rationplanner.domain.security;
 
-import com.lambakean.RationPlanner.data.model.User;
-import com.lambakean.RationPlanner.domain.exception.EntityNotFoundException;
-import com.lambakean.RationPlanner.domain.service.UserService;
+import com.lambakean.rationplanner.data.model.User;
+import com.lambakean.rationplanner.domain.exception.EntityNotFoundException;
+import com.lambakean.rationplanner.domain.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.AuthenticationProvider;

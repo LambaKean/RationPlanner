@@ -1,10 +1,10 @@
-package com.lambakean.RationPlanner.representation.controller;
+package com.lambakean.rationplanner.representation.controller;
 
-import com.lambakean.RationPlanner.representation.dto.PlannedDayDto;
-import com.lambakean.RationPlanner.representation.dto.form.PlannedDayCreationForm;
-import com.lambakean.RationPlanner.domain.mapper.PlannedDayMapper;
-import com.lambakean.RationPlanner.data.model.PlannedDay;
-import com.lambakean.RationPlanner.domain.service.PlannedDayService;
+import com.lambakean.rationplanner.representation.dto.PlannedDayDto;
+import com.lambakean.rationplanner.representation.dto.form.PlannedDayCreationForm;
+import com.lambakean.rationplanner.domain.mapper.PlannedDayMapper;
+import com.lambakean.rationplanner.data.model.PlannedDay;
+import com.lambakean.rationplanner.domain.service.PlannedDayService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

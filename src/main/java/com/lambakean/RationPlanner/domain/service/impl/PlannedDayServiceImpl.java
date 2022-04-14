@@ -1,15 +1,15 @@
-package com.lambakean.RationPlanner.domain.service.impl;
+package com.lambakean.rationplanner.domain.service.impl;
 
-import com.lambakean.RationPlanner.data.model.Meal;
-import com.lambakean.RationPlanner.data.model.PlannedDay;
-import com.lambakean.RationPlanner.data.model.User;
-import com.lambakean.RationPlanner.data.repository.PlannedDayRepository;
-import com.lambakean.RationPlanner.domain.exception.AccessDeniedException;
-import com.lambakean.RationPlanner.domain.exception.EntityNotFoundException;
-import com.lambakean.RationPlanner.domain.service.MealService;
-import com.lambakean.RationPlanner.domain.service.PlannedDayService;
-import com.lambakean.RationPlanner.domain.service.PrincipalService;
-import com.lambakean.RationPlanner.domain.service.ValidationService;
+import com.lambakean.rationplanner.data.model.Meal;
+import com.lambakean.rationplanner.data.model.PlannedDay;
+import com.lambakean.rationplanner.data.model.User;
+import com.lambakean.rationplanner.data.repository.PlannedDayRepository;
+import com.lambakean.rationplanner.domain.exception.AccessDeniedException;
+import com.lambakean.rationplanner.domain.exception.EntityNotFoundException;
+import com.lambakean.rationplanner.domain.service.MealService;
+import com.lambakean.rationplanner.domain.service.PlannedDayService;
+import com.lambakean.rationplanner.domain.service.PrincipalService;
+import com.lambakean.rationplanner.domain.service.ValidationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;

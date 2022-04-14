@@ -1,4 +1,4 @@
-package com.lambakean.RationPlanner.domain.service;
+package com.lambakean.rationplanner.domain.service;
 
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;

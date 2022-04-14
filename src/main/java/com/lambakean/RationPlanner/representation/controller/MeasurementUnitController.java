@@ -1,9 +1,9 @@
-package com.lambakean.RationPlanner.representation.controller;
+package com.lambakean.rationplanner.representation.controller;
 
-import com.lambakean.RationPlanner.representation.dto.MeasurementUnitDto;
-import com.lambakean.RationPlanner.domain.mapper.MeasurementUnitMapper;
-import com.lambakean.RationPlanner.data.model.MeasurementUnit;
-import com.lambakean.RationPlanner.domain.service.MeasurementUnitService;
+import com.lambakean.rationplanner.representation.dto.MeasurementUnitDto;
+import com.lambakean.rationplanner.domain.mapper.MeasurementUnitMapper;
+import com.lambakean.rationplanner.data.model.MeasurementUnit;
+import com.lambakean.rationplanner.domain.service.MeasurementUnitService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -1,8 +1,7 @@
-package com.lambakean.RationPlanner.domain.validator;
+package com.lambakean.rationplanner.domain.validator;
 
-import com.lambakean.RationPlanner.data.model.Meal;
-import com.lambakean.RationPlanner.data.model.PlannedDay;
-import com.lambakean.RationPlanner.data.model.PlannedDayMeal;
+import com.lambakean.rationplanner.data.model.Meal;
+import com.lambakean.rationplanner.data.model.PlannedDayMeal;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

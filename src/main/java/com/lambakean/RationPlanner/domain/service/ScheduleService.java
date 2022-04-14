@@ -1,7 +1,7 @@
-package com.lambakean.RationPlanner.domain.service;
+package com.lambakean.rationplanner.domain.service;
 
-import com.lambakean.RationPlanner.data.model.Schedule;
-import com.lambakean.RationPlanner.data.model.ScheduledPlannedDay;
+import com.lambakean.rationplanner.data.model.Schedule;
+import com.lambakean.rationplanner.data.model.ScheduledPlannedDay;
 
 import java.time.LocalDate;
 import java.util.List;

@@ -1,7 +1,7 @@
-package com.lambakean.RationPlanner.domain.scheduling;
+package com.lambakean.rationplanner.domain.scheduling;
 
-import com.lambakean.RationPlanner.data.repository.RefreshTokenWrapperRepository;
-import com.lambakean.RationPlanner.data.model.RefreshTokenWrapper;
+import com.lambakean.rationplanner.data.repository.RefreshTokenWrapperRepository;
+import com.lambakean.rationplanner.data.model.RefreshTokenWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

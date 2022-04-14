@@ -1,4 +1,4 @@
-package com.lambakean.RationPlanner.domain.security;
+package com.lambakean.rationplanner.domain.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;

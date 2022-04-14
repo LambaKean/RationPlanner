@@ -1,9 +1,9 @@
-package com.lambakean.RationPlanner.domain.service;
+package com.lambakean.rationplanner.domain.service;
 
-import com.lambakean.RationPlanner.data.model.SecurityTokensHolder;
-import com.lambakean.RationPlanner.data.model.User;
-import com.lambakean.RationPlanner.data.model.AccessTokenWrapper;
-import com.lambakean.RationPlanner.data.model.RefreshTokenWrapper;
+import com.lambakean.rationplanner.data.model.SecurityTokensHolder;
+import com.lambakean.rationplanner.data.model.User;
+import com.lambakean.rationplanner.data.model.AccessTokenWrapper;
+import com.lambakean.rationplanner.data.model.RefreshTokenWrapper;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

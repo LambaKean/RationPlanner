@@ -1,4 +1,4 @@
-package com.lambakean.RationPlanner.representation.dto;
+package com.lambakean.rationplanner.representation.dto;
 
 import lombok.Getter;
 import lombok.Setter;

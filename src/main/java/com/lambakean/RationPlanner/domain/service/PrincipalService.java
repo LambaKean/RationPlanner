@@ -1,6 +1,6 @@
-package com.lambakean.RationPlanner.domain.service;
+package com.lambakean.rationplanner.domain.service;
 
-import com.lambakean.RationPlanner.data.model.User;
+import com.lambakean.rationplanner.data.model.User;
 
 public interface PrincipalService {
 
